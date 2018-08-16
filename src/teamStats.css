@@ -1,0 +1,26 @@
+
+.stat-card {
+  padding: 5px 10px;
+  padding-bottom: 10px;
+}
+
+.chart-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  font-size: 20px;
+}
+
+.pct{
+  color: red;
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.days {
+  color: green;
+  font-weight: bold;
+  font-size: 26px;
+}

@@ -1,0 +1,99 @@
+@media screen and (min-width: 600px){
+}
+
+@media screen and (min-width: 1150px){
+  .user-table{
+    background-color: gray;
+    color: white;
+    position: absolute;
+    top: 50px;
+    bottom: 0px;
+  }
+
+  .column-user {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
+  .column-user img {
+    padding-right: 15px;
+  }
+
+  .blue-text {
+    font-size: 20px;
+    color: #00BFFF;
+    font-weight: bold;
+  }
+
+  .user-info {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    margin-top: 20px;
+  }
+
+  .user-infoB {
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    margin-top: 40px;
+  }
+  .date{
+    color: #00BFFF;
+    font-weight: bold;
+    font-size: 20px;
+    padding-right: 20px;
+  }
+  .hour{
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+    padding-left: 20px;
+    border-left: 3px solid gray;
+  }
+
+
+  .devider{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    padding-bottom: 30px;
+  }
+
+  .task {
+    text-align: center;
+    border-bottom: 0.5px solid gray;
+  }
+  .user-tasks {
+    background-color: #fff;
+    padding: 24px 70px;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 2px 3px 0 rgba(0, 0, 0, 0.19);
+    position: relative;
+  }
+
+  .cardTitleC{
+    background-color: #00BFFF  ;
+    color: white;
+    border-radius: 5px;
+    position: absolute;
+    left: -10px;
+    padding: 5px;
+  }
+  .finish{
+    padding: 60px;
+  }
+
+  .user-tasksB {
+    background-color: #fff;
+    padding: 20px 90px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 5px 0 rgba(0, 0, 0, 0.19);
+    margin-bottom: 20px
+  }
+
+  .user-data{
+    background-color: #fff;
+    padding: 20px 90px;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 3px 5px 0 rgba(0, 0, 0, 0.19);
+  }
+}
