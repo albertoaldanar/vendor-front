@@ -6,31 +6,34 @@ import moment from 'moment';
 // to the correct localizer.
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
-const myEventsList= [
-  {
-    title: 'All Day Event very long title',
-    startDate: new Date(2018, 7, 16),
-    endDate: new Date(2018, 7, 16),
-    desc: 'Big conference for important people'
-  },
-  {
-    title: 'Event 2',
-    startDate: new Date(2018, 7, 17),
-    endDate: new Date(2018, 7, 17),
+
+class Calendar extends Component{
+
+  constructor(props){
+    super(props);
+    this.state = {myEventsList: []}
   }
-]
 
+  componentWillMount(){
+    fetch("http://localhost:3000/api/tasks")
+    .then(response => response.json())
+    .then(res => {
+      this.setState({myEventsList: res})
+    })
+  }
 
-
-const Calendar = props => (
-  <div id = "mycalendar" className ="calendar-container">
-    <BigCalendar
-      events={myEventsList}
-      startAccessor='startDate'
-      endAccessor='endDate'
-      selectable = {true}
-    />
-  </div>
-);
+  render(){
+    return(
+      <div id = "mycalendar" className ="calendar-container">
+        <BigCalendar
+          events={this.state.myEventsList}
+          startAccessor='startDate'
+          endAccessor='endDate'
+          selectable = {true}
+        />
+      </div>
+    );
+  }
+}
 
 export default Calendar;

@@ -9,6 +9,7 @@ class Stats extends Component{
     super(props);
     this.state = {stats: []}
   }
+
   render(){
     return(
       <div className = "stats">

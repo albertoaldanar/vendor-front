@@ -3,6 +3,9 @@
   padding: 5px 10px;
   padding-bottom: 10px;
 }
+.stats-page {
+  background-color: #fff;
+}
 
 .chart-info {
   display: flex;

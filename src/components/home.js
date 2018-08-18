@@ -12,8 +12,18 @@ class Home extends Component{
 
   constructor(props){
     super(props);
-    this.state = {isAdmin: true}
+    this.state = {isAdmin: null}
   }
+
+  componentWillMount(){
+    fetch("http://192.168.0.8:3000/api/user_type")
+      .then(res => res.json())
+      .then(resJson => {
+        this.setState({isAdmin: resJson.type})
+      })
+      .catch(e => console.log(e));
+  }
+
 
   defineUserType(){
     if(this.state.isAdmin){
