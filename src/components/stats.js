@@ -7,23 +7,32 @@ class Stats extends Component{
 
   constructor(props){
     super(props);
-    this.state = {stats: []}
+    this.state = { goal: 0, sales: 0 }
+  }
+
+  componentWillMount(){
+    fetch("http://localhost:3000/api/team_info")
+    .then(res => res.json())
+    .then(response => {
+      this.setState({goal: response.goal, sales: response.sales})
+    })
   }
 
   render(){
+    const {sales, goal} = this.state;
     return(
       <div className = "stats">
           <div className ="column">
             <div className ="card">
               <p className ="cardTitle">Meta</p>
-              <p className ="bold">150,000 $</p>
-              <p>150,000 $</p>
+              <p className ="bold">{goal} $</p>
+              <p>{goal} $</p>
             </div>
 
             <div className ="card">
               <p className ="cardTitleB">Actual</p>
-              <p className ="bold">75,000 $</p>
-              <p >75,000 $</p>
+              <p className ="bold">{sales} $</p>
+              <p >{sales} $</p>
             </div>
 
             <div className ="card ">

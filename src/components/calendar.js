@@ -7,6 +7,22 @@ import moment from 'moment';
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 
+// const myEventsList= [
+//   {
+//     title: 'All Day Event very long title',
+//     startDate: new Date(2018, 7, 18),
+//     endDate: new Date(2018, 7, 18),
+//     desc: 'Big conference for important people'
+//   },
+//   {
+//     title: 'Event 2',
+//     startDate: new Date(2018, 7, 18),
+//     endDate: new Date(2018, 7, 18),
+//     desc: 'refer'
+//   }
+// ]
+
+
 class Calendar extends Component{
 
   constructor(props){
@@ -15,10 +31,10 @@ class Calendar extends Component{
   }
 
   componentWillMount(){
-    fetch("http://localhost:3000/api/tasks")
+    fetch("http://localhost:3000/api/task_admins")
     .then(response => response.json())
     .then(res => {
-      this.setState({myEventsList: res})
+      this.setState({myEventsList: res.allTasks})
     })
   }
 
