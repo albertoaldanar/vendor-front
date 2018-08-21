@@ -4,6 +4,23 @@ import {Bar, Line, Pie, Doughnut} from "react-chartjs-2";
 
 class ChartUsers extends Component {
 
+  // getVendorNumbers(){
+  //   this.props.vendors.map(vend => {
+  //     return(
+  //       vend.sales
+  //     );
+  //   })
+  // }
+
+  // getUserNames(){
+  //   this.props.vendors.map(vend => {
+  //     return(
+  //       vend.sales
+  //     );
+  //   })
+  // }
+
+
   constructor(props){
     super(props);
     this.state = {

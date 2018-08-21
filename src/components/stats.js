@@ -3,6 +3,8 @@ import ChartUsers from "./reusable/chartUsers";
 import ChartProduct from "./reusable/chartProduct";
 import ChartPrediction from "./reusable/chartPrediction";
 import ChartPositions from "./reusable/chartPositions";
+import CountUp from 'react-countup';
+
 class Stats extends Component{
 
   constructor(props){
@@ -14,7 +16,10 @@ class Stats extends Component{
     fetch("http://localhost:3000/api/team_info")
     .then(res => res.json())
     .then(response => {
-      this.setState({goal: response.goal, sales: response.sales})
+      this.setState({
+        goal: response.goal,
+        sales: response.sales
+      })
     })
   }
 
@@ -25,14 +30,19 @@ class Stats extends Component{
           <div className ="column">
             <div className ="card">
               <p className ="cardTitle">Meta</p>
-              <p className ="bold">{goal} $</p>
-              <p>{goal} $</p>
+              <p className ="bold">$ {goal} </p>
+              <p> $ {goal} </p>
             </div>
 
             <div className ="card">
               <p className ="cardTitleB">Actual</p>
-              <p className ="bold">{sales} $</p>
-              <p >{sales} $</p>
+              <CountUp className ="bold"
+              decimals = {2}
+              prefix = "$ "
+              separator=","
+              end={sales}
+              />
+              <p>{sales} $</p>
             </div>
 
             <div className ="card ">
