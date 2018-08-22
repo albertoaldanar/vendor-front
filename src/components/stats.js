@@ -10,7 +10,7 @@ class Stats extends Component{
 
   constructor(props){
     super(props);
-    this.state = { goal: 0, sales: 0, vendors: [], top_low: [], names:[] }
+    this.state = { goal: 0, sales: 0, vendors: [], top_low: []}
   }
 
   componentWillMount(){
@@ -26,9 +26,36 @@ class Stats extends Component{
       })
   }
 
+  getUser(type){
+    if(type == "top"){
+      return(
+        this.state.top_low.map((n, i) => {
+          if (i == 1){
+            return n.name
+          }
+        })
+      )
+    }else if(type == "low"){
+      return(
+        this.state.top_low.map((n, i) => {
+          if (i == 0){
+            return n.name
+          }
+        })
+      )
+    }
+
+  }
 
   render(){
-    const {goal, sales, vendors, names} = this.state;
+    const {goal, sales, vendors} = this.state;
+    // let top = this.state.top_low.map((n, i) => {
+    //   if (i == 0){
+    //     return n.name
+    //   }
+
+    // })
+    // console.log(top)
 
     return(
       <div className = "stats">
@@ -59,14 +86,14 @@ class Stats extends Component{
 
           <div className ="column">
             <div className ="card">
-              <p className ="black">Lux</p>
+              <p className ="black">{this.getUser("top")}</p>
               <p className ="first-place">1ro</p>
               <p>Llamada a prospecto</p>
               <p>Venta de equipo</p>
               <p>Venta de minisplit</p>
             </div>
             <div className ="card">
-              <p className ="black">Roberto Sanchez</p>
+              <p className ="black">{this.getUser("low")}</p>
               <p className ="last-place">5to</p>
               <p>Llamada a prospecto</p>
               <p>Venta de equipo</p>
