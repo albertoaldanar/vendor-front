@@ -7,20 +7,20 @@ import moment from 'moment';
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 
-// const myEventsList= [
-//   {
-//     title: 'All Day Event very long title',
-//     startDate: new Date(2018, 7, 18),
-//     endDate: new Date(2018, 7, 18),
-//     desc: 'Big conference for important people'
-//   },
-//   {
-//     title: 'Event 2',
-//     startDate: new Date(2018, 7, 18),
-//     endDate: new Date(2018, 7, 18),
-//     desc: 'refer'
-//   }
-// ]
+const myEventsList= [
+  {
+    title: 'All Day Event very long title',
+    startDate: new Date(2018, 7, 18),
+    endDate: new Date(2018, 7, 18),
+    desc: 'Big conference for important people'
+  },
+  {
+    title: 'Event 2',
+    startDate: new Date(2018, 7, 18),
+    endDate: new Date(2018, 7, 18),
+    desc: 'refer'
+  }
+]
 
 
 class Calendar extends Component{
@@ -42,7 +42,7 @@ class Calendar extends Component{
     return(
       <div id = "mycalendar" className ="calendar-container">
         <BigCalendar
-          events={this.state.myEventsList}
+          events={myEventsList}
           startAccessor='startDate'
           endAccessor='endDate'
           selectable = {true}

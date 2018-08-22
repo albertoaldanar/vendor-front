@@ -5,26 +5,31 @@ import ChartPrediction from "./reusable/chartPrediction";
 import ChartPositions from "./reusable/chartPositions";
 import CountUp from 'react-countup';
 
+
 class Stats extends Component{
 
   constructor(props){
     super(props);
-    this.state = { goal: 0, sales: 0 }
+    this.state = { goal: 0, sales: 0, vendors: [], top_low: [], names:[] }
   }
 
   componentWillMount(){
-    fetch("http://localhost:3000/api/team_info")
-    .then(res => res.json())
-    .then(response => {
-      this.setState({
-        goal: response.goal,
-        sales: response.sales
+    return fetch("http://localhost:3000/api/team_info")
+      .then(res => res.json())
+      .then(response => {
+        this.setState({
+          goal: response.goal,
+          sales: response.sales,
+          vendors: response.vendors,
+          top_low: response.top_low,
+        })
       })
-    })
   }
 
+
   render(){
-    const {sales, goal} = this.state;
+    const {goal, sales, vendors, names} = this.state;
+
     return(
       <div className = "stats">
           <div className ="column">
@@ -47,14 +52,14 @@ class Stats extends Component{
 
             <div className ="card ">
               <div className ="center">
-                <ChartUsers/>
+                <ChartUsers vendors = {vendors}/>
               </div>
             </div>
           </div>
 
           <div className ="column">
             <div className ="card">
-              <p className ="black">Luz Maria</p>
+              <p className ="black">Lux</p>
               <p className ="first-place">1ro</p>
               <p>Llamada a prospecto</p>
               <p>Venta de equipo</p>
