@@ -14,7 +14,10 @@ class Team extends Component{
     return fetch("http://localhost:3000/api/team_info")
       .then(res => res.json())
       .then(response => {
-        this.setState({vendors: response.vendors})
+        this.setState({
+          vendors: response.vendors,
+          goal: response.goal
+        })
       })
   }
 
@@ -28,14 +31,14 @@ class Team extends Component{
     return(
       vendors.map((vend, i ) => {
         return(
-         { key: i, value: vend, label: vend.name}
+         { key: i, value: vend.sales, label: vend.name}
         );
       })
     )
   }
 
   render(){
-    const {userSelected} = this.state;
+    const {userSelected, goal} = this.state;
     const options = [
       { value: {name: "Alberto", age: 24}, label: 'One' },
       { value: 'two', label: 'Two' },
@@ -43,21 +46,21 @@ class Team extends Component{
     ]
 
     const defaultOption = options[0]
-    console.log(this.state.userSelected)
+    console.log(this.state.userSelected.value, goal)
 
     return(
       <div className ="team">
         <div className ="user-info">
           <div className ="user-detail">
             <img className ="center" width ="40" height ="40" src ="http://www.skylightsearch.co.uk/wp-content/uploads/2017/01/Hadie-profile-pic-circle-1.png"/>
-            <p className ="center"> Luz Maria Payan</p>
+            <p className ="center"> {userSelected.label}</p>
 
           </div>
           <div className ="user-data">
             <p className ="blue-text">1RO</p>
           </div>
           <div className ="user-data">
-            <p className ="blue-text">7554 $</p>
+            <p className ="blue-text">{userSelected.value}</p>
           </div>
           <div className ="user-data">
             <p className ="blue-text"> 7950 pts</p>
@@ -66,14 +69,14 @@ class Team extends Component{
 
         <div className ="stat-horizontal">
           <div className ="center">
-            <ChartComparing/>
+            <ChartComparing goal = {goal} vendorSales= {userSelected.value} vendorSelected ={userSelected.label}/>
+            <Dropdown options={this.getValues()} onChange={this.onChange.bind(this)} value={userSelected} placeholder="Selecciona un vendedor" key ={userSelected}/>
           </div>
         </div>
 
         <div className ="stat-horizontal">
           <div className ="center">
             <ChartComparing/>
-            <Dropdown options={this.getValues()} onChange={this.onChange.bind(this)} value={userSelected} placeholder="Selecciona un vendedor" key ={userSelected}/>
           </div>
         </div>
 
