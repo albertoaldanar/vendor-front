@@ -1,5 +1,5 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
-
+import 'react-dropdown/style.css'
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import Home from "./components/home";

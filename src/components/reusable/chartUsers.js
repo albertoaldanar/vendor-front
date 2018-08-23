@@ -37,7 +37,7 @@ class ChartUsers extends Component {
             legend: {display: false},
             title: {
               display: true,
-              text: "Total ventas"
+              text: "Ventas en Porcentaje"
             }
           }}
         />
