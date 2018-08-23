@@ -3,14 +3,6 @@ import ChartPositions from "./reusable/chartPositions";
 import ChartComparing from "./reusable/chartComparing";
 import Dropdown from 'react-dropdown'
 
-const options = [
-  { value: {name: "Alberto", age: 24}, label: 'One' },
-  { value: 'two', label: 'Two' },
-  { value: 'three', label: 'Three' }
-]
-
-const defaultOption = options[0]
-
 class Team extends Component{
 
   constructor(props){
@@ -30,9 +22,29 @@ class Team extends Component{
     this.setState({userSelected: item})
   }
 
+  getValues(){
+    const {vendors} = this.state;
+
+    return(
+      vendors.map((vend, i ) => {
+        return(
+         { key: i, value: vend, label: vend.name}
+        );
+      })
+    )
+  }
+
   render(){
+    const {userSelected} = this.state;
+    const options = [
+      { value: {name: "Alberto", age: 24}, label: 'One' },
+      { value: 'two', label: 'Two' },
+      { value: 'three', label: 'Three' }
+    ]
+
+    const defaultOption = options[0]
     console.log(this.state.userSelected)
-    console.log(this.state.vendors)
+
     return(
       <div className ="team">
         <div className ="user-info">
@@ -61,7 +73,7 @@ class Team extends Component{
         <div className ="stat-horizontal">
           <div className ="center">
             <ChartComparing/>
-            <Dropdown options={options} onChange={this.onChange.bind(this)} value={defaultOption} placeholder="Select an option" />
+            <Dropdown options={this.getValues()} onChange={this.onChange.bind(this)} value={userSelected} placeholder="Selecciona un vendedor" key ={userSelected}/>
           </div>
         </div>
 
