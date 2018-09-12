@@ -30,8 +30,8 @@ const AdminSideBar = () => {
             </Link>
 
             <Link to="/lines">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/134/134808.svg"/>
-              <span>Chat</span>
+              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/944/944055.svg"/>
+              <span>Tendencia</span>
             </Link>
         </div>
         <Chat/>

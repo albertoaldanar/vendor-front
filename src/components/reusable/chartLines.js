@@ -5,16 +5,13 @@ class ChartLines extends Component{
 
   render(){
 
+
     let vendors = this.props.vendors.map(vend => {
       return vend.name
     })
 
-    let sales = this.props.vendors.map(vend => {
-      return vend.sales
-    })
+    var w1 = Object.values(this.props.week);
 
-
-    console.log(vendors, sales)
     return(
       <div>
         <Line
@@ -23,12 +20,12 @@ class ChartLines extends Component{
               datasets: [
                 {
                   label: vendors[0],
-                  data:[
-                    sales[0]
+                  data: [
+                    w1[0]
                   ],
                   fill: false,
                   borderColor: [
-                  "rgba(255,99,132,0.6)",
+                    "rgba(255,99,132,0.6)",
                   ],
                   borderDash: [1,1],
                   borderWidth: 3
@@ -37,7 +34,7 @@ class ChartLines extends Component{
                 {
                   label: vendors[1],
                   data: [
-                    sales[1], 24000
+                     w1[1]
                   ],
                   fill: false,
                   borderColor: "rgba(75,192,192,0.6)",
@@ -47,7 +44,7 @@ class ChartLines extends Component{
                 {
                   label:  vendors[2],
                   data: [
-                    sales[2], 21000
+                     w1[2]
                   ],
                   fill: false,
                   borderColor: "green",

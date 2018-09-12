@@ -6,24 +6,28 @@ class Lines extends Component{
   constructor(props){
     super(props);
     this.state = {
-      vendors: [],
-      week: 1
+      week1: {},
+      vendors: []
     }
   }
 
   componentWillMount(){
-    fetch("http://localhost:3000/api/team_info")
+    fetch("http://localhost:3000/api/week_stats")
     .then(res => res.json())
     .then(response => {
-      this.setState({vendors: response.vendors})
+      this.setState({
+        week1: response.week1,
+        vendors: response.vendors
+      })
     })
   }
 
   render(){
-    const {vendors} = this.state;
+    const {week1, vendors} = this.state;
+
     return(
       <div className = "white">
-        <ChartLines vendors = {vendors}/>
+        <ChartLines week = {week1} vendors = {vendors}/>
       </div>
     );
   }
