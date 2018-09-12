@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import ChartPositions from "./reusable/chartPositions";
 import ChartComparing from "./reusable/chartComparing";
-import Dropdown from 'react-dropdown'
+import Dropdown from 'react-dropdown';
 
 class Team extends Component{
 

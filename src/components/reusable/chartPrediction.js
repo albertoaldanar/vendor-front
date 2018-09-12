@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Line} from "react-chartjs-2";
 
+//Hacer las intancias para que puedan consumirse en el ftin
 class ChartPrediction extends Component{
   constructor(props){
     super(props);

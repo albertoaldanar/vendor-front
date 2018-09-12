@@ -67,4 +67,8 @@
     padding: 40px;
     align-self: center;
   }
+
+  .white {
+    background-color: #fff;
+  }
 }

@@ -7,6 +7,7 @@ import Chat from "./components/chat";
 import Calendar from "./components/calendar";
 import Stats from "./components/stats";
 import TeamStats from "./components/teamStats";
+import Lines from "./components/lines";
 import Team from "./components/team";
 import CardView from "./components/reusable/cardView";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -22,6 +23,8 @@ class App extends Component {
           <Home/>
           <CardView>
             <Route exact path="/chat" component={TeamStats} />
+            <Route exact path="/graphics" component={Chat} />
+            <Route exact path="/lines" component={Lines} />
             <Route exact path="/calendar" component={Calendar} />
             <Route exact path ="/stats" component ={Stats}/>
             <Route exact path="/team" component={Team} />

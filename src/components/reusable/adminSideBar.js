@@ -29,13 +29,11 @@ const AdminSideBar = () => {
               <span>Posiciones</span>
             </Link>
 
-            <Link to="/chat">
+            <Link to="/lines">
               <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/134/134808.svg"/>
               <span>Chat</span>
             </Link>
-
         </div>
-
         <Chat/>
       </div>
   );
