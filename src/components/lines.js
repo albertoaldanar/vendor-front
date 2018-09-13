@@ -7,6 +7,9 @@ class Lines extends Component{
     super(props);
     this.state = {
       week1: {},
+      week2: {},
+      week3: {},
+      week4: {},
       vendors: []
     }
   }
@@ -17,17 +20,18 @@ class Lines extends Component{
     .then(response => {
       this.setState({
         week1: response.week1,
+        week2: response.week2,
         vendors: response.vendors
       })
     })
   }
 
   render(){
-    const {week1, vendors} = this.state;
+    const {week1, vendors, week2} = this.state;
 
     return(
       <div className = "white">
-        <ChartLines week = {week1} vendors = {vendors}/>
+        <ChartLines week1 = {week1} week2 = {week2} vendors = {vendors}/>
       </div>
     );
   }

@@ -4,13 +4,39 @@ import {Line} from "react-chartjs-2";
 class ChartLines extends Component{
 
   render(){
+    let values = {
+        "Carlos" :{
+          week1: 1000,
+          week2: 2400,
+          week3: 1400
+        },
+        "Luzm" :{
+          week1: 560,
+          week2: 2600,
+          week3: 2600
+        },
+        "Daniel" :{
+          week1: 500,
+          week2: 2600,
+        }
+      }
 
+    let names = Object.keys(values);
+
+    let all = Object.values(values);
+
+    console.log(names, all)
 
     let vendors = this.props.vendors.map(vend => {
       return vend.name
     })
 
-    var w1 = Object.values(this.props.week);
+    let sales = this.props.vendors.map(s => {
+      return s.sales
+    })
+
+    var w1 = Object.values(this.props.week1);
+    var w2 = Object.values(this.props.week2);
 
     return(
       <div>
@@ -21,7 +47,8 @@ class ChartLines extends Component{
                 {
                   label: vendors[0],
                   data: [
-                    w1[0]
+                    all[0].week1, all[0].week1 + all[0].week2, all[0].week1 + all[0].week2 + all[0].week3
+                    // w1[0], w1[0] + w2[0]
                   ],
                   fill: false,
                   borderColor: [
@@ -34,7 +61,8 @@ class ChartLines extends Component{
                 {
                   label: vendors[1],
                   data: [
-                     w1[1]
+                     // w1[1], w1[1] + w2[1]
+                    all[1].week1, all[1].week1 + all[1].week2, all[1].week1 + all[1].week2 + all[1].week3
                   ],
                   fill: false,
                   borderColor: "rgba(75,192,192,0.6)",
@@ -44,7 +72,8 @@ class ChartLines extends Component{
                 {
                   label:  vendors[2],
                   data: [
-                     w1[2]
+                     // w1[2], w1[2] + w2[2]
+                     all[2].week1, all[2].week1 + all[2].week2, all[2].week1 + all[2].week2 + all[2].week3
                   ],
                   fill: false,
                   borderColor: "green",
