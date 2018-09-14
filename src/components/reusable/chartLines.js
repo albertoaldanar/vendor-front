@@ -7,13 +7,11 @@ class ChartLines extends Component{
     let values = {
         "Carlos" :{
           week1: 1000,
-          week2: 2400,
-          week3: 1400
+          week2: 2400
         },
         "Luzm" :{
           week1: 560,
-          week2: 2600,
-          week3: 2600
+          week2: 2600
         },
         "Daniel" :{
           week1: 500,
@@ -21,22 +19,12 @@ class ChartLines extends Component{
         }
       }
 
-    let names = Object.keys(values);
+    let names = Object.keys(this.props.weeks);
 
     let all = Object.values(values);
+    let x = Object.values(this.props.weeks);
 
-    console.log(names, all)
-
-    let vendors = this.props.vendors.map(vend => {
-      return vend.name
-    })
-
-    let sales = this.props.vendors.map(s => {
-      return s.sales
-    })
-
-    var w1 = Object.values(this.props.week1);
-    var w2 = Object.values(this.props.week2);
+    console.log(Object.values(this.props.weeks))
 
     return(
       <div>
@@ -45,10 +33,9 @@ class ChartLines extends Component{
               labels: ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
               datasets: [
                 {
-                  label: vendors[0],
+                  label: names[0],
                   data: [
-                    all[0].week1, all[0].week1 + all[0].week2, all[0].week1 + all[0].week2 + all[0].week3
-                    // w1[0], w1[0] + w2[0]
+                    all[0].week1, all[0].week1 + all[0].week2
                   ],
                   fill: false,
                   borderColor: [
@@ -59,10 +46,9 @@ class ChartLines extends Component{
                 },
 
                 {
-                  label: vendors[1],
+                  label: names[1],
                   data: [
-                     // w1[1], w1[1] + w2[1]
-                    all[1].week1, all[1].week1 + all[1].week2, all[1].week1 + all[1].week2 + all[1].week3
+                    all[1].week1, all[1].week1 + all[1].week2
                   ],
                   fill: false,
                   borderColor: "rgba(75,192,192,0.6)",
@@ -70,10 +56,9 @@ class ChartLines extends Component{
                   borderWidth: 3
                 },
                 {
-                  label:  vendors[2],
+                  label:  names[2],
                   data: [
-                     // w1[2], w1[2] + w2[2]
-                     all[2].week1, all[2].week1 + all[2].week2, all[2].week1 + all[2].week2 + all[2].week3
+                     all[2].week1, all[2].week1 + all[2].week2
                   ],
                   fill: false,
                   borderColor: "green",

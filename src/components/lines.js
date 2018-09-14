@@ -6,10 +6,7 @@ class Lines extends Component{
   constructor(props){
     super(props);
     this.state = {
-      week1: {},
-      week2: {},
-      week3: {},
-      week4: {},
+      weeks : {},
       vendors: []
     }
   }
@@ -19,19 +16,18 @@ class Lines extends Component{
     .then(res => res.json())
     .then(response => {
       this.setState({
-        week1: response.week1,
-        week2: response.week2,
+        weeks: response.weeks,
         vendors: response.vendors
       })
     })
   }
 
   render(){
-    const {week1, vendors, week2} = this.state;
+    const {weeks, vendors} = this.state;
 
     return(
       <div className = "white">
-        <ChartLines week1 = {week1} week2 = {week2} vendors = {vendors}/>
+        <ChartLines weeks = {weeks} vendors = {vendors}/>
       </div>
     );
   }
