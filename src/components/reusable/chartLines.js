@@ -5,36 +5,17 @@ class ChartLines extends Component{
 
   constructor(props){
     super(props);
-    this.state = {x: {}, num: 0}
-  }
-
-  componentWillReceiveProps(){
-
-    this.setState({x: x})
-    console.log(this.state.x)
+    this.state = {x: []}
   }
 
   render(){
-    let values = {
-        "Carlos" :{
-          1: 1000,
-          week2: 2400
-        },
-        "Luzm" :{
-          week1: 560,
-          week2: 2600
-        },
-        "Daniel" :{
-          week1: 500,
-          week2: 2600,
-        }
-      }
+
 
     let names = Object.keys(this.props.weeks);
-    let all = Object.values(values);
 
-    let x = Object.values(this.props.weeks)
-
+    var vend1 = this.props.example[Object.keys(this.props.example)[0]];
+    var vend2 = this.props.example[Object.keys(this.props.example)[1]];
+    var vend3 = this.props.example[Object.keys(this.props.example)[2]];
 
     return(
       <div>
@@ -44,9 +25,7 @@ class ChartLines extends Component{
               datasets: [
                 {
                   label: names[0],
-                  data: [
-                    // x[0]["1"], x[0]["1"] + x[0]["2"]
-                  ],
+                  data: vend1,
                   fill: false,
                   borderColor: [
                     "rgba(255,99,132,0.6)",
@@ -57,9 +36,7 @@ class ChartLines extends Component{
 
                 {
                   label: names[1],
-                  data: [
-                    all[1].week1, all[1].week1 + all[1].week2
-                  ],
+                  data: vend2,
                   fill: false,
                   borderColor: "rgba(75,192,192,0.6)",
                   backgroundColor:"rgba(75,192,192,0.6)",
@@ -67,9 +44,7 @@ class ChartLines extends Component{
                 },
                 {
                   label:  names[2],
-                  data: [
-                     all[2].week1, all[2].week1 + all[2].week2
-                  ],
+                  data: vend3,
                   fill: false,
                   borderColor: "green",
                   borderDash: [1,1],
