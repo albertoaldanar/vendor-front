@@ -13,6 +13,8 @@ class ChartPositions extends Component {
       return vend.sales
     })
 
+    console.log(vendors)
+
     return(
       <div>
         <Bar

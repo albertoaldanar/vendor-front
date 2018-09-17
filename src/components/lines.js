@@ -3,11 +3,10 @@ import ChartLines from "./reusable/chartLines";
 
 class Lines extends Component{
 
-  constructor(props){
+constructor(props){
     super(props);
     this.state = {
-      weeks : {},
-      vendors: []
+      weeks : {}
     }
   }
 
@@ -17,17 +16,16 @@ class Lines extends Component{
     .then(response => {
       this.setState({
         weeks: response.weeks,
-        vendors: response.vendors
       })
     })
   }
 
   render(){
-    const {weeks, vendors} = this.state;
+    const {weeks} = this.state;
 
     return(
       <div className = "white">
-        <ChartLines weeks = {weeks} vendors = {vendors}/>
+        <ChartLines weeks = {weeks}/>
       </div>
     );
   }

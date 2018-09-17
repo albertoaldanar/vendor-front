@@ -3,10 +3,21 @@ import {Line} from "react-chartjs-2";
 
 class ChartLines extends Component{
 
+  constructor(props){
+    super(props);
+    this.state = {x: {}, num: 0}
+  }
+
+  componentWillReceiveProps(){
+
+    this.setState({x: x})
+    console.log(this.state.x)
+  }
+
   render(){
     let values = {
         "Carlos" :{
-          week1: 1000,
+          1: 1000,
           week2: 2400
         },
         "Luzm" :{
@@ -20,11 +31,10 @@ class ChartLines extends Component{
       }
 
     let names = Object.keys(this.props.weeks);
-
     let all = Object.values(values);
-    let x = Object.values(this.props.weeks);
 
-    console.log(Object.values(this.props.weeks))
+    let x = Object.values(this.props.weeks)
+
 
     return(
       <div>
@@ -35,7 +45,7 @@ class ChartLines extends Component{
                 {
                   label: names[0],
                   data: [
-                    all[0].week1, all[0].week1 + all[0].week2
+                    // x[0]["1"], x[0]["1"] + x[0]["2"]
                   ],
                   fill: false,
                   borderColor: [
