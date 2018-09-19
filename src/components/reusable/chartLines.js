@@ -1,21 +1,23 @@
 import React, {Component} from "react";
-import {Line} from "react-chartjs-2";
+import {Line, Bar} from "react-chartjs-2";
 
 class ChartLines extends Component{
 
   constructor(props){
     super(props);
-    this.state = {x: []}
   }
 
   render(){
 
-
     let names = Object.keys(this.props.weeks);
 
-    var vend1 = this.props.example[Object.keys(this.props.example)[0]];
-    var vend2 = this.props.example[Object.keys(this.props.example)[1]];
-    var vend3 = this.props.example[Object.keys(this.props.example)[2]];
+      // for(var i = 0; i < array.length; i ++){
+      //   for(var x = 0; x < array[i].length; x ++){
+      //     // final.push(array[i])
+      //     final[i] = array[i][0]
+      //   }
+      //   // console.log(array[i])
+      // }
 
     return(
       <div>
@@ -25,7 +27,7 @@ class ChartLines extends Component{
               datasets: [
                 {
                   label: names[0],
-                  data: vend1,
+                  data: this.props.result[0],
                   fill: false,
                   borderColor: [
                     "rgba(255,99,132,0.6)",
@@ -36,15 +38,15 @@ class ChartLines extends Component{
 
                 {
                   label: names[1],
-                  data: vend2,
+                  data: this.props.result[1],
                   fill: false,
                   borderColor: "rgba(75,192,192,0.6)",
                   backgroundColor:"rgba(75,192,192,0.6)",
                   borderWidth: 3
                 },
                 {
-                  label:  names[2],
-                  data: vend3,
+                  label: names[2],
+                  data: this.props.result[2],
                   fill: false,
                   borderColor: "green",
                   borderDash: [1,1],
