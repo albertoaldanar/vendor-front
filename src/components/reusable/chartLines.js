@@ -11,14 +11,6 @@ class ChartLines extends Component{
 
     let names = Object.keys(this.props.weeks);
 
-      // for(var i = 0; i < array.length; i ++){
-      //   for(var x = 0; x < array[i].length; x ++){
-      //     // final.push(array[i])
-      //     final[i] = array[i][0]
-      //   }
-      //   // console.log(array[i])
-      // }
-
     return(
       <div>
         <Line

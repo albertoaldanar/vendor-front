@@ -7,52 +7,51 @@ class Team extends Component{
 
   constructor(props){
     super(props);
-    this.state = {userSelected: "", vendors: []}
+    this.state = {
+      userSelected: {
+        value: [0,0,0,0],
+        label: "Elige un vendedor"
+      },
+       weeks: [],
+       result: [],
+       goal: 0}
   }
 
   componentWillMount(){
-    return fetch("http://localhost:3000/api/team_info")
+    return fetch("http://localhost:3000/api/week_stats")
       .then(res => res.json())
       .then(response => {
         this.setState({
-          vendors: response.vendors,
+          weeks: response.weeks,
+          result: response.result,
           goal: response.goal
         })
       })
   }
 
+
   onChange(item){
     this.setState({userSelected: item})
   }
 
-  getValues(){
-    const {vendors} = this.state;
-
-    return(
-      vendors.map((vend, i ) => {
-        return(
-         { key: i, value: vend.sales, label: vend.name}
-        );
-      })
-    )
-  }
-
   render(){
-    const {userSelected, goal} = this.state;
+    const {userSelected, goal, result} = this.state;
+
+    let names = Object.keys(this.state.weeks)
+
     const options = [
-      { value: {name: "Alberto", age: 24}, label: 'One' },
-      { value: 'two', label: 'Two' },
-      { value: 'three', label: 'Three' }
+      { value: result[0], label: names[0] },
+      { value: result[1], label: names[1] },
+      { value: result[2], label: names[2] },
     ]
 
     const defaultOption = options[0]
-    console.log(this.state.userSelected.value, goal)
 
     return(
       <div className ="team">
         <div className ="user-info">
           <div className ="user-detail">
-            <img className ="center" width ="40" height ="40" src ="http://www.skylightsearch.co.uk/wp-content/uploads/2017/01/Hadie-profile-pic-circle-1.png"/>
+            <img className ="icon-profile" width ="60" height = "50" src ="https://png.icons8.com/dotty/2x/administrator-male.png"/>
             <p className ="center"> {userSelected.label}</p>
 
           </div>
@@ -69,8 +68,8 @@ class Team extends Component{
 
         <div className ="stat-horizontal">
           <div className ="center">
-            <ChartComparing goal = {goal} vendorSales= {userSelected.value} vendorSelected ={userSelected.label}/>
-            <Dropdown options={this.getValues()} onChange={this.onChange.bind(this)} value={userSelected} placeholder="Selecciona un vendedor" key ={userSelected}/>
+            <ChartComparing goal = {goal} vendorSales= {this.state.userSelected.value} vendorSelected ={userSelected.label}/>
+            <Dropdown options={options} onChange={this.onChange.bind(this)} value={userSelected} placeholder="Selecciona un vendedor" key ={userSelected}/>
           </div>
         </div>
 

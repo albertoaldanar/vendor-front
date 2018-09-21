@@ -4,23 +4,33 @@ import {Bar, Line} from "react-chartjs-2";
 class ChartComparing extends Component {
 
   render(){
+    console.log(this.props.vendorSales)
     return(
       <div>
         <Bar
           data = {{
-              labels: [
-              "Meta",
-              this.props.vendorSelected
-              ],
+              labels:
+                ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
               datasets: [
                 {
-                  label: "Distancia para la meta",
+                  label: "Meta",
                   data: [
-                    this.props.goal,
-                    this.props.vendorSales,
+                    this.props.goal, this.props.goal, this.props.goal, this.props.goal
                   ],
                   backgroundColor: [
                     "rgba(255,99,132,0.6)",
+                    "rgba(255,99,132,0.6)",
+                    "rgba(255,99,132,0.6)",
+                    "rgba(255,99,132,0.6)",
+                  ]
+                },
+                {
+                  label: this.props.vendorSelected,
+                  data: this.props.vendorSales,
+                  backgroundColor: [
+                    "rgba(54,162,235,0.6)",
+                    "rgba(54,162,235,0.6)",
+                    "rgba(54,162,235,0.6)",
                     "rgba(54,162,235,0.6)",
                   ]
                 }

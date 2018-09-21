@@ -3,7 +3,7 @@ import ChartLines from "./reusable/chartLines";
 
 class Lines extends Component{
 
-constructor(props){
+  constructor(props){
     super(props);
     this.state = {
       weeks : {},
