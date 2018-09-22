@@ -45,8 +45,6 @@ class Team extends Component{
       { value: result[2], label: names[2] },
     ]
 
-    const defaultOption = options[0]
-
     return(
       <div className ="team">
         <div className ="user-info">
