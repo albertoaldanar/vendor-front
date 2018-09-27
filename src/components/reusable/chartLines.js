@@ -22,7 +22,7 @@ class ChartLines extends Component{
                   data: this.props.result[0],
                   fill: false,
                   borderColor: [
-                    "rgba(255,99,132,0.6)",
+                    "blue",
                   ],
                   borderDash: [1,1],
                   borderWidth: 3
@@ -32,8 +32,8 @@ class ChartLines extends Component{
                   label: names[1],
                   data: this.props.result[1],
                   fill: false,
-                  borderColor: "rgba(75,192,192,0.6)",
-                  backgroundColor:"rgba(75,192,192,0.6)",
+                  borderColor: "orange",
+                  backgroundColor:"orange",
                   borderWidth: 3
                 },
                 {

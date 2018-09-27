@@ -12,26 +12,26 @@ class ChartComparing extends Component {
               labels:
                 ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
               datasets: [
-                {
-                  label: "Meta",
-                  data: [
-                    this.props.goal, this.props.goal, this.props.goal, this.props.goal
-                  ],
-                  backgroundColor: [
-                    "rgba(255,99,132,0.6)",
-                    "rgba(255,99,132,0.6)",
-                    "rgba(255,99,132,0.6)",
-                    "rgba(255,99,132,0.6)",
-                  ]
-                },
+                // {
+                //   label: "Meta",
+                //   data: [
+                //     this.props.goal, this.props.goal, this.props.goal, this.props.goal
+                //   ],
+                //   backgroundColor: [
+                //     "#DC143C",
+                //     "#DC143C",
+                //     "#DC143C",
+                //     "#DC143C",
+                //   ]
+                // },
                 {
                   label: this.props.vendorSelected,
                   data: this.props.vendorSales,
                   backgroundColor: [
-                    "rgba(54,162,235,0.6)",
-                    "rgba(54,162,235,0.6)",
-                    "rgba(54,162,235,0.6)",
-                    "rgba(54,162,235,0.6)",
+                    "#1E90FF",
+                    "#1E90FF",
+                    "#1E90FF",
+                    "#1E90FF",
                   ]
                 }
               ]
