@@ -40,12 +40,13 @@ class Team extends Component{
     let names = Object.keys(this.state.weeks)
     let sales = Object.values(this.state.weeks)
 
-    console.log(names, sales);
+    console.log(this.state.result)
+    //Si quieres quitar el acomulado: Cambiar result por sales
 
     const options = [
-      { value: sales[0], label: names[0] },
-      { value: sales[1], label: names[1] },
-      { value: sales[2], label: names[2] },
+      { value: result[0], label: names[0] },
+      { value: result[1], label: names[1] },
+      { value: result[2], label: names[2] },
     ]
 
     return(

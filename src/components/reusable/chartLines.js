@@ -10,6 +10,9 @@ class ChartLines extends Component{
   render(){
 
     let names = Object.keys(this.props.weeks);
+    let stats = Object.values(this.props.weeks);
+
+    //Si es el acumulado, poner this.props.result en todas las datas
 
     return(
       <div>
@@ -19,7 +22,7 @@ class ChartLines extends Component{
               datasets: [
                 {
                   label: names[0],
-                  data: this.props.result[0],
+                  data: stats[0],
                   fill: false,
                   borderColor: [
                     "blue",
@@ -30,7 +33,7 @@ class ChartLines extends Component{
 
                 {
                   label: names[1],
-                  data: this.props.result[1],
+                  data: stats[1],
                   fill: false,
                   borderColor: "orange",
                   backgroundColor:"orange",
@@ -38,7 +41,7 @@ class ChartLines extends Component{
                 },
                 {
                   label: names[2],
-                  data: this.props.result[2],
+                  data: stats[2],
                   fill: false,
                   borderColor: "green",
                   borderDash: [1,1],
