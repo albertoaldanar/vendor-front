@@ -12,18 +12,6 @@ class ChartComparing extends Component {
               labels:
                 ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
               datasets: [
-                // {
-                //   label: "Meta",
-                //   data: [
-                //     this.props.goal, this.props.goal, this.props.goal, this.props.goal
-                //   ],
-                //   backgroundColor: [
-                //     "#DC143C",
-                //     "#DC143C",
-                //     "#DC143C",
-                //     "#DC143C",
-                //   ]
-                // },
                 {
                   label: this.props.vendorSelected,
                   data: this.props.vendorSales,

@@ -35,14 +35,17 @@ class Team extends Component{
   }
 
   render(){
-    const {userSelected, goal, result} = this.state;
+    const { userSelected, goal, result } = this.state;
 
     let names = Object.keys(this.state.weeks)
+    let sales = Object.values(this.state.weeks)
+
+    console.log(names, sales);
 
     const options = [
-      { value: result[0], label: names[0] },
-      { value: result[1], label: names[1] },
-      { value: result[2], label: names[2] },
+      { value: sales[0], label: names[0] },
+      { value: sales[1], label: names[1] },
+      { value: sales[2], label: names[2] },
     ]
 
     return(
@@ -50,7 +53,7 @@ class Team extends Component{
         <div className ="user-info">
           <div className ="user-detail">
             <img className ="icon-profile" width ="60" height = "50" src ="https://png.icons8.com/dotty/2x/administrator-male.png"/>
-            <p className ="center"> {userSelected.label}</p>
+            <p className ="center user-label"> {userSelected.label}</p>
 
           </div>
           <div className ="user-data">

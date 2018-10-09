@@ -17,8 +17,8 @@ class ChartProduct extends Component{
                   label: "Ventas",
                   data: sales,
                   backgroundColor: [
-                    "#DC143C",
-                    "#9ACD32",
+                    "#00BFFF",
+                    "#E6E6FA",
                     "#008080",
                     "rgba(75,192,192,0.6)"
                   ]
