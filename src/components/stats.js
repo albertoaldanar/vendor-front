@@ -10,7 +10,7 @@ class Stats extends Component{
 
   constructor(props){
     super(props);
-    this.state = { goal: 0, sales: 0, vendors: [], top_low: [], product_group: {}}
+    this.state = { goal: 0, sales: 0, prod: [], top_low: [], product_group: {}}
   }
 
   componentWillMount(){
@@ -20,7 +20,7 @@ class Stats extends Component{
         this.setState({
           goal: response.goal,
           sales: response.sales,
-          vendors: response.vendors,
+          prod: response.count,
           top_low: response.top_low,
           product_group: response.products
         })
@@ -49,7 +49,7 @@ class Stats extends Component{
   }
 
   render(){
-    const {goal, sales, vendors, product_group} = this.state;
+    const {goal, sales, prod, product_group} = this.state;
 
     return(
       <div className = "stats">
@@ -73,7 +73,7 @@ class Stats extends Component{
 
             <div className ="card ">
               <div className ="center">
-                <ChartUsers vendors = {vendors}/>
+                <ChartUsers prod = {prod}/>
               </div>
             </div>
           </div>

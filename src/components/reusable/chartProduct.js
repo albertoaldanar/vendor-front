@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Doughnut} from "react-chartjs-2";
+import {Doughnut, Pie} from "react-chartjs-2";
 
 class ChartProduct extends Component{
 
@@ -9,7 +9,7 @@ class ChartProduct extends Component{
 
     return(
       <div>
-        <Doughnut
+        <Pie
           data = {{
               labels: products,
               datasets: [
@@ -31,7 +31,7 @@ class ChartProduct extends Component{
             legend: {display: false},
             title: {
               display: true,
-              text: "Ventas por producto"
+              text: "Utilidad por producto"
             }
           }}
         />
