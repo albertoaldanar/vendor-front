@@ -6,6 +6,20 @@ class ChartProduct extends Component{
   render(){
     let products = Object.keys(this.props.products)
     let sales = Object.values(this.props.products)
+    var i = 0
+
+    var amount = sales.map(x => {
+      return i += x
+    })
+
+    const top = amount[amount.length - 1]
+
+    var pct  = sales.map(x => {
+      return ((x / top) * 100).toFixed(2);
+    })
+
+
+    console.log(pct)
 
     return(
       <div>
@@ -15,7 +29,7 @@ class ChartProduct extends Component{
               datasets: [
                 {
                   label: "Ventas",
-                  data: sales,
+                  data: pct,
                   backgroundColor: [
                     "#00BFFF",
                     "#E6E6FA",

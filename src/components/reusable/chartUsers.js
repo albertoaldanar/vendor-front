@@ -8,6 +8,18 @@ class ChartUsers extends Component {
     let products = Object.keys(this.props.prod)
     let count = Object.values(this.props.prod)
 
+    var i = 0
+
+    var amount = count.map(x => {
+      return i += x
+    })
+
+    const top = amount[amount.length - 1]
+
+    var pct  = count.map(x => {
+      return ((x / top) * 100).toFixed(2);
+    })
+
     return(
       <div>
         <Pie
@@ -16,7 +28,7 @@ class ChartUsers extends Component {
               datasets: [
                 {
                   label: "Ventas",
-                  data: count,
+                  data: pct,
                   backgroundColor: [
                     "#00BFFF",
                     "#E6E6FA",
