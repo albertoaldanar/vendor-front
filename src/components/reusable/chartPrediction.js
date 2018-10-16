@@ -38,8 +38,8 @@ class ChartPrediction extends Component{
               {
               label: "Ventas",
                 data: [
-                  165555,
-                  179549,
+                  54000,
+                  52300,
                   225473,
                   244834,
                 ],

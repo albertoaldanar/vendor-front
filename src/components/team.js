@@ -14,7 +14,8 @@ class Team extends Component{
       },
        weeks: [],
        result: [],
-       goal: 0}
+       goal: 0
+    }
   }
 
   componentWillMount(){
