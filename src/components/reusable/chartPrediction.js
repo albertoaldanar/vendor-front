@@ -7,7 +7,8 @@ class ChartPrediction extends Component{
   constructor(props){
     super(props);
     this.state = {
-      projection: []
+      projection: [],
+      myTeam: []
     }
   }
 
@@ -15,12 +16,15 @@ class ChartPrediction extends Component{
     fetch("http://localhost:3000/api/projection")
     .then(response => response.json())
     .then( res =>  {
-      this.setState({projection: res.projection})
+      this.setState({
+        projection: res.projection,
+        myTeam: res.my_team
+      })
     })
   }
 
   render(){
-    const {projection} = this.state;
+    const {projection, myTeam} = this.state;
     return(
       <div>
         <Line
@@ -37,12 +41,7 @@ class ChartPrediction extends Component{
               },
               {
               label: "Ventas",
-                data: [
-                  54000,
-                  52300,
-                  225473,
-                  244834,
-                ],
+                data: myTeam,
                 fill: false,
                 borderColor: "rgba(75,192,192,0.6)",
                 backgroundColor:"rgba(75,192,192,0.6)",
