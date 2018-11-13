@@ -56,7 +56,12 @@ class Stats extends Component{
           <div className ="column">
             <div className ="card">
               <p className ="cardTitle">Meta</p>
-              <p className ="bold">$ {goal} </p>
+              <CountUp className ="bold"
+              decimals = {2}
+              prefix = "$ "
+              separator=","
+              end={goal}
+              />
               <p> $ {goal} </p>
             </div>
 

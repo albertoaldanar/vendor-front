@@ -14,7 +14,8 @@ class Team extends Component{
       },
        weeks: [],
        result: [],
-       goal: 0
+       goal: 0,
+       sales: 0
     }
   }
 
@@ -25,7 +26,8 @@ class Team extends Component{
         this.setState({
           weeks: response.weeks,
           result: response.result,
-          goal: response.goal
+          goal: response.goal,
+          sales: response.sales
         })
       })
   }
@@ -35,13 +37,19 @@ class Team extends Component{
     this.setState({userSelected: item})
   }
 
+  getPct(value, goal){
+    return (( value / (goal / 4) ) * 100).toFixed(2);
+  }
+
   render(){
-    const { userSelected, goal, result } = this.state;
+    const { userSelected, goal, result, sales } = this.state;
 
     let names = Object.keys(this.state.weeks)
-    let sales = Object.values(this.state.weeks)
+    // let sales = Object.values(this.state.weeks)
+    let indGoal = goal / 4
 
-    console.log(this.state.result)
+    var last_element = userSelected.value[userSelected.value.length - 1];
+
     //Si quieres quitar el acomulado: Cambiar result por sales
 
     const options = [
@@ -59,13 +67,13 @@ class Team extends Component{
 
           </div>
           <div className ="user-data">
-            <p className ="blue-text">1RO</p>
+            <p className ="blue-text"> {indGoal} $</p>
           </div>
           <div className ="user-data">
-            <p className ="blue-text">{userSelected.value}</p>
+            <p className ="blue-text"> {last_element} $</p>
           </div>
           <div className ="user-data">
-            <p className ="blue-text"> 7950 pts</p>
+            <p className ="blue-text"> {this.getPct(last_element, goal)} %</p>
           </div>
         </div>
 

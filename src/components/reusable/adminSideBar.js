@@ -24,11 +24,6 @@ const AdminSideBar = () => {
               <span>Vendedores</span>
             </Link>
 
-            <Link to="/chat">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/485/485440.svg"/>
-              <span>Posiciones</span>
-            </Link>
-
             <Link to="/lines">
               <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/944/944055.svg"/>
               <span>Tendencia</span>

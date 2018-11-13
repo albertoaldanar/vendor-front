@@ -7,8 +7,7 @@ class Lines extends Component{
     super(props);
     this.state = {
       weeks : {},
-      result: [],
-
+      result: []
     }
   }
 

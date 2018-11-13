@@ -14,10 +14,9 @@ class ChartProduct extends Component{
 
     const top = amount[amount.length - 1]
 
-    var pct  = sales.map(x => {
+    var pct = sales.map(x => {
       return ((x / top) * 100).toFixed(2);
     })
-
 
     console.log(pct)
 
