@@ -15,6 +15,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import "./team.css";
 import "./teamStats.css";
+import "./settings.css";
 
 class App extends Component {
   render() {

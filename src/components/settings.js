@@ -5,8 +5,50 @@ class Settings extends Component{
   constructor(props){
     super(props);
     this.state = {
-      unauthorizedSales: []
+      unauthorizedSales: [],
+      week: null,
+      month: "",
+      goal: 0
     }
+  }
+
+  renderSales(list){
+    const sales = list.map(s => {
+      return (
+        <div className ="unauthorized-list">
+          <div className ="each-list">
+            <ul>
+              <li key={s.id}>
+                {s.brand}
+              </li>
+            </ul>
+          </div>
+        </div>
+      );
+    });
+    return sales;
+  }
+
+  changeData(){
+    const {month, goal, week} = this.state;
+
+    return fetch("http://localhost:3000/authorize/", {
+      method: "PUT",
+      headers: {
+        "Accept": "application/json",
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({
+        "sale": {
+          "authorized": true
+        }
+      })
+    })
+      .then(res => res.json())
+      .then(res => {
+        console.log("Success")
+      })
+      .catch((e) => console.log(e))
   }
 
   componentWillMount(){
@@ -21,10 +63,14 @@ class Settings extends Component{
   };
 
   render(){
-    console.log(this.state.unauthorizedSales)
+    const {unauthorizedSales} = this.state;
+
     return(
       <div>
-        <p className = "center">Settings</p>
+        <h3 className ="sales-title">Ventas sin autorizar</h3>
+        <div>
+          {this.renderSales(unauthorizedSales)}
+        </div>
       </div>
     );
   }
