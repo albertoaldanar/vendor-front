@@ -15,7 +15,8 @@ class Team extends Component{
        weeks: [],
        result: [],
        goal: 0,
-       sales: 0
+       sales: 0,
+       register: {}
     }
   }
 
@@ -27,36 +28,37 @@ class Team extends Component{
           weeks: response.weeks,
           result: response.result,
           goal: response.goal,
-          sales: response.sales
+          sales: response.sales,
+          register: response.reg
         })
       })
   }
-
 
   onChange(item){
     this.setState({userSelected: item})
   }
 
   getPct(value, goal){
-    return (( value / (goal / 4) ) * 100).toFixed(2);
+    return (( value / (goal / 4)) * 100).toFixed(2);
   }
 
   render(){
-    const { userSelected, goal, result, sales } = this.state;
+    const { userSelected, goal, result, sales, register } = this.state;
 
-    let names = Object.keys(this.state.weeks)
+    let names = Object.keys(this.state.weeks);
     // let sales = Object.values(this.state.weeks)
     let indGoal = goal / 4
 
     var last_element = userSelected.value[userSelected.value.length - 1];
 
     //Si quieres quitar el acomulado: Cambiar result por sales
-
     const options = [
       { value: result[0], label: names[0] },
       { value: result[1], label: names[1] },
-      { value: result[2], label: names[2] },
-    ]
+      { value: result[2], label: names[2] }
+    ];
+
+    console.log(register);
 
     return(
       <div className ="team">
@@ -80,13 +82,14 @@ class Team extends Component{
         <div className ="stat-horizontal">
           <div className ="center">
             <ChartComparing goal = {goal} vendorSales= {this.state.userSelected.value} vendorSelected ={userSelected.label}/>
-            <Dropdown options={options} onChange={this.onChange.bind(this)} value={userSelected} placeholder="Selecciona un vendedor" key ={userSelected}/>
+            <Dropdown options={options} onChange={this.onChange.bind(this)} value={userSelected} placeholder= "Selecciona un vendedor" key ={userSelected}/>
           </div>
         </div>
 
         <div className ="stat-horizontal">
           <div className ="center">
-            <ChartComparing/>
+            <div className = "vendor-num">
+            </div>
           </div>
         </div>
 

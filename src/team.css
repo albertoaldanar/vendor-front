@@ -75,4 +75,10 @@
   .white {
     background-color: #fff;
   }
+  .vendor-num{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 10px 20px;
+  }
 }

@@ -28,6 +28,11 @@ const AdminSideBar = () => {
               <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/944/944055.svg"/>
               <span>Tendencia</span>
             </Link>
+
+            <Link to="/team">
+              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/263/263074.svg"/>
+              <span> Admin </span>
+            </Link>
         </div>
         <Chat/>
       </div>
