@@ -9,6 +9,7 @@ import Stats from "./components/stats";
 import TeamStats from "./components/teamStats";
 import Lines from "./components/lines";
 import Team from "./components/team";
+import Settings from "./components/settings";
 import CardView from "./components/reusable/cardView";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
@@ -28,6 +29,7 @@ class App extends Component {
             <Route exact path="/calendar" component={Calendar} />
             <Route exact path ="/stats" component ={Stats}/>
             <Route exact path="/team" component={Team} />
+            <Route exact path="/settings" component={Settings} />
           </CardView>
         </div>
       </Router>

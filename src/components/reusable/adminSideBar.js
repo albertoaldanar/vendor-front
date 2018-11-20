@@ -29,7 +29,7 @@ const AdminSideBar = () => {
               <span>Tendencia</span>
             </Link>
 
-            <Link to="/team">
+            <Link to="/settings">
               <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/263/263074.svg"/>
               <span> Admin </span>
             </Link>
