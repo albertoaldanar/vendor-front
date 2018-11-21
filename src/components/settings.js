@@ -29,6 +29,10 @@ class Settings extends Component{
     return sales;
   }
 
+  onChangeWeek(e){
+    this.setState({week: e.target.value})
+  }
+
   changeData(){
     const {month, goal, week} = this.state;
 
@@ -63,7 +67,8 @@ class Settings extends Component{
   };
 
   render(){
-    const {unauthorizedSales} = this.state;
+    const {unauthorizedSales, week} = this.state;
+    console.log(week);
 
     return(
       <div>
@@ -71,6 +76,13 @@ class Settings extends Component{
         <div>
           {this.renderSales(unauthorizedSales)}
         </div>
+          <form>
+            <label>
+              Name:
+            </label>
+              <input type= "number" name= "Semana" value ={week} onChange ={this.onChangeWeek.bind(this)}/>
+              <input type="submit" value="Submit" />
+          </form>
       </div>
     );
   }
