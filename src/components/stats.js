@@ -31,17 +31,13 @@ class Stats extends Component{
     if(type == "top"){
       return(
         this.state.top_low.map((n, i) => {
-          if (i == 1){
-            return n.name
-          }
+          return i == 1 && n ?  n.name : ""
         })
       )
     }else if(type == "low"){
       return(
         this.state.top_low.map((n, i) => {
-          if (i == 0){
-            return n.name
-          }
+         return i == 0 && n ? n.name : ""
         })
       )
     }
