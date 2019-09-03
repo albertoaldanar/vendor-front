@@ -4,32 +4,33 @@ import {Doughnut, Pie} from "react-chartjs-2";
 class ChartProduct extends Component{
 
   render(){
-    let products = Object.keys(this.props.products)
-    let sales = Object.values(this.props.products)
-    var i = 0
 
-    var amount = sales.map(x => {
-      return i += x
+    const monthEgresos = this.props.egreso.map(x => {
+      return x.genero;
     })
 
-    const top = amount[amount.length - 1]
-
-    var pct = sales.map(x => {
-      return ((x / top) * 100).toFixed(2);
+    const dataEgresos = this.props.egreso.map(x => {
+      return x.importe__sum;
     })
-
-    console.log(pct)
 
     return(
       <div>
         <Pie
           data = {{
-              labels: products,
+              labels: monthEgresos,
               datasets: [
                 {
                   label: "Ventas",
-                  data: pct,
+                  data: dataEgresos,
                   backgroundColor: [
+                    "#00BFFF",
+                    "#E6E6FA",
+                    "#008080",
+                    "rgba(75,192,192,0.6)",
+                    "#00BFFF",
+                    "#E6E6FA",
+                    "#008080",
+                    "rgba(75,192,192,0.6)",
                     "#00BFFF",
                     "#E6E6FA",
                     "#008080",
@@ -38,13 +39,13 @@ class ChartProduct extends Component{
                 }
               ]
           }}
-          width = {240}
-          height = {240}
+          width = {410} //240 tamaño normal
+          height = {410}
           options = {{
-            legend: {display: false},
+            legend: {display: true, position: "bottom"},
             title: {
               display: true,
-              text: "Utilidad por producto"
+              text: this.props.title
             }
           }}
         />

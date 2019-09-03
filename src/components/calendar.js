@@ -7,19 +7,19 @@ BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 const myEventsList = [
   {
-    title: 'All Day Event very long title',
-    startDate: new Date(2018, 7, 18),
-    endDate: new Date(2018, 7, 18),
-    desc: 'Big conference for important people'
+    title: 'Carga de gas',
+    startDate: new Date(2019, 8, 3),
+    endDate: new Date(2019, 8, 3),
+    desc: 'Descarga'
   },
   {
-    title: 'Event 2',
-    startDate: new Date(2018, 7, 18),
-    endDate: new Date(2018, 7, 18),
-    desc: 'refer'
+    title: 'Descarga',
+    startDate: new Date(2019, 8, 2),
+    endDate: new Date(2019, 8, 2),
+    desc: 'refer',
+    allDay: false
   }
 ]
-
 
 class Calendar extends Component{
 
@@ -28,22 +28,34 @@ class Calendar extends Component{
     this.state = {myEventsList: []}
   }
 
-  componentWillMount(){
-    fetch("http://localhost:3000/api/task_admins")
-    .then(response => response.json())
-    .then(res => {
-      this.setState({myEventsList: res.allTasks})
-    })
-  }
-
   render(){
     return(
       <div id = "mycalendar" className ="calendar-container">
         <BigCalendar
+
+          eventPropGetter={
+            (event, start, end, isSelected) => {
+              let newStyle = {
+                backgroundColor: "red",
+                color: 'white',
+                borderRadius: "0px",
+                border: "none"
+              };
+
+                if (event.desc == "Descarga"){
+                  newStyle.backgroundColor = "blue"
+                }
+              return {
+                className: "",
+                style: newStyle
+              };
+            }
+          }
+
           events={myEventsList}
           startAccessor='startDate'
           endAccessor='endDate'
-          selectable = {true}
+          selectable = 'ignoreEvents'
         />
       </div>
     );

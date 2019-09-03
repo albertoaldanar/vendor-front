@@ -1,4 +1,8 @@
 import React, {Component} from "react";
+import { FilePond } from 'react-filepond';
+import 'filepond/dist/filepond.min.css';
+import * as XLSX from "xlsx";
+
 
 class Settings extends Component{
 
@@ -22,6 +26,7 @@ class Settings extends Component{
         })
       .catch(e => console.log(e))
   };
+
 
   editData(){
     return fetch("http://localhost:3000/edit_data/", {
@@ -87,24 +92,31 @@ class Settings extends Component{
     return sales;
   }
 
+  // readExcelFile(){
+  //   var name = f.name; 
+  //   const reader = new FileReader();
+  //   reader.onload = (evt) => {
+  //       /* Parse data */
+  //       const bstr = evt.target.result;
+  //       const wb = XLSX.read(bstr, {type:'binary'});
+  //       /* Get first worksheet */
+  //       const wsname = wb.SheetNames[0];
+  //       const ws = wb.Sheets[wsname];
+  //       /* Convert array of arrays */
+  //       const data = XLSX.utils.sheet_to_csv(ws, {header:1});
+  //       /* Update state */
+  //       console.log("Data>>>"+data);
+  //   };
+
+  //   reader.readAsBinaryString(f);
+  // }
+
   render(){
     const {unauthorizedSales, week} = this.state;
     console.log(week);
 
     return(
-      <div>
-        <h3 className ="sales-title">Ventas sin autorizar</h3>
-        <div>
-          {this.renderSales(unauthorizedSales)}
-        </div>
-          <form>
-            <label>
-              Name:
-            </label>
-              <input type= "number" name= "Semana" value ={week} onChange ={this.onChangeWeek.bind(this)}/>
-              <input type="submit" value="Submit" />
-          </form>
-      </div>
+        <FilePond server ="http://localhost:8000"/>
     );
   }
 }

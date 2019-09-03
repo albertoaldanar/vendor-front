@@ -13,8 +13,8 @@ class ChartComparing extends Component {
                 ["Semana 1", "Semana 2", "Semana 3", "Semana 4"],
               datasets: [
                 {
-                  label: this.props.vendorSelected,
-                  data: this.props.vendorSales,
+                  label: ["Luz", "Alan", "Daniel", "Carlos"],
+                  data:[150, 200, 400, 100],
                   backgroundColor: [
                     "#1E90FF",
                     "#1E90FF",

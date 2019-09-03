@@ -1,42 +1,53 @@
-import React from "react";
+import React, {Component} from "react";
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStroopwafel } from '@fortawesome/free-solid-svg-icons'
-import {Link} from "react-router-dom";
-import Chat from "../chat"
 
-const AdminSideBar = () => {
-  return(
+import Chat from "../chat"
+import { HashLink as Link } from 'react-router-hash-link';
+import smoothscroll from 'smoothscroll-polyfill';
+
+class AdminSideBar extends Component{
+
+  componentWillMount(){
+      smoothscroll.polyfill();
+  }
+
+  render(){
+    return(
       <div>
           <div className="side-nav">
-            <Link to="/calendar">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/149/149375.svg"/>
-              <span>Calendario</span>
-            </Link>
-
-            <Link to="/stats">
+            <Link smooth to="/stats#stats">
               <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/478/478544.svg"/>
               <span>Estadisticas</span>
             </Link>
 
-            <Link to="/team">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/944/944039.svg"/>
-              <span>Vendedores</span>
+            <Link smooth to="/stats#kpis">
+                <img  width ="40" height = "40" src ="https://image.flaticon.com/icons/svg/1611/1611179.svg"/>
+                <span>KPI´S </span>
             </Link>
 
-            <Link to="/lines">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/944/944055.svg"/>
-              <span>Tendencia</span>
+            <Link smooth to="/stats#clients">
+              <img  width ="35" height = "35" src ="https://image.flaticon.com/icons/svg/1528/1528669.svg"/>
+              <span> Clientes </span>
             </Link>
 
-            <Link to="/settings">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/263/263074.svg"/>
-              <span> Admin </span>
+
+            <Link smooth to="/stats#bus">
+              <img  width ="35" height = "35" src ="https://image.flaticon.com/icons/svg/74/74928.svg"/>
+              <span> Recolección </span>
+            </Link>
+
+            <Link smooth to="/settings">
+              <img  width ="35" height = "35" src ="https://image.flaticon.com/icons/svg/149/149213.svg"/>
+              <span> Excel </span>
             </Link>
         </div>
         <Chat/>
       </div>
-  );
+    );
+  }
 }
+
 
 export default AdminSideBar;

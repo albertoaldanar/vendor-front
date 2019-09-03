@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import ChartLines from "./reusable/chartLines";
+import ChartPositions from "./reusable/chartPositions";
 
 class Lines extends Component{
 
@@ -27,7 +28,12 @@ class Lines extends Component{
 
     return(
       <div className = "white">
-        <ChartLines weeks = {weeks} result = {result}/>
+        <p className = "title"> Unidad y perdidas por recolección</p>
+          <div className ="card">
+              <div className ="center">
+                <ChartPositions/>
+              </div>
+          </div>
       </div>
     );
   }

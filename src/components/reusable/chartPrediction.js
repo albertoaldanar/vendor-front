@@ -12,51 +12,59 @@ class ChartPrediction extends Component{
     }
   }
 
-  componentWillMount(){
-    fetch("http://localhost:3000/api/projection")
-    .then(response => response.json())
-    .then( res =>  {
-      this.setState({
-        projection: res.projection,
-        myTeam: res.my_team
-      })
-    })
-  }
 
   render(){
+
+    const months = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
+
     const {projection, myTeam} = this.state;
+
+    const monthIngresos = this.props.dataIngresos.map(x => {
+      return months[x.mes];
+    })
+
+    const dataIngresos = this.props.dataIngresos.map(x => {
+      return x.importe__sum;
+    })
+
+
+    const dataEgresos = this.props.dataEgresos.map(x => {
+      return x.importe__sum;
+    })
+
     return(
       <div>
         <Line
           data = {{
-            labels: ["Semana 1", "Semana 2", "Semena 3", "Semana 4"],
+            labels: monthIngresos,
             datasets: [
               {
-                label: "Meta",
-                data: projection,
-                fill: false,
-                borderColor: "red",
-                borderDash: [1,1],
-                borderWidth: 3
-              },
-              {
-              label: "Ventas",
-                data: myTeam,
+                label: "Suma de utilidad",
+                data: dataIngresos,
                 fill: false,
                 borderColor: "rgba(75,192,192,0.6)",
                 backgroundColor:"rgba(75,192,192,0.6)",
                 borderWidth: 3
+              },
+              {
+              label: "Suma de costos",
+                data: dataEgresos,
+                fill: true,
+                backgroundColor: "rgba(255, 25, 0, 0.5)",
+                borderColor: "red" ,
+                borderDash: [1,1],
+                borderWidth: 3
               }
             ]
           }}
-          width= {240}
+          width= {window.innerWidth * 0.85}
           height = {240}
           options = {{
             maintainAspectRatio: false,
-            legend: {display: true},
+            legend: {display: true, position: "bottom"},
             title: {
               display: true,
-              text: "Proyección"
+              text: "Crecimiento anual acumulado"
             }
           }}
         />
