@@ -24,11 +24,11 @@ class App extends Component {
         <div>
           <Home/>
           <CardView>
+            <Route exact path ="/stats" component ={Stats}/>
             <Route exact path="/chat" component={TeamStats} />
             <Route exact path="/graphics" component={Chat} />
             <Route exact path="/lines" component={Lines} />
             <Route exact path="/calendar" component={Calendar} />
-            <Route exact path ="/stats" component ={Stats}/>
             <Route exact path="/team" component={Team} />
             <Route exact path="/settings" component={Settings} />
           </CardView>
