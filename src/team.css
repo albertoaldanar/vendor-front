@@ -54,6 +54,11 @@
     align-self: center;
   }
 
+  .top {
+    align-self: center;
+    margin-top: 30px;
+    font-size: 20px;
+  }
   .user-label {
     font-size: 20px;
   }

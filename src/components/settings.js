@@ -14,7 +14,7 @@ class Settings extends Component{
       week: null,
       month: "",
       goal: 0, 
-      ingresos: [{}],  loaded: false, type: ""
+      ingresos: [{}],  loaded: false, type: "", message: ""
     }
 
     if(!firebase.apps.length){
@@ -104,7 +104,7 @@ class Settings extends Component{
               adeudoAño:  x.adeudoAño
             });
         }
-        this.setState({ingresos: [{}], loaded: true })
+        this.setState({ingresos: [{}], loaded: true, message: "Archivo enviado exitosamente a la base de datos :)" })
       })
 
   }
@@ -150,24 +150,6 @@ class Settings extends Component{
       this.changeData(userList);
   }
 
-  // readExcelFile(){
-  //   var name = f.name; 
-  //   const reader = new FileReader();
-  //   reader.onload = (evt) => {
-  //       /* Parse data */
-  //       const bstr = evt.target.result;
-  //       const wb = XLSX.read(bstr, {type:'binary'});
-  //       /* Get first worksheet */
-  //       const wsname = wb.SheetNames[0];
-  //       const ws = wb.Sheets[wsname];
-  //       /* Convert array of arrays */
-  //       const data = XLSX.utils.sheet_to_csv(ws, {header:1});
-  //       /* Update state */
-  //       console.log("Data>>>"+data);
-  //   };
-
-  //   reader.readAsBinaryString(f);
-  // }
 
   render(){
     const {unauthorizedSales, week} = this.state;
@@ -185,6 +167,7 @@ class Settings extends Component{
         />
 
         {this.showData()}
+        <p className ="top">{this.state.message}</p>
 
         {
           this.state.ingresos.length > 1  ?
