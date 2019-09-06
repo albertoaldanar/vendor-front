@@ -15,6 +15,7 @@ import Calendar from "./calendar";
 // Be sure to include styles at some point, probably during your bootstraping
 import '@trendmicro/react-table/dist/react-table.css';
 import '@trendmicro/react-paginations/dist/react-paginations.css';
+import * as firebase from 'firebase'
 
 class Stats extends Component{
 
@@ -25,15 +26,63 @@ class Stats extends Component{
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
         totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: []
     }
+
+    if(!firebase.apps.length){
+      const firebaseConfig = {
+        apiKey: "AIzaSyD3G-zK6USRWEAJy1_dtHdqZZb_GWDmifw",
+        authDomain: "serecsin-1533314943191.firebaseapp.com",
+        databaseURL: "https://serecsin-1533314943191.firebaseio.com",
+        projectId: "serecsin-1533314943191",
+        storageBucket: "",
+        messagingSenderId: "1091946178343",
+        appId: "1:1091946178343:web:68af7c6bb70c4584acab02"
+      };
+
+      this.dataBase = firebase.initializeApp(firebaseConfig);
+    }
+
   }
 
   componentWillMount(){
-      var today = new Date();
-      var dd = today.getDate();
-      var mm = 1
 
-      var year = new Date().getFullYear()
-      return this.getData(mm, year);
+    const db = firebase.firestore()
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = 1
+
+    var year = new Date().getFullYear();
+
+
+    const arrayIngresos = []
+    let ingresosRef = db.collection('Ingresos').where('mes', '==', mm).where('año', '==', year).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(doc.id, '=>', doc.data());
+          arrayIngresos.push(doc.data().importe); 
+
+          this.setState({totalIngresos: arrayIngresos.reduce((a, b) => a + b, 0)})
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+
+
+    const arrayEgresos = []
+    let egresosRef = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(doc.id, '=>', doc.data());
+          arrayEgresos.push(doc.data().importe); 
+
+          this.setState({totalEgresos: arrayEgresos.reduce((a, b) => a + b, 0)})
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
+
   }
 
   getData(month, year){
@@ -60,7 +109,7 @@ class Stats extends Component{
 
   render(){
     const {incidentes, descargas, totalRec, totalRecFail} = this.state;
-    console.log(this.state.year);
+    console.log(this.state.totalEgresos, this.state.totalIngresos);
 
 
     const totalIngresos = this.state.totalIngresos.importe__sum;
@@ -136,7 +185,7 @@ class Stats extends Component{
         <p> Ventas netas </p>
 
         <div className ="card">
-          <ChartTotals totalEgresos = {totalEgresos} totalIngresos = {totalIngresos} month = {this.state.month}/>
+          <ChartTotals totalEgresos = {this.state.totalEgresos} totalIngresos = {this.state.totalIngresos} month = {1}/>
         </div>
 
         <p className = "title" id = "kpis">Kpi´s Financieros</p>

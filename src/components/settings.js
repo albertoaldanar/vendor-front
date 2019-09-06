@@ -3,7 +3,6 @@ import { FilePond } from 'react-filepond';
 import 'filepond/dist/filepond.min.css';
 import * as XLSX from "xlsx";
 
-
 class Settings extends Component{
 
   constructor(props){
@@ -15,18 +14,6 @@ class Settings extends Component{
       goal: 0
     }
   }
-
-  componentWillMount(){
-    return fetch("http://localhost:3000/api/authorization")
-      .then(response => response.json())
-        .then(res => {
-          this.setState({
-            unauthorizedSales: res.unauthorized
-          })
-        })
-      .catch(e => console.log(e))
-  };
-
 
   editData(){
     return fetch("http://localhost:3000/edit_data/", {
@@ -116,7 +103,7 @@ class Settings extends Component{
     console.log(week);
 
     return(
-        <FilePond server ="http://localhost:8000"/>
+        <FilePond server ="http://localhost:8000/csv_reader"/>
     );
   }
 }
