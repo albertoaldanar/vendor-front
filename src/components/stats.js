@@ -15,7 +15,7 @@ import Calendar from "./calendar";
 // Be sure to include styles at some point, probably during your bootstraping
 import '@trendmicro/react-table/dist/react-table.css';
 import '@trendmicro/react-paginations/dist/react-paginations.css';
-import * as firebase from 'firebase'
+import * as firebase from 'firebase';
 
 class Stats extends Component{
 
@@ -109,7 +109,7 @@ class Stats extends Component{
 
   render(){
     const {incidentes, descargas, totalRec, totalRecFail} = this.state;
-    console.log(this.state.totalEgresos, this.state.totalIngresos);
+    console.log(this.state.totalIngresos);
 
 
     const totalIngresos = this.state.totalIngresos.importe__sum;
