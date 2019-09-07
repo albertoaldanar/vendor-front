@@ -73,7 +73,6 @@ class Stats extends Component{
       });
 
 
-
     //TOTAL EGRESO
     const arrayEgresos = []
     let egresosRef = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).get()
@@ -89,13 +88,36 @@ class Stats extends Component{
         console.log('Error getting documents', err);
       });
 
+      // Ingreso por recolección
+      const porRe = []
+      let porRecoleccion = db.collection('Ingresos').where('mes', '==', mm).where('año', '==', year).get()
+       .then(snapshot => {
+        snapshot.forEach(doc => {
+           porRe.push(doc.data());
+
+              let counts = porRe.reduce((prev, curr) => {
+                let count = prev.get(curr.cliente) || 0;
+                prev.set(curr.cliente, curr.importe + count);
+                return prev;
+              }, new Map());
+
+              // then, map your counts object back to an array
+              let reducedObjArr = [...counts].map(([key, value]) => {
+                return {key, value}
+              })
+
+              this.setState({byGroup: reducedObjArr});
+        });
+      })
+
+
+
       //EGRESO QRO
       const egQro = []
       let egresosQro = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Queretaro").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egQro.push(doc.data());
-
 
               let counts = egQro.reduce((prev, curr) => {
                 let count = prev.get(curr.genero) || 0;
@@ -111,7 +133,7 @@ class Stats extends Component{
               this.setState({egresoQro: reducedObjArr});
         });
       })
-
+      // EGRESOS MOCHIS
       const egMochis = [];
       let egresosMochis = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Mochis").get()
        .then(snapshot => {
@@ -135,37 +157,12 @@ class Stats extends Component{
         });
       });
 
-
-
+      //EGRESOS CULIACAN
       const egCuliacan = [];
       let egresosCuliacan = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Culiacan").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egCuliacan.push(doc.data());
-           // console.log(egCuliacan);
-
-              // var temp = {};
-              // var obj = null;
-              // for(var i=0; i < egCuliacan.length; i++) {
-              //    obj=egCuliacan[i];
-
-              //    if(!temp[obj.genero]) {
-              //        temp[obj.genero] = obj;
-              //    } else {
-              //        temp[obj.genero].importe += obj.importe;
-              //    }
-              // }
-
-              // var result = [];
-              // for (var prop in temp)
-              //     result.push(temp[prop]);
-
-              // const data = result.map(x=> {
-              //   return {"genero": x.genero, "importe": x.importe}
-              // })
-
-              // this.setState({egresoCLN: data})
-
               let counts = egCuliacan.reduce((prev, curr) => {
                 let count = prev.get(curr.genero) || 0;
                 prev.set(curr.genero, curr.importe + count);
@@ -191,7 +188,7 @@ class Stats extends Component{
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
 
 
-    console.log(this.state.egresoQro);
+    console.log(this.state.byGroup);
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;
@@ -344,7 +341,7 @@ class Stats extends Component{
         <p>Utilidad y perdida por recolección</p>
         <div className ="card ">
               <div className ="center">
-                <ChartPositions payByClient = {this.state.payByClient}/>
+                <ChartPositions payByClient = {this.state.byGroup}/>
               </div>
         </div>
 

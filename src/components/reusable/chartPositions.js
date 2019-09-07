@@ -10,11 +10,11 @@ class ChartPositions extends Component {
     // })
 
     let clients = this.props.payByClient.map(x => {
-        return x.cliente
+        return x.key
     })
 
     let data = this.props.payByClient.map(x => {
-        return (x.importe__sum / 30).toFixed(2)
+        return (x.value/ 30).toFixed(2)
     })
     // console.log(vendors)
 
