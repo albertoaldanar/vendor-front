@@ -57,6 +57,31 @@ class Stats extends Component{
 
     var year = new Date().getFullYear();
 
+
+    //Total ingrso por mes
+    const arrayI = []
+    let ingRef = db.collection('Ingresos').where('año', '==', year).orderBy("mes").get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          arrayI.push(doc.data());
+          console.log(arrayI)
+          let counts = arrayI.reduce((prev, curr) => {
+                let count = prev.get(curr.mes) || 0;
+                prev.set(curr.mes, curr.importe + count);
+                return prev;
+              }, new Map());
+
+              // then, map your counts object back to an array
+              let reducedObjArr = [...counts].map(([key, value]) => {
+                return {key, value}
+              })
+
+              this.setState({ingresosbyMonth: reducedObjArr});
+        });
+      })
+
+
+
     //TOTAL INGRESO
     const arrayIngresos = []
     let ingresosRef = db.collection('Ingresos').where('mes', '==', mm).where('año', '==', year).get()
@@ -109,7 +134,6 @@ class Stats extends Component{
               this.setState({byGroup: reducedObjArr});
         });
       })
-
 
 
       //EGRESO QRO
@@ -188,7 +212,7 @@ class Stats extends Component{
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
 
 
-    console.log(this.state.byGroup);
+    console.log(this.state.ingresosbyMonth);
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;

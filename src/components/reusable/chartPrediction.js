@@ -20,11 +20,11 @@ class ChartPrediction extends Component{
     const {projection, myTeam} = this.state;
 
     const monthIngresos = this.props.dataIngresos.map(x => {
-      return months[x.mes];
+      return months[x.key];
     })
 
     const dataIngresos = this.props.dataIngresos.map(x => {
-      return x.importe__sum;
+      return x.value;
     })
 
 
