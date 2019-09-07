@@ -16,6 +16,7 @@ import Calendar from "./calendar";
 import '@trendmicro/react-table/dist/react-table.css';
 import '@trendmicro/react-paginations/dist/react-paginations.css';
 import * as firebase from 'firebase';
+import {Picker, MonthBox }from 'react-month-picker'
 
 class Stats extends Component{
 
@@ -44,7 +45,10 @@ class Stats extends Component{
   }
 
   componentWillMount(){
+    return this.getData()
+  }
 
+  getData(){
     const db = firebase.firestore()
 
     var today = new Date();
@@ -53,7 +57,7 @@ class Stats extends Component{
 
     var year = new Date().getFullYear();
 
-
+    //TOTAL INGRESO
     const arrayIngresos = []
     let ingresosRef = db.collection('Ingresos').where('mes', '==', mm).where('año', '==', year).get()
       .then(snapshot => {
@@ -69,6 +73,8 @@ class Stats extends Component{
       });
 
 
+
+    //TOTAL EGRESO
     const arrayEgresos = []
     let egresosRef = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).get()
       .then(snapshot => {
@@ -83,24 +89,100 @@ class Stats extends Component{
         console.log('Error getting documents', err);
       });
 
-  }
+      //EGRESO QRO
+      const egQro = []
+      let egresosQro = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Queretaro").get()
+       .then(snapshot => {
+        snapshot.forEach(doc => {
+           egQro.push(doc.data());
+           // console.log(egQro);
 
-  getData(month, year){
 
-      return fetch(`http://localhost:8000/serecsin_data?month=${month}&year=${year}`)
-        .then(res => res.json())
-        .then(response => {
-          console.log(response);
-          this.setState({
-              ingresosbyMonth: response.ingreso_by_month, egresosByMonth: response.egreso_by_month,
-              totalIngresos: response.total_ingresos, totalEgresos: response.total_egresos, 
-              month: month, stopsByClient: response.stops_by_client, payByClient: response.pay_by_client,
-              egresoCLN: response.egreso_cln, egresoQro: response.egreso_qro, egresoMochis: response.egreso_mochis,
-              totalRec: response.total_rec, totalRecFail: response.total_rec_fail, descargas: response.descargas, incidentes: response.incidentes,
-              year: year, byGroup: response.by_group, grupoMochis: response.mochis, grupoBonnati: response.bonatti, grupoOxxo: response.oxxo, 
-              gastosBonatti: response.gastos_bonatti, gastosOxxo: response.gastos_oxxo, gastosTiendas: response.gastos_tiendas, totalTiendas: response.total_tiendas
-          })
-        })
+              let counts = egQro.reduce((prev, curr) => {
+                let count = prev.get(curr.genero) || 0;
+                prev.set(curr.genero, curr.importe + count);
+                return prev;
+              }, new Map());
+
+              // then, map your counts object back to an array
+              let reducedObjArr = [...counts].map(([key, value]) => {
+                return {key, value}
+              })
+
+              this.setState({egresoQro: reducedObjArr});
+        });
+      })
+
+      const egMochis = [];
+      let egresosMochis = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Mochis").get()
+       .then(snapshot => {
+        snapshot.forEach(doc => {
+           egMochis.push(doc.data());
+           // console.log(egMochis);
+
+              let counts = egMochis.reduce((prev, curr) => {
+                let count = prev.get(curr.genero) || 0;
+                prev.set(curr.genero, curr.importe + count);
+                return prev;
+              }, new Map());
+
+              // then, map your counts object back to an array
+              let reducedObjArr = [...counts].map(([key, value]) => {
+                return {key, value}
+              })
+
+              console.log(reducedObjArr);
+
+              this.setState({egresoMochis: reducedObjArr});
+        });
+      });
+
+
+
+      const egCuliacan = [];
+      let egresosCuliacan = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Culiacan").get()
+       .then(snapshot => {
+        snapshot.forEach(doc => {
+           egCuliacan.push(doc.data());
+           // console.log(egCuliacan);
+
+              // var temp = {};
+              // var obj = null;
+              // for(var i=0; i < egCuliacan.length; i++) {
+              //    obj=egCuliacan[i];
+
+              //    if(!temp[obj.genero]) {
+              //        temp[obj.genero] = obj;
+              //    } else {
+              //        temp[obj.genero].importe += obj.importe;
+              //    }
+              // }
+
+              // var result = [];
+              // for (var prop in temp)
+              //     result.push(temp[prop]);
+
+              // const data = result.map(x=> {
+              //   return {"genero": x.genero, "importe": x.importe}
+              // })
+
+              // this.setState({egresoCLN: data})
+
+              let counts = egCuliacan.reduce((prev, curr) => {
+                let count = prev.get(curr.genero) || 0;
+                prev.set(curr.genero, curr.importe + count);
+                return prev;
+              }, new Map());
+
+              // then, map your counts object back to an array
+              let reducedObjArr = [...counts].map(([key, value]) => {
+                return {key, value}
+              })
+
+              this.setState({egresoCLN: reducedObjArr});
+          });
+      });
+
   }
 
   onChange(item){
@@ -108,12 +190,10 @@ class Stats extends Component{
   }
 
   render(){
-    const {incidentes, descargas, totalRec, totalRecFail} = this.state;
-    console.log(this.state.totalIngresos);
+    const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
 
 
-    const totalIngresos = this.state.totalIngresos.importe__sum;
-    const totalEgresos = this.state.totalEgresos.importe__sum;
+    console.log(this.state.egresoQro);
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;
@@ -163,6 +243,7 @@ class Stats extends Component{
 
     return(
       <div className ="page-box">
+
         <p className = "title" id = "stats">Estadisticas mensuales</p>
 
         <div className ="card ">
@@ -252,7 +333,7 @@ class Stats extends Component{
                   <ChartProduct title = "Desgloce Mochis" egreso = {this.state.egresoMochis }/>
                 </div>
                 <div className ="center">
-                  <ChartProduct title = "Desgloce Queretaro" egreso = {this.state.egresoQro }/>
+                  <ChartProduct title = "Desgloce Queretaro" egreso = { this.state.egresoQro }/>
                 </div>
             </div>
 

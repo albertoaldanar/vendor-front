@@ -90,7 +90,14 @@ class Settings extends Component{
             mes:  Number(x.mes), 
             año:  Number(x.año), 
             concepto: x.concepto, 
-            genero:  x.genero
+            genero:  x.genero, 
+            concepto: x.concepto, 
+            cantidad: x.cantidad, 
+            metodoPago: x.metodoPago, 
+            cuentaOrigen: x.cuentaOrigen, 
+            formaPago: x.formaPago, 
+            cfdi: x.cfdi, 
+            folio: x.folio
           });
 
         } else {
@@ -140,8 +147,15 @@ class Settings extends Component{
               const año = Number(response[i][5]);
               const genero = response[i][6];
               const concepto = response[i][7];
+              const cantidad = response[i][8];
+              const metodoPago = response[i][9];
+              const cuentaOrigen = response[i][10];
+              const formaPago = response[i][11];
+              const cfdi = response[i][12];
+              const folio = response[i][13];
 
-              const newUser = { cliente, importe, lugar, mes, año, genero, concepto };
+
+              const newUser = { cliente, importe, lugar, mes, año, genero, concepto, cantidad, metodoPago, cuentaOrigen, formaPago, cfdi, folio };
             
               userList.push(newUser);
             }

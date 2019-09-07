@@ -6,11 +6,11 @@ class ChartProduct extends Component{
   render(){
 
     const monthEgresos = this.props.egreso.map(x => {
-      return x.genero;
+      return x.key;
     })
 
     const dataEgresos = this.props.egreso.map(x => {
-      return x.importe__sum;
+      return x.value;
     })
 
     return(
