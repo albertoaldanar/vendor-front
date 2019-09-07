@@ -29,7 +29,7 @@ class ChartPrediction extends Component{
 
 
     const dataEgresos = this.props.dataEgresos.map(x => {
-      return x.importe__sum;
+      return x.value;
     })
 
     return(
