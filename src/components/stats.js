@@ -95,7 +95,6 @@ class Stats extends Component{
        .then(snapshot => {
         snapshot.forEach(doc => {
            egQro.push(doc.data());
-           // console.log(egQro);
 
 
               let counts = egQro.reduce((prev, curr) => {
@@ -118,7 +117,6 @@ class Stats extends Component{
        .then(snapshot => {
         snapshot.forEach(doc => {
            egMochis.push(doc.data());
-           // console.log(egMochis);
 
               let counts = egMochis.reduce((prev, curr) => {
                 let count = prev.get(curr.genero) || 0;
