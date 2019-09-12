@@ -58,6 +58,23 @@ class Stats extends Component{
     var year = new Date().getFullYear();
 
 
+    // Clientes ganados y perdidos
+
+    // let ingRef = db.collection('clientesGanados').where('año', '==', year).where("mes", "==", mm).get()
+    //   .then(snapshot => {
+    //     snapshot.forEach(doc => {
+    //       arrayI.push(doc.data());
+    //     })
+    //   }
+
+    // let ingRef = db.collection('clientesGanados').where('año', '==', year).where("mes", "==", mm).get()
+    //   .then(snapshot => {
+    //     snapshot.forEach(doc => {
+    //       arrayI.push(doc.data());
+    //     })
+    //   }
+
+
     //Total ingrso por mes
     const arrayI = []
     let ingRef = db.collection('Ingresos').where('año', '==', year).orderBy("mes").get()
@@ -159,7 +176,7 @@ class Stats extends Component{
 
       //EGRESO QRO
       const egQro = []
-      let egresosQro = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Queretaro").get()
+      let egresosQro = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "QUERETARO").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egQro.push(doc.data());
@@ -180,7 +197,7 @@ class Stats extends Component{
       })
       // EGRESOS MOCHIS
       const egMochis = [];
-      let egresosMochis = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Mochis").get()
+      let egresosMochis = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "MOCHIS").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egMochis.push(doc.data());
@@ -204,7 +221,7 @@ class Stats extends Component{
 
       //EGRESOS CULIACAN
       const egCuliacan = [];
-      let egresosCuliacan = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "Culiacan").get()
+      let egresosCuliacan = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "CULIACAN").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egCuliacan.push(doc.data());
@@ -232,8 +249,6 @@ class Stats extends Component{
   render(){
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
 
-
-    console.log(this.state.egresosByMonth);
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;

@@ -80,6 +80,8 @@ class Settings extends Component{
 
       const dbIngreso = firebase.firestore().collection('Ingresos');
       const dbEgreso = firebase.firestore().collection('egreso');
+      const dbClientesGanados = firebase.firestore().collection('clientesGanados');
+      const dbClientesPerdidos = firebase.firestore().collection('clientesPerdidos');
 
       return this.state.ingresos.map(x => {
         if(this.state.type == "Egreso"){
@@ -110,6 +112,22 @@ class Settings extends Component{
               adeudoMes: x.adeudoMes, 
               adeudoAño:  x.adeudoAño
             });
+            
+            if(x.clienteGanado!== ""){
+              dbClientesGanados.add({
+                cliente: x.clienteGanado, 
+                año: Number(x.año), 
+                mes: Number(x.mes)
+              });
+            }
+
+            if(x.clientePerdido!== ""){
+              dbClientesPerdidos.add({
+                cliente: x.clientePerdido, 
+                año: Number(x.año), 
+                mes: Number(x.mes)
+              });
+            }
         }
         this.setState({ingresos: [{}], loaded: true, message: "Archivo enviado exitosamente a la base de datos :)" })
       })
@@ -133,10 +151,13 @@ class Settings extends Component{
               const año = Number(response[i][5]);
               const adeudoMes = Number(response[i][6]);
               const adeudoAño = Number(response[i][7]);
+              const clienteGanado = response[i][8];
+              const clientePerdido = response[i][9];
 
-              const newUser = { cliente, importe, lugar, mes, año, adeudoMes, adeudoAño };
+              const newUser = { cliente, importe, lugar, mes, año, adeudoMes, adeudoAño, clienteGanado, clientePerdido };
             
               userList.push(newUser);
+
             } else {
               this.setState({type: "Egreso"});
 

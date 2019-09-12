@@ -24,12 +24,14 @@ class ChartPrediction extends Component{
     })
 
     const dataIngresos = this.props.dataIngresos.map(x => {
-      return x.value;
+      var num =  x.value;
+      return num.toFixed(2);
     })
 
 
     const dataEgresos = this.props.dataEgresos.map(x => {
-      return x.value;
+      var num =  x.value;
+      return num.toFixed(2);
     })
 
     return(

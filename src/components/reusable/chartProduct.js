@@ -10,7 +10,7 @@ class ChartProduct extends Component{
     })
 
     const dataEgresos = this.props.egreso.map(x => {
-      return x.value;
+      return x.value
     })
 
     return(
@@ -27,14 +27,18 @@ class ChartProduct extends Component{
                     "#E6E6FA",
                     "#008080",
                     "rgba(75,192,192,0.6)",
-                    "#00BFFF",
-                    "#E6E6FA",
-                    "#008080",
-                    "rgba(75,192,192,0.6)",
-                    "#00BFFF",
-                    "#E6E6FA",
-                    "#008080",
-                    "rgba(75,192,192,0.6)"
+                    "#DC143C",
+                    "#FF8C00",
+                    "#FFD700",
+                    "#ADFF2F",
+                    "#4B0082",
+                    "#ADD8E6",
+                    "#20B2AA",
+                    "#BA55D3",
+                    "#FFDEAD",
+                    "#DB7093",
+                    "#4169E1",
+                    "#708090"
                   ]
                 }
               ]

@@ -61,7 +61,16 @@ class ChartPositions extends Component {
               display: true,
               text: "Utilidad y perdida por recolección"
             },
-            
+            scales: {
+                 yAxes: [
+                  {
+                      display: true,
+                      ticks: {
+                        fontSize: 7
+                      }
+                  }
+                ]
+            }
           }}
         />
       </div>
