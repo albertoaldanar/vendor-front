@@ -25,7 +25,7 @@ class Stats extends Component{
     this.state = {
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
-        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: []
+        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: []
     }
 
     if(!firebase.apps.length){
@@ -56,8 +56,6 @@ class Stats extends Component{
     var mm = 1
 
     var year = new Date().getFullYear();
-
-
     // Clientes ganados y perdidos
 
     // let ingRef = db.collection('clientesGanados').where('año', '==', year).where("mes", "==", mm).get()
@@ -73,7 +71,6 @@ class Stats extends Component{
     //       arrayI.push(doc.data());
     //     })
     //   }
-
 
     //Total ingrso por mes
     const arrayI = []
@@ -92,10 +89,11 @@ class Stats extends Component{
               let reducedObjArr = [...counts].map(([key, value]) => {
                 return {key, value}
               })
-
               this.setState({ingresosbyMonth: reducedObjArr});
         });
       })
+
+    this.setState({ingresos: arrayI});
 
     const arrayE = []
     let egreRef = db.collection('egreso').where('año', '==', year).orderBy("mes").get()
@@ -242,13 +240,26 @@ class Stats extends Component{
 
   }
 
+  adeudos(){
+    return this.state.ingresos.map(x => {
+      return(
+          <div className = "user-info containerAdeudo">
+              <p>{x.cliente}</p>
+              <p>{x.importe}</p>
+              <p>{x.adeudoMes}</p>
+              <p>{x.adeudoAño}</p>
+          </div>
+      );
+    })
+  }
+
   onChange(item){
     this.setState({userSelected: item})
   }
 
   render(){
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
-
+    console.log(this.state.ingresos);
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;
@@ -379,6 +390,11 @@ class Stats extends Component{
         </div>
 
         <p className = "title" id= "clients">Clientes</p>
+
+
+            <div className ="card">
+              {this.adeudos()}
+            </div>
 
             <div className ="card">
                 <div className ="center">
