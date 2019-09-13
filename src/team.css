@@ -1,4 +1,36 @@
 @media screen and (min-width: 600px){
+  .user-info {
+    position: relative;
+    height: 30px;
+  }
+  .one {
+    position: absolute;
+    left: 5px;
+  }
+  .two{
+    position: absolute;
+    left: 200px;
+  }
+  .three{
+    position: absolute;
+    right: 170px;
+  }
+  .four{
+    position: absolute;
+    right: 5px;
+  }
+
+  .positive{
+    color:  green;
+  }
+
+  .negative-monthly{
+    color:  orange;
+  }
+
+  .negative-yearly{
+    color: red;
+  }
 }
 
 @media screen and (min-width: 1150px){
@@ -17,10 +49,8 @@
   }
 
   .user-info {
-    display: flex;
-    justify-content: space-around;
-    flex-direction: row;
-    margin-top: 10px;
+    position: relative;
+    height: 30px;
   }
 
   .task {
@@ -86,10 +116,37 @@
     justify-content: space-around;
     padding: 10px 20px;
   }
-  .containerAdeudo {
-    width: 50%;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
+
+  .one {
+    position: absolute;
+    left: 5px;
+  }
+  .two{
+    position: absolute;
+    left: 320px;
+  }
+  .three{
+    position: absolute;
+    right: 250px;
+  }
+  .four{
+    position: absolute;
+    right: 5px;
+  }
+
+  .positive{
+    color : green;
+  }
+
+  .negative-monthly{
+    color: orange;
+  }
+
+  .negative-yearly{
+    color: red;
+  }
+  .border-line{
+    border: solid gray 1px;
   }
 }
+

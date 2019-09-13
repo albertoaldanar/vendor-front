@@ -243,11 +243,11 @@ class Stats extends Component{
   adeudos(){
     return this.state.ingresos.map(x => {
       return(
-          <div className = "user-info containerAdeudo">
-              <p>{x.cliente}</p>
-              <p>{x.importe}</p>
-              <p>{x.adeudoMes}</p>
-              <p>{x.adeudoAño}</p>
+          <div className = "user-info">
+              <p className = "one"> {x.cliente}</p>
+              <p className = "two">$ {x.importe}</p>
+              <p className = {"three " + (x.adeudoMes > 0 ? 'negative-monthly' : 'positive')}>$ {x.adeudoMes}</p>
+              <p className = {"four " + (x.adeudoMes > 0 ? 'negative-yearly' : 'positive')}>$ {x.adeudoAño}</p>
           </div>
       );
     })
@@ -393,6 +393,12 @@ class Stats extends Component{
 
 
             <div className ="card">
+               <div className = "user-info border-line">
+                  <p className = "one"> CLIENTES</p>
+                  <p className = "two"> INGRESO</p>
+                  <p className = "three">ADEUDO MES</p>
+                  <p className = "four">ADEUDO ANTERIOR</p>
+               </div>
               {this.adeudos()}
             </div>
 
