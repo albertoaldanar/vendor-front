@@ -4,8 +4,6 @@ import 'filepond/dist/filepond.min.css';
 import * as XLSX from "xlsx";
 import CSVReader from 'react-csv-reader';
 import * as firebase from 'firebase';
-import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
-import PdfDocument from "./pdfDocument";
 // import { SegmentedControl } from 'segmented-control-react';
 
 
