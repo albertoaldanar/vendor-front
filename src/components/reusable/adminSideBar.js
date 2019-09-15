@@ -40,7 +40,7 @@ class AdminSideBar extends Component{
 
             <Link smooth to="/settings">
               <img  width ="35" height = "35" src ="https://image.flaticon.com/icons/svg/149/149213.svg"/>
-              <span> Excel </span>
+              <span> Archivos </span>
             </Link>
         </div>
         <Chat/>

@@ -4,6 +4,10 @@ import 'filepond/dist/filepond.min.css';
 import * as XLSX from "xlsx";
 import CSVReader from 'react-csv-reader';
 import * as firebase from 'firebase';
+import { PDFDownloadLink, Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import PdfDocument from "./pdfDocument";
+// import { SegmentedControl } from 'segmented-control-react';
+
 
 class Settings extends Component{
 
@@ -14,7 +18,7 @@ class Settings extends Component{
       week: null,
       month: "",
       goal: 0, 
-      ingresos: [{}],  loaded: false, type: "", message: ""
+      ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]], months: { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     }
 
     if(!firebase.apps.length){
@@ -33,9 +37,51 @@ class Settings extends Component{
   }
 
 
+  fetchData(){
+    const db = firebase.firestore()
+
+    var today = new Date();
+    var dd = today.getDate();
+    var mm = 1
+
+    var year = new Date().getFullYear();
+
+    const arrayI = []
+    let ingRef = db.collection('Ingresos').where('año', '==', year).orderBy("mes").get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          arrayI.push(doc.data());
+
+          this.setState({ingresosThisMonth: arrayI, ready: true});
+        });
+      })
+  }
+
+
+  componentWillMount(){
+      return this.fetchData();
+  }
+
+
   onChangeWeek(e){
     this.setState({week: e.target.value})
   }
+
+
+    renderData(){
+        console.log(this.state.ingresosThisMonth);
+
+        if(this.state.ingresosThisMonth.length > 0 ){
+            return this.state.ingresosThisMonth.map(x=> {
+                return(
+                    <Text style = {styles.movieTitle}>{x.importe}</Text>
+                )
+            })
+        } else {
+            return <Text>A mamarla</Text>
+        }
+
+    }
 
 
   showData(){
@@ -188,7 +234,14 @@ class Settings extends Component{
 
   render(){
     const {unauthorizedSales, week} = this.state;
-    console.log(this.state.ingresos, this.state.type);
+
+    const segments = [
+      { name: 'All' },
+      { name: 'Unread', disabled: true },
+      { name: 'Drafts' },
+      { name: 'Trash' },
+      { name: 'Pins' }
+    ];
 
     return( 
       <div>
@@ -201,6 +254,7 @@ class Settings extends Component{
           inputStyle={{color: 'gray'}}
         />
 
+
         {this.showData()}
         <p className ="top">{this.state.message}</p>
 
@@ -211,9 +265,108 @@ class Settings extends Component{
           </button> :
           null
         }
+
+        <div className ="card">
+            <h2>Best movies of the year</h2>
+            <label htmlFor="movies">Select Year</label>
+            <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
+              <option defaultValue="" disabled>
+                Select your option
+              </option>
+              {this.state.ingresosThisMonth.map((item, index) => {
+                return (
+                  <option key={index} value={item.cliente}>
+                    {item.cliente}
+                  </option>
+                );
+              })}
+            </select>
+        </div>
       </div>
     );
   }
 }
+
+
+const styles = StyleSheet.create({
+    page: {
+        backgroundColor: "#ffffff"
+    },
+    section: {
+        margin: 10,
+        padding: 10,
+        flexGrow: 1
+    },
+    movieContainer: {
+        backgroundColor: "#f6f6f5",
+        display: "flex",
+        flexDirection: "row",
+        padding: 5
+    },
+    movieDetails: {
+        display: "flex",
+        marginLeft: 5
+    },
+    movieTitle: {
+        fontSize: 15,
+        marginBottom: 10, 
+        color: "black"
+    },
+    movieOverview: {
+        fontSize: 10
+    },
+
+    image: {
+        height: 200,
+        width: 150
+    },
+    subtitle: {
+        display: "flex",
+        justifyContent: "space-between",
+        flexDirection: "row",
+        width: 150,
+        alignItems: "center",
+        marginBottom: 12
+    },
+    vote: {
+        display: "flex",
+        flexDirection: "row"
+    },
+    rating: {
+        height: 10,
+        width: 10
+    },
+    vote_text: {
+        fontSize: 10
+    },
+    vote_pop: {
+        fontSize: 10,
+        padding: 2,
+        backgroundColor: "#61C74F",
+        color: "#fff"
+    },
+    vote_pop_text: {
+        fontSize: 10,
+        marginLeft: 4
+    },
+    overviewContainer: {
+        minHeight: 110
+    },
+    detailsFooter: {
+        display: "flex",
+        flexDirection: "row"
+    },
+    lang: {
+        fontSize: 8,
+        fontWeight: 700
+    },
+    vote_average: {
+        fontSize: 8,
+        marginLeft: 4,
+        fontWeight: "bold"
+    }
+});
+
+
 
 export default Settings;

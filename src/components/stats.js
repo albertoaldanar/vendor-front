@@ -16,7 +16,7 @@ import Calendar from "./calendar";
 import '@trendmicro/react-table/dist/react-table.css';
 import '@trendmicro/react-paginations/dist/react-paginations.css';
 import * as firebase from 'firebase';
-import {Picker, MonthBox }from 'react-month-picker'
+import ClipLoader from 'react-spinners/ClipLoader';
 
 class Stats extends Component{
 
@@ -25,7 +25,7 @@ class Stats extends Component{
     this.state = {
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
-        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: []
+        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true
     }
 
     if(!firebase.apps.length){
@@ -45,6 +45,9 @@ class Stats extends Component{
   }
 
   componentWillMount(){
+
+    setTimeout(() => {this.setState({loading: false})}, 7500)
+
     return this.getData()
   }
 
@@ -266,6 +269,9 @@ class Stats extends Component{
 
     const puntoEquilibrio = (totalIngresos / 30) / totalEgresos || 0;
 
+ 
+
+
     const options = [
         { value: "Culiacan", label: "Culiacan" },
         { value: "Mochis", label: "Mochis" },
@@ -309,6 +315,20 @@ class Stats extends Component{
 
     return(
       <div className ="page-box">
+
+      { this.state.loading ? 
+        <div className = "spinner">
+          <ClipLoader
+            sizeUnit={"px"}
+            size={250}
+            color={'black'}
+            loading={this.state.loading}
+          /> 
+          <p>Generando reportes</p>
+        </div>
+        : null
+      }
+      
 
         <p className = "title" id = "stats">Estadisticas mensuales</p>
 
