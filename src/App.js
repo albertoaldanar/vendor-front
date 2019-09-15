@@ -3,7 +3,7 @@ import 'react-dropdown/style.css'
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import Home from "./components/home";
-import Welcome from "./components/Welcome";
+import Welcome from "./components/welcome";
 import Chat from "./components/chat";
 import Calendar from "./components/calendar";
 import Stats from "./components/stats";
