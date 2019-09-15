@@ -3,6 +3,7 @@ import 'react-dropdown/style.css'
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import Home from "./components/home";
+import Welcome from "./components/Welcome";
 import Chat from "./components/chat";
 import Calendar from "./components/calendar";
 import Stats from "./components/stats";
@@ -23,7 +24,9 @@ class App extends Component {
       <Router>
         <div>
           <Home/>
+          <p>Hello</p>
           <CardView>
+            <Route exact path ="/" component ={Welcome}/>
             <Route exact path ="/stats" component ={Stats}/>
             <Route exact path="/chat" component={TeamStats} />
             <Route exact path="/graphics" component={Chat} />

@@ -25,7 +25,7 @@ class Stats extends Component{
     this.state = {
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
-        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true
+        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true, 
     }
 
     if(!firebase.apps.length){
@@ -49,6 +49,10 @@ class Stats extends Component{
     setTimeout(() => {this.setState({loading: false})}, 7500)
 
     return this.getData()
+  }
+
+  fetchData(){
+    console.log("changed");
   }
 
   getData(){
@@ -269,8 +273,9 @@ class Stats extends Component{
 
     const puntoEquilibrio = (totalIngresos / 30) / totalEgresos || 0;
 
- 
+    const months = [ {mes: "Enero", key: 1}, {mes: "Febrero", key: 2}, {mes: "Marzo", key: 3}, {mes: "Abril", key: 4}, {mes: "Mayo", key: 5}, {mes: "Junio", key: 6}, {mes: "Julio", key: 7}, {mes: "Agosto", key: 8}, {mes: "Septiembre", key: 9}, {mes: "Octubre", key: 10}, {mes: "Noviembre", key: 11}, {mes: "Diciembre", key: 12}];
 
+    const years = [2019, 2020];
 
     const options = [
         { value: "Culiacan", label: "Culiacan" },
@@ -326,7 +331,38 @@ class Stats extends Component{
           /> 
           <p>Generando reportes</p>
         </div>
-        :       <div>
+        :    
+        <div>
+      
+        <div>
+          <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
+              <option defaultValue="" disabled>
+                Selecciona mes (por default el mes actual).
+              </option>
+              {months.map((item, index) => {
+                return (
+                  <option key={item.key} value={item.key}>
+                    {item.mes}
+                  </option>
+                );
+              })}
+          </select>
+
+
+          <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
+              <option defaultValue="" disabled>
+                Selecciona año (por default el año actual).
+              </option>
+              {years.map((item, index) => {
+                return (
+                  <option key={index} value={item}>
+                    {item}
+                  </option>
+                );
+              })}
+          </select>
+        </div>
+
         <p className = "title" id = "stats">Estadisticas mensuales</p>
 
         <div className ="card ">
