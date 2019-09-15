@@ -326,10 +326,7 @@ class Stats extends Component{
           /> 
           <p>Generando reportes</p>
         </div>
-        : null
-      }
-      
-
+        :       <div>
         <p className = "title" id = "stats">Estadisticas mensuales</p>
 
         <div className ="card ">
@@ -476,7 +473,9 @@ class Stats extends Component{
           <Calendar/>
         </div>
       </div>
+      }
 
+    </div>
 
     );
   }
