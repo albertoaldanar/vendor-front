@@ -28,7 +28,7 @@ class Stats extends Component{
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
         totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true, 
-        monthSelected: 1, yearSelected: new Date().getFullYear(),
+        monthSelected: 1, yearSelected: new Date().getFullYear(), clientesGanados: null, clientesPerdidos: null, egresos: [], allStops: []
     }
 
     if(!firebase.apps.length){
@@ -51,10 +51,10 @@ class Stats extends Component{
     return this.getData()
   }
 
-  filterData(){
-    this.setState({loading: true});
-    return this.getData();
-  }
+  // filterData(){
+  //   // this.setState({loading: true});
+  //   return this.getData.bind();
+  // }
 
   dataMonth(event){
     this.setState({monthSelected: event.target.value});
@@ -69,20 +69,23 @@ class Stats extends Component{
 
     const db = firebase.firestore();
     // Clientes ganados y perdidos
+    const clientesGanados = [];
+    let cGanados = db.collection('clientesGanados').where('año', '==', this.state.yearSelected).where("mes", "==", this.state.monthSelected).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          clientesGanados.push(doc.data());
+        })
+      });
+      this.setState({clientesGanados});
 
-    // let ingRef = db.collection('clientesGanados').where('año', '==', year).where("mes", "==", mm).get()
-    //   .then(snapshot => {
-    //     snapshot.forEach(doc => {
-    //       arrayI.push(doc.data());
-    //     })
-    //   }
-
-    // let ingRef = db.collection('clientesGanados').where('año', '==', year).where("mes", "==", mm).get()
-    //   .then(snapshot => {
-    //     snapshot.forEach(doc => {
-    //       arrayI.push(doc.data());
-    //     })
-    //   }
+    const clientesPerdidos = [];
+    let cPerdidos = db.collection('clientesPerdidos').where('año', '==', this.state.yearSelected).where("mes", "==", this.state.monthSelected).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          clientesPerdidos.push(doc.data());
+        })
+      });
+      this.setState({clientesPerdidos});
 
     //Total ingrso por mes
     const arrayI = []
@@ -105,7 +108,7 @@ class Stats extends Component{
         });
       })
 
-    this.setState({ingresos: arrayI});
+    
 
     const arrayE = []
     let egreRef = db.collection('egreso').where('año', '==', this.state.yearSelected).orderBy("mes").get()
@@ -144,16 +147,20 @@ class Stats extends Component{
         console.log('Error getting documents', err);
       });
 
+    this.setState({ingresos: arrayI});
+
 
     //TOTAL EGRESO
-    const arrayEgresos = []
+    const arrayEgresos = []; 
+    const egresos= [];
     let egresosRef = db.collection('egreso').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           console.log(doc.id, '=>', doc.data());
           arrayEgresos.push(doc.data().importe); 
+          egresos.push(doc.data()); 
 
-          this.setState({totalEgresos: arrayEgresos.reduce((a, b) => a + b, 0)})
+          this.setState({totalEgresos: arrayEgresos.reduce((a, b) => a + b, 0), egresos })
         });
       })
       .catch(err => {
@@ -249,6 +256,28 @@ class Stats extends Component{
           });
       });
 
+    // PARADAS
+    const paradas = []
+    let parad = db.collection('parada').where('año', '==', this.state.yearSelected).where("mes", "==", this.state.monthSelected).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          paradas.push(doc.data());
+          this.setState({allStops: paradas});
+
+          // let counts = arrayI.reduce((prev, curr) => {
+          //       let count = prev.get(curr.mes) || 0;
+          //       prev.set(curr.mes, curr.importe + count);
+          //       return prev;
+          //     }, new Map());
+
+          //     // then, map your counts object back to an array
+          //     let reducedObjArr = [...counts].map(([key, value]) => {
+          //       return {key, value}
+          //     })
+          //     this.setState({ingresosbyMonth: reducedObjArr});
+        });
+      })
+
   }
 
   adeudos(){
@@ -270,7 +299,7 @@ class Stats extends Component{
 
   render(){
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
-    console.log(this.state.monthSelected);
+    console.log(this.state.clientesGanados, this.state.clientesPerdidos);
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;
@@ -281,23 +310,36 @@ class Stats extends Component{
     const monthStrings = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     const years = [2019, 2020];
 
-    const options = [
-        { value: "Culiacan", label: "Culiacan" },
-        { value: "Mochis", label: "Mochis" },
-        { value: "Queretaro", label: "Queretaro" }
-    ];
-
     const columns = [
         { dataIndex: 'clientesGanados', title: "Clientes Ganados" },
-        { dataIndex: 'clientesPerdidos', title: 'Clientes Perdidos' },
-        { dataIndex: 'pedidosWeb', title: 'Pedidos web' },
     ];
 
-    const data = [
-            { id: 1, clientesGanados: 'Sushi Factory', clientesPerdidos: 'Oxxo la lomita', pedidosWeb: 5},
-            { id: 2, clientesGanados: "Lomita x"},
-            { id: 3, clientesGanados: 'Quisco'}
-    ]
+    const columnsPerdidos = [
+        { dataIndex: 'clientesPerdidos', title: "Clientes Perdidos" },
+    ];
+
+    const data = this.state.clientesGanados.map((x, index) => {
+        return { id: index, clientesGanados: x.cliente}
+    });
+    const dataPerdidos = this.state.clientesPerdidos.map((x, index) => {
+        return { id: index, clientesPerdidos: x.cliente}
+    });
+
+
+    const ingr = [{id: 1, cliente: "BONATTI", importe: 2500}, {id: 2, cliente: "OXXO", importe: 1200}, {id: 3, cliente: "BONATTI", importe: 800}, {id: 4, cliente: "ALDANA", importe: 700}];
+
+    const egre = [{id: 1, cliente: "BONATTI", importe: 2500}, {id: 2, cliente: "OXXO", importe: 1200}, {id: 3, cliente: "BONATTI", importe: 800}, {id: 4, cliente: "ALDANA", importe: 700}];
+
+    const bonattiIngresos = ingr.filter(x => x.cliente == "BONATTI").map(x => x.importe).reduce((a, b) => a + b, 0);
+    const oxxoIngresos = ingr.filter(x => x.cliente == "OXXO").map(x => x.importe).reduce((a, b) => a + b, 0);
+    const otrosIngresos = ingr.filter(x => x.cliente != "BONATTI" && x.cliente!= "OXXO").map(x => x.importe).reduce((a, b) => a + b, 0);
+
+
+    const bonattiEgresos = egre.filter(x => x.cliente == "BONATTI").length * 120;
+    const oxxoEgresos = egre.filter(x => x.cliente == "OXXO").length * 120;
+    const otrosEgresos = egre.filter(x => x.cliente != "BONATTI" && x.cliente!= "OXXO").length * 120;
+
+    console.log(bonattiEgresos, oxxoEgresos, otrosEgresos);
 
     const columnRecolección = [
         { dataIndex: 'cliente', title: "Clientes" },
@@ -362,20 +404,28 @@ class Stats extends Component{
               })}
           </select>
 
-          <button className="primary" onClick= {this.filterData.bind(this)}>Filtrar data</button>
+          <button className="primary" onClick= {this.getData.bind(this)}>Filtrar data</button>
         </div>
 
         <p className = "title" id = "stats">Estadisticas mensuales</p>
 
         <div className ="card ">
-          <Table
-            headerClassName ="table-header"
-            hoverable
-            sortable
-            rowKey={record => record.id}
-            columns={columns}
-            data={data}
-          />
+            <Table
+              headerClassName ="table-header"
+              hoverable
+              sortable
+              rowKey={record => record.id}
+              columns={columns}
+              data={data}
+            />
+            <Table
+              headerClassName ="table-header"
+              hoverable
+              sortable
+              rowKey={record => record.id}
+              columns={columnsPerdidos}
+              data={dataPerdidos}
+            />
         </div>
 
         <div className ="card">
@@ -471,7 +521,7 @@ class Stats extends Component{
 
 
         <div className ="card ">
-          <StackedChart oxxo = {this.state.grupoOxxo} bonatti = {this.state.grupoBonnati} mochis = {this.state.grupoMochis} gastosOxxo = {this.state.gastosOxxo} gastosBonatti= {this.state.gastosBonatti} gastosTiendas = {this.state.gastosTiendas} totalTiendas = {this.state.totalTiendas}/>
+          <StackedChart oxxo = {oxxoIngresos} bonatti = {bonattiIngresos} otros = {otrosIngresos} gastosOxxo = {oxxoEgresos} gastosBonatti= {bonattiEgresos} gastosOtros = {otrosEgresos}/>
         </div>
 
 

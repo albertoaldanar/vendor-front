@@ -14,7 +14,7 @@ class StackedChart extends Component{
   render(){
 
 
-  const {oxxo, bonatti, mochis, gastosBonatti, gastosOxxo, gastosTiendas, totalTiendas} = this.props;
+  const {oxxo, bonatti, otros, gastosBonatti, gastosOxxo, gastosTiendas, totalTiendas, gastosOtros} = this.props;
 
  	const options = {
        scales: {
@@ -37,7 +37,7 @@ class StackedChart extends Component{
 
 	      	{
 		        label: 'Gastos',
-		          data :[gastosBonatti * 120, gastosOxxo * 120, gastosTiendas * 120],
+		          data :[gastosBonatti, gastosOxxo, gastosOtros ],
 		          backgroundColor: [
 		                    "rgba(255,0,0,0.6)",
                         "rgba(255,0,0,0.6)",
@@ -47,7 +47,7 @@ class StackedChart extends Component{
 	        },
 		    {
 		          label: 'Utilidades',
-		          data:  [bonatti, oxxo, totalTiendas ],
+		          data:  [bonatti, oxxo, otros ],
 		          backgroundColor: [
 		                "rgba(0,153,204,0.6)",
                     "rgba(0,153,204,0.6)",
