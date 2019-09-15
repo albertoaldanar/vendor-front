@@ -26,6 +26,7 @@ class Stats extends Component{
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
         totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true, 
+        monthSelected: null, yearSelected: null;
     }
 
     if(!firebase.apps.length){
@@ -335,7 +336,7 @@ class Stats extends Component{
         <div>
       
         <div>
-          <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
+          <select id="movies" className="select" onChange={mes => this.setState({monthSelected: mes})}>
               <option>
                 Mes actual
               </option>
