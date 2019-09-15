@@ -148,5 +148,11 @@
   .border-line{
     border: solid gray 1px;
   }
+
+  .primary{
+    background-color: black;
+    color:white;
+    border-radius: 5px;
+  }
 }
 

@@ -17,6 +17,8 @@ import '@trendmicro/react-table/dist/react-table.css';
 import '@trendmicro/react-paginations/dist/react-paginations.css';
 import * as firebase from 'firebase';
 import ClipLoader from 'react-spinners/ClipLoader';
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import Button from 'react-bootstrap/Button';
 
 class Stats extends Component{
 
@@ -26,7 +28,7 @@ class Stats extends Component{
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
         totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true, 
-        monthSelected: null, yearSelected: null;
+        monthSelected: 1, yearSelected: new Date().getFullYear(),
     }
 
     if(!firebase.apps.length){
@@ -46,24 +48,26 @@ class Stats extends Component{
   }
 
   componentWillMount(){
-
-    setTimeout(() => {this.setState({loading: false})}, 7500)
-
     return this.getData()
   }
 
-  fetchData(){
-    console.log("changed");
+  filterData(){
+    this.setState({loading: true});
+    return this.getData();
+  }
+
+  dataMonth(event){
+    this.setState({monthSelected: event.target.value});
+  }
+
+  dataYear(event){
+    this.setState({yearSelected: event.target.value});
   }
 
   getData(){
-    const db = firebase.firestore()
+    setTimeout(() => {this.setState({loading: false})}, 7500);
 
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = 1
-
-    var year = new Date().getFullYear();
+    const db = firebase.firestore();
     // Clientes ganados y perdidos
 
     // let ingRef = db.collection('clientesGanados').where('año', '==', year).where("mes", "==", mm).get()
@@ -82,7 +86,7 @@ class Stats extends Component{
 
     //Total ingrso por mes
     const arrayI = []
-    let ingRef = db.collection('Ingresos').where('año', '==', year).orderBy("mes").get()
+    let ingRef = db.collection('Ingresos').where('año', '==', this.state.yearSelected).orderBy("mes").get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           arrayI.push(doc.data());
@@ -104,7 +108,7 @@ class Stats extends Component{
     this.setState({ingresos: arrayI});
 
     const arrayE = []
-    let egreRef = db.collection('egreso').where('año', '==', year).orderBy("mes").get()
+    let egreRef = db.collection('egreso').where('año', '==', this.state.yearSelected).orderBy("mes").get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           arrayE.push(doc.data());
@@ -125,10 +129,9 @@ class Stats extends Component{
       })
 
 
-
     //TOTAL INGRESO
     const arrayIngresos = []
-    let ingresosRef = db.collection('Ingresos').where('mes', '==', mm).where('año', '==', year).get()
+    let ingresosRef = db.collection('Ingresos').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           console.log(doc.id, '=>', doc.data());
@@ -144,7 +147,7 @@ class Stats extends Component{
 
     //TOTAL EGRESO
     const arrayEgresos = []
-    let egresosRef = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).get()
+    let egresosRef = db.collection('egreso').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           console.log(doc.id, '=>', doc.data());
@@ -159,7 +162,7 @@ class Stats extends Component{
 
       // Ingreso por recolección
       const porRe = []
-      let porRecoleccion = db.collection('Ingresos').where('mes', '==', mm).where('año', '==', year).get()
+      let porRecoleccion = db.collection('Ingresos').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            porRe.push(doc.data());
@@ -182,7 +185,7 @@ class Stats extends Component{
 
       //EGRESO QRO
       const egQro = []
-      let egresosQro = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "QUERETARO").get()
+      let egresosQro = db.collection('egreso').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).where("lugar", "==", "QUERETARO").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egQro.push(doc.data());
@@ -203,7 +206,7 @@ class Stats extends Component{
       })
       // EGRESOS MOCHIS
       const egMochis = [];
-      let egresosMochis = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "MOCHIS").get()
+      let egresosMochis = db.collection('egreso').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).where("lugar", "==", "MOCHIS").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egMochis.push(doc.data());
@@ -227,7 +230,7 @@ class Stats extends Component{
 
       //EGRESOS CULIACAN
       const egCuliacan = [];
-      let egresosCuliacan = db.collection('egreso').where('mes', '==', mm).where('año', '==', year).where("lugar", "==", "CULIACAN").get()
+      let egresosCuliacan = db.collection('egreso').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).where("lugar", "==", "CULIACAN").get()
        .then(snapshot => {
         snapshot.forEach(doc => {
            egCuliacan.push(doc.data());
@@ -267,7 +270,7 @@ class Stats extends Component{
 
   render(){
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
-    console.log(this.state.ingresos);
+    console.log(this.state.monthSelected);
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;
@@ -275,7 +278,7 @@ class Stats extends Component{
     const puntoEquilibrio = (totalIngresos / 30) / totalEgresos || 0;
 
     const months = [ {mes: "Enero", key: 1}, {mes: "Febrero", key: 2}, {mes: "Marzo", key: 3}, {mes: "Abril", key: 4}, {mes: "Mayo", key: 5}, {mes: "Junio", key: 6}, {mes: "Julio", key: 7}, {mes: "Agosto", key: 8}, {mes: "Septiembre", key: 9}, {mes: "Octubre", key: 10}, {mes: "Noviembre", key: 11}, {mes: "Diciembre", key: 12}];
-
+    const monthStrings = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     const years = [2019, 2020];
 
     const options = [
@@ -336,10 +339,8 @@ class Stats extends Component{
         <div>
       
         <div>
-          <select id="movies" className="select" onChange={mes => this.setState({monthSelected: mes})}>
-              <option>
-                Mes actual
-              </option>
+          <select id="months" className="select" onChange={this.dataMonth.bind(this)}>
+            value={monthStrings[this.state.monthSelected]}
               {months.map((item, index) => {
                 return (
                   <option key={item.key} value={item.key}>
@@ -350,10 +351,8 @@ class Stats extends Component{
           </select>
 
 
-          <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
-              <option>
-                Año actual
-              </option>
+          <select id="years" className="select" onChange={this.dataYear.bind(this)}>
+            value={this.state.yearSelected}
               {years.map((item, index) => {
                 return (
                   <option key={index} value={item}>
@@ -362,6 +361,8 @@ class Stats extends Component{
                 );
               })}
           </select>
+
+          <button className="primary" onClick= {this.filterData.bind(this)}>Filtrar data</button>
         </div>
 
         <p className = "title" id = "stats">Estadisticas mensuales</p>
