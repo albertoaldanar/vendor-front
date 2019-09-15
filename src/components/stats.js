@@ -336,8 +336,8 @@ class Stats extends Component{
       
         <div>
           <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
-              <option defaultValue="" disabled>
-                Selecciona mes (por default el mes actual).
+              <option>
+                Mes actual
               </option>
               {months.map((item, index) => {
                 return (
@@ -350,8 +350,8 @@ class Stats extends Component{
 
 
           <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
-              <option defaultValue="" disabled>
-                Selecciona año (por default el año actual).
+              <option>
+                Año actual
               </option>
               {years.map((item, index) => {
                 return (
