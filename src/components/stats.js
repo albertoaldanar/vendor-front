@@ -264,17 +264,17 @@ class Stats extends Component{
           paradas.push(doc.data());
           this.setState({allStops: paradas});
 
-          // let counts = arrayI.reduce((prev, curr) => {
-          //       let count = prev.get(curr.mes) || 0;
-          //       prev.set(curr.mes, curr.importe + count);
-          //       return prev;
-          //     }, new Map());
+          let counts = paradas.reduce((prev, curr) => {
+                let count = prev.get(curr.mes) || 0;
+                prev.set(curr.mes, curr.importe + count);
+                return prev;
+              }, new Map());
 
-          //     // then, map your counts object back to an array
-          //     let reducedObjArr = [...counts].map(([key, value]) => {
-          //       return {key, value}
-          //     })
-          //     this.setState({ingresosbyMonth: reducedObjArr});
+              // then, map your counts object back to an array
+              let reducedObjArr = [...counts].map(([key, value]) => {
+                return {key, value}
+              })
+              this.setState({ingresosbyMonth: reducedObjArr});
         });
       })
 
@@ -299,7 +299,8 @@ class Stats extends Component{
 
   render(){
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
-    console.log(this.state.clientesGanados, this.state.clientesPerdidos);
+    console.log(this.state.allStops);
+
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;
@@ -325,7 +326,6 @@ class Stats extends Component{
         return { id: index, clientesPerdidos: x.cliente}
     });
 
-
     const ingr = [{id: 1, cliente: "BONATTI", importe: 2500}, {id: 2, cliente: "OXXO", importe: 1200}, {id: 3, cliente: "BONATTI", importe: 800}, {id: 4, cliente: "ALDANA", importe: 700}];
 
     const egre = [{id: 1, cliente: "BONATTI", importe: 2500}, {id: 2, cliente: "OXXO", importe: 1200}, {id: 3, cliente: "BONATTI", importe: 800}, {id: 4, cliente: "ALDANA", importe: 700}];
@@ -347,21 +347,19 @@ class Stats extends Component{
     ];
 
     const dataRecolección = this.state.stopsByClient.map((x, index) => {
-        return {id: index + 1  , cliente: x.client, diasRecolección: x.client__count}
+        return {id: index + 1, cliente: x.client, diasRecolección: x.client__count}
     })
 
     const columnIndicadores = [
         { dataIndex: 'indicadores', title: "Indicadores" },
-        { dataIndex: 'number', title: '#' },
+        { dataIndex: 'number', title: '#' }
     ];
     
     const dataIndicadores = [
-            { id: 1, indicadores: 'Incidentes', number: incidentes},
-            { id: 2, indicadores: 'Recolecciones totales', number: totalRec},
-            { id: 3, indicadores: "Recolecciones fallidas", number: totalRecFail},
-            { id: 4, indicadores: 'Descargas', number: descargas},
-            { id: 5, indicadores: 'Recorrido mensual', number: "6597 KM"}
-
+            { id: 1, indicadores: 'Incidentes', number: 10 },
+            { id: 2, indicadores: 'Recolecciones totales', number: this.state.allStops.length },
+            { id: 3, indicadores: "Recolecciones fallidas", number: this.state.allStops.filter(x => x.fallida == true).length },
+            { id: 4, indicadores: 'Descargas', number: this.state.allStops.filter(x => x.cliente == "BASURA").length },
     ];
 
     return(
@@ -391,7 +389,6 @@ class Stats extends Component{
                 );
               })}
           </select>
-
 
           <select id="years" className="select" onChange={this.dataYear.bind(this)}>
             value={this.state.yearSelected}
@@ -531,7 +528,6 @@ class Stats extends Component{
                 <ChartPositions payByClient = {this.state.byGroup}/>
               </div>
         </div>
-
 
        <p className = "title" id= "bus">Recolección del mes</p>
   
