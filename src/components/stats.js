@@ -108,8 +108,6 @@ class Stats extends Component{
         });
       })
 
-    
-
     const arrayE = []
     let egreRef = db.collection('egreso').where('año', '==', this.state.yearSelected).orderBy("mes").get()
       .then(snapshot => {
@@ -257,16 +255,16 @@ class Stats extends Component{
       });
 
     // PARADAS
-    const paradas = []
+    const par = []
     let parad = db.collection('parada').where('año', '==', this.state.yearSelected).where("mes", "==", this.state.monthSelected).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          paradas.push(doc.data());
-          this.setState({allStops: paradas});
+          par.push(doc.data());
+          this.setState({allStops: par});
 
-          let counts = paradas.reduce((prev, curr) => {
+          let counts = par.reduce((prev, curr) => {
                 let count = prev.get(curr.mes) || 0;
-                prev.set(curr.mes, curr.importe + count);
+                prev.set(curr.mes, curr.length);
                 return prev;
               }, new Map());
 
@@ -274,7 +272,7 @@ class Stats extends Component{
               let reducedObjArr = [...counts].map(([key, value]) => {
                 return {key, value}
               })
-              this.setState({ingresosbyMonth: reducedObjArr});
+              this.setState({paradasCount: reducedObjArr});
         });
       })
 
@@ -298,8 +296,8 @@ class Stats extends Component{
   }
 
   render(){
-    const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos} = this.state;
-    console.log(this.state.allStops);
+    const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos, ingresos, allStops} = this.state;
+    console.log(this.state.paradasCount);
 
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
@@ -326,18 +324,17 @@ class Stats extends Component{
         return { id: index, clientesPerdidos: x.cliente}
     });
 
-    const ingr = [{id: 1, cliente: "BONATTI", importe: 2500}, {id: 2, cliente: "OXXO", importe: 1200}, {id: 3, cliente: "BONATTI", importe: 800}, {id: 4, cliente: "ALDANA", importe: 700}];
+    const calendarStops = allStops.filter(x=> x.client == "BASURA" || x.client == "DESCARGA" || x.client == "GASOLINA");
+    console.log(calendarStops);
 
-    const egre = [{id: 1, cliente: "BONATTI", importe: 2500}, {id: 2, cliente: "OXXO", importe: 1200}, {id: 3, cliente: "BONATTI", importe: 800}, {id: 4, cliente: "ALDANA", importe: 700}];
-
-    const bonattiIngresos = ingr.filter(x => x.cliente == "BONATTI").map(x => x.importe).reduce((a, b) => a + b, 0);
-    const oxxoIngresos = ingr.filter(x => x.cliente == "OXXO").map(x => x.importe).reduce((a, b) => a + b, 0);
-    const otrosIngresos = ingr.filter(x => x.cliente != "BONATTI" && x.cliente!= "OXXO").map(x => x.importe).reduce((a, b) => a + b, 0);
+    const bonattiIngresos = ingresos.filter(x => x.cliente == "BONATTI").map(x => x.importe).reduce((a, b) => a + b, 0);
+    const oxxoIngresos = ingresos.filter(x => x.cliente == "OXXO").map(x => x.importe).reduce((a, b) => a + b, 0);
+    const otrosIngresos = ingresos.filter(x => x.cliente != "BONATTI" && x.cliente!= "OXXO").map(x => x.importe).reduce((a, b) => a + b, 0);
 
 
-    const bonattiEgresos = egre.filter(x => x.cliente == "BONATTI").length * 120;
-    const oxxoEgresos = egre.filter(x => x.cliente == "OXXO").length * 120;
-    const otrosEgresos = egre.filter(x => x.cliente != "BONATTI" && x.cliente!= "OXXO").length * 120;
+    const bonattiEgresos = allStops.filter(x => x.client == "BONATTI").length * 120;
+    const oxxoEgresos = allStops.filter(x => x.client == "OXXO").length * 120;
+    const otrosEgresos = allStops.filter(x => x.client != "BONATTI" && x.cliente!= "OXXO" && x.cliente!= "BASURA" && x.cliente!= "GASOLINA").length * 120;
 
     console.log(bonattiEgresos, oxxoEgresos, otrosEgresos);
 
@@ -359,7 +356,7 @@ class Stats extends Component{
             { id: 1, indicadores: 'Incidentes', number: 10 },
             { id: 2, indicadores: 'Recolecciones totales', number: this.state.allStops.length },
             { id: 3, indicadores: "Recolecciones fallidas", number: this.state.allStops.filter(x => x.fallida == true).length },
-            { id: 4, indicadores: 'Descargas', number: this.state.allStops.filter(x => x.cliente == "BASURA").length },
+            { id: 4, indicadores: 'Descargas', number: this.state.allStops.filter(x => x.client == "BASURA").length },
     ];
 
     return(
@@ -554,7 +551,7 @@ class Stats extends Component{
         </div>
 
         <div className = "card">
-          <Calendar/>
+          <Calendar stops = {calendarStops}/>
         </div>
       </div>
       }

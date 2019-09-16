@@ -23,12 +23,24 @@ const myEventsList = [
 
 class Calendar extends Component{
 
+
   constructor(props){
     super(props);
     this.state = {myEventsList: []}
   }
 
   render(){
+    console.log(this.props.stops)
+
+    const events = this.props.stops.map(x=> {
+      return {
+        title: x.client, 
+        startDate: x.arrived_at, 
+        endDate: x.arrived_at, 
+        allDay: false
+      }
+    })
+
     return(
       <div id = "mycalendar" className ="calendar-container">
         <BigCalendar
@@ -36,14 +48,16 @@ class Calendar extends Component{
           eventPropGetter={
             (event, start, end, isSelected) => {
               let newStyle = {
-                backgroundColor: "red",
+                backgroundColor: "blue",
                 color: 'white',
                 borderRadius: "0px",
                 border: "none"
               };
 
-                if (event.desc == "Descarga"){
-                  newStyle.backgroundColor = "blue"
+                if (event.client == "DESCARGA"){
+                  newStyle.backgroundColor = "green"
+                } else if(event.client == "FALLA"){
+                  newStyle.backgroundColor = "red"
                 }
               return {
                 className: "",
@@ -52,7 +66,7 @@ class Calendar extends Component{
             }
           }
 
-          events={myEventsList}
+          events={events}
           startAccessor='startDate'
           endAccessor='endDate'
           selectable = 'ignoreEvents'
