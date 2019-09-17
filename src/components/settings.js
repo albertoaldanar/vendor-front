@@ -248,22 +248,6 @@ class Settings extends Component{
           null
         }
 
-        <div className ="card">
-            <h2>Best movies of the year</h2>
-            <label htmlFor="movies">Select Year</label>
-            <select id="movies" className="select" onChange={this.fetchData.bind(this)}>
-              <option defaultValue="" disabled>
-                Select your option
-              </option>
-              {this.state.ingresosThisMonth.map((item, index) => {
-                return (
-                  <option key={index} value={item.cliente}>
-                    {item.cliente}
-                  </option>
-                );
-              })}
-            </select>
-        </div>
       </div>
     );
   }
