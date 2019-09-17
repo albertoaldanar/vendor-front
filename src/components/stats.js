@@ -28,7 +28,7 @@ class Stats extends Component{
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
         totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true, 
-        monthSelected: 2, yearSelected: new Date().getFullYear(), clientesGanados: null, clientesPerdidos: null, egresos: [], allStops: [], paradasCount: []
+        monthSelected: 1, yearSelected: new Date().getFullYear(), clientesGanados: null, clientesPerdidos: null, egresos: [], allStops: [], paradasCount: []
     }
 
     if(!firebase.apps.length){
