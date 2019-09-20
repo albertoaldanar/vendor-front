@@ -57,7 +57,8 @@ class Login extends Component{
 		} else {
 			this.setState({errorMessage: "Información incompleta", password: "", username: ""})
 		}
-	
+		
+		return this.props.reload
 	}
 
 	render(){
