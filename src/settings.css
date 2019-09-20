@@ -57,3 +57,9 @@
 .select{
   margin-right: 20px;
 }
+
+.login{
+  margin-top: 20px;
+  align-self: center;
+  justify-content: center;
+}

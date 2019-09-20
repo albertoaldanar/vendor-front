@@ -37,7 +37,7 @@ class Calendar extends Component{
         title: x.client, 
         startDate: x.arrived_at, 
         endDate: x.arrived_at, 
-        allDay: false
+        allDay: true
       }
     })
 
@@ -54,7 +54,7 @@ class Calendar extends Component{
                 border: "none"
               };
 
-                if (event.client == "DESCARGA"){
+                if (event.client == "BASURA"){
                   newStyle.backgroundColor = "green"
                 } else if(event.client == "FALLA"){
                   newStyle.backgroundColor = "red"
