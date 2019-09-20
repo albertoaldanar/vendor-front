@@ -13,6 +13,7 @@ import Team from "./components/team";
 import Settings from "./components/settings";
 import CardView from "./components/reusable/cardView";
 import Login from "./login";
+import Header from "./components/reusable/header";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import './App.css';
 import "./team.css";
@@ -43,7 +44,10 @@ class App extends Component {
       }
   }
 
-
+  logout(){
+    localStorage.removeItem('login');
+     window.location.reload(false);
+  }
 
 
   reloadComponent(){
@@ -95,6 +99,12 @@ class App extends Component {
       <Router>
           { login =="SI" ? 
             <div>
+              <div className ="header">
+                <p className ="bussines-name">Serecsin SA de CV</p>
+                <button onClick={this.logout.bind(this)}>
+                  Logout
+                </button>
+              </div>
               <Home/>
               <p>Hello</p>
               <CardView>

@@ -15,19 +15,10 @@ class Home extends Component{
     this.state = {isAdmin: true}
   }
 
-  defineUserType(){
-    if(this.state.isAdmin){
-      return <AdminSideBar/>
-    } else {
-      return <VendorSideBar/>
-    }
-  }
-
   render(){
     return(
       <div>
-        <Header/>
-        {this.defineUserType()}
+        <AdminSideBar/>
       </div>
     );
   }
