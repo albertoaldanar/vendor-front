@@ -24,42 +24,7 @@ class Login extends Component{
    		}
 	}
 
-	handleUsername(event) {
-   		 this.setState({username: event.target.value});
-  	}
 
-
- 	handlePassword(event) {
-   		 this.setState({password: event.target.value});
-  	}
-
-	login(){
-	  	const {username, password} = this.state;
-	    const dbUser = firebase.firestore().collection('user');
-
-		if(username && password){
-
-			    dbUser.where('username', '==', username).where("password", "==", password).get()
-			      .then(snapshot => {
-			        snapshot.forEach(doc => {
-			        	console.log(doc.data());
-
-			        	if(doc.data().username){
-						  	localStorage.setItem("login", "SI")
-
-			        	} else {
-			        		this.setState({errorMessage: "Usuario o contraseña incorrectos", username: "", password: ""})
-			        	}
-			        });
-	      		  })
-
-			// return this.sendToHome();
-		} else {
-			this.setState({errorMessage: "Información incompleta", password: "", username: ""})
-		}
-		
-		return this.props.reload
-	}
 
 	render(){
 		console.log(this.state.username);

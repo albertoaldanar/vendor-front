@@ -109,22 +109,28 @@ class App extends Component {
               </CardView>
             </div> : 
 
-              <div className = "login">
-                <form>
-                  <label>
-                    Usuario:
-                    <input type="text" name="username" value = {this.state.username} onChange = {this.handleUsername.bind(this)}/>
-                  </label>
+              <div>
 
-                  <label>
-                    Contraseña:
-                    <input type="password" name="password" value = {this.state.password} onChange = {this.handlePassword.bind(this)}/>
-                  </label>
-                </form>
+                  <p className ="logoleft">Serecsin SA de CV</p>
+                  <div className = "login">
+                    <form>
+                      <div className ="field">
+                        <label>
+                          Usuario:
+                          <input type="text" name="username" value = {this.state.username} onChange = {this.handleUsername.bind(this)}/>
+                        </label>
+                      </div>
 
-                <button onClick = {this.login.bind(this)}>Login</button>
-          
-                <p>{this.state.errorMessage}</p>
+                      <label>
+                        Contraseña:
+                        <input type="password" name="password" value = {this.state.password} onChange = {this.handlePassword.bind(this)}/>
+                      </label>
+                    </form>
+
+                    <button onClick = {this.login.bind(this)}>Login</button>
+              
+                    <p className = "errorMessage">{this.state.errorMessage}</p>
+                  </div>
               </div>
 
           }

@@ -59,7 +59,21 @@
 }
 
 .login{
-  margin-top: 20px;
+  margin-top: 50px;
   align-self: center;
-  justify-content: center;
+  text-align: center;
+
+}
+
+.errorMessage{
+  margin-top: 30px;
+  align-self: center;
+  color:red;
+}
+
+
+.logoleft{
+  margin-left: 15px;
+  margin-top: 15px;
+  padding-top: 15px;
 }
