@@ -297,11 +297,10 @@ class Stats extends Component{
     })
   }
 
-  onChange(item){
-    this.setState({userSelected: item})
-  }
 
-  render(){
+  statsBlock(){
+    var access = localStorage.getItem('access');
+
     const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos, ingresos, allStops, paradasCount} = this.state;
     console.log(this.state.totalIngresos, this.state.totalEgresos);
 
@@ -371,206 +370,230 @@ class Stats extends Component{
             { id: 3, indicadores: "Recolecciones fallidas", number: this.state.allStops.filter(x => x.fallida == true).length },
             { id: 4, indicadores: 'Descargas', number: this.state.allStops.filter(x => x.client == "BASURA").length },
     ];
+    
+
+    if(access == "conductor" || access == "soloArchivo"){
+      return(
+        <div>
+                <img  width ="70" height = "70" src ="https://image.flaticon.com/icons/svg/395/395848.svg"/>
+                <p className ="blocked">Esta función es solo para Administradores con total acceso !</p>
+              </div>
+            );
+          } else {
+              return(
+                <div className ="page-box">
+
+            { this.state.loading ? 
+              <div className = "spinner">
+                <ClipLoader
+                  sizeUnit={"px"}
+                  size={250}
+                  color={'black'}
+                  loading={this.state.loading}
+                /> 
+                <p>Generando reportes</p>
+              </div>
+              :    
+              <div>
+            
+              <div>
+                <select id="months" className="select" onChange={this.dataMonth.bind(this)}>
+                  value={this.state.monthSelected}
+                    {months.map((item, index) => {
+                      return (
+                        <option key={item.key} value={item.key}>
+                          {item.mes}
+                        </option>
+                      );
+                    })}
+                </select>
+
+                <select id="years" className="select" onChange={this.dataYear.bind(this)}>
+                  value={this.state.yearSelected}
+                    {years.map((item, index) => {
+                      return (
+                        <option key={index} value={item}>
+                          {item}
+                        </option>
+                      );
+                    })}
+                </select>
+
+                <button className="primary" onClick= {this.filterData.bind(this)}>Filtrar data</button>
+              </div>
+
+              <p className = "title" id = "stats">Estadisticas mensuales</p>
+
+              <div className ="card ">
+                  <Table
+                    headerClassName ="table-header"
+                    hoverable
+                    sortable
+                    rowKey={record => record.id}
+                    columns={columns}
+                    data={data}
+                  />
+                  <Table
+                    headerClassName ="table-header"
+                    hoverable
+                    sortable
+                    rowKey={record => record.id}
+                    columns={columnsPerdidos}
+                    data={dataPerdidos}
+                  />
+              </div>
+
+              <div className ="card">
+                <div className ="center">
+                  <ChartPrediction dataIngresos = {this.state.ingresosbyMonth} dataEgresos = {this.state.egresosByMonth}/>
+                </div>
+              </div>
+
+              <p> Ventas netas </p>
+
+              <div className ="card">
+                <ChartTotals totalEgresos = {this.state.totalEgresos} totalIngresos = {this.state.totalIngresos} month = {this.state.monthSelected}/>
+              </div>
+
+              <p className = "title" id = "kpis">Kpi´s Financieros</p>
+
+              <div className ="card">
+                <p className ="cardTitle">Utilidad neta</p>
+                <CountUp className ="number"
+                  decimals = {2}
+                  prefix = "$ "
+                  separator=","
+                  end={utilidadNeta}
+                />
+              </div>
+
+              <div className ="card">
+                <p className ="cardTitle">Retorno de inversión</p>
+                <CountUp className ="number"
+                  decimals = {2}
+                  prefix = "% "
+                  separator=","
+                  end={roi}
+                />
+              </div>
+
+
+              <div className ="card">
+                <p className ="cardTitle">Tasa de crecimiento</p>
+                <CountUp className ="number"
+                  decimals = {2}
+                  prefix = "% "
+                  separator=","
+                  end={22.5}
+                />
+              </div>
+
+
+              <div className ="card">
+                <p className ="cardTitle">Punto equilibrio (dias)</p>
+                <CountUp className ="number"
+                  decimals = {2}
+                  prefix = "# "
+                  separator=","
+                  end={puntoEquilibrio}
+                />
+              </div>
+
+              <div className ="card">
+                <p className ="cardTitle">Costo de financiación</p>
+                <CountUp className ="number"
+                  decimals = {2}
+                  prefix = "$ "
+                  separator=","
+                  end={84560.51}
+                />
+              </div>
+
+              <p className = "title" id= "clients">Clientes</p>
+
+
+                  <div className ="card">
+                     <div className = "user-info border-line">
+                        <p className = "one"> CLIENTES</p>
+                        <p className = "two"> INGRESO</p>
+                        <p className = "three">ADEUDO MES</p>
+                        <p className = "four">ADEUDO ANTERIOR</p>
+                     </div>
+                    {this.adeudos()}
+                  </div>
+
+                  <div className ="card">
+                      <div className ="center">
+                        <ChartProduct title = "Desgloce Culiacan" egreso = {this.state.egresoCLN }/>
+                      </div>
+                      <div className ="center">
+                        <ChartProduct title = "Desgloce Mochis" egreso = {this.state.egresoMochis }/>
+                      </div>
+                      <div className ="center">
+                        <ChartProduct title = "Desgloce Queretaro" egreso = { this.state.egresoQro }/>
+                      </div>
+                  </div>
+
+
+              <div className ="card ">
+                <StackedChart oxxo = {oxxoIngresos} bonatti = {bonattiIngresos} otros = {otrosIngresos} gastosOxxo = {oxxoEgresos} gastosBonatti= {bonattiEgresos} gastosOtros = {otrosEgresos}/>
+              </div>
+
+
+              <p>Utilidad y perdida por recolección</p>
+              <div className ="card ">
+                    <div className ="center">
+                      <ChartPositions payByClient = {this.state.byGroup}/>
+                    </div>
+              </div>
+
+             <p className = "title" id= "bus">Recolección del mes</p>
+        
+              <div className ="card ">
+                <div className ="flex-r">
+                  <Table
+                    headerClassName ="table-header"
+                    hoverable
+                    sortable
+                    rowKey={record => record.id}
+                    columns={columnRecolección}
+                    data={dataRecolección}
+                  />
+
+                  <Table
+                    headerClassName ="table-header"
+                    hoverable
+                    sortable
+                    rowKey={record => record.id}
+                    columns={columnIndicadores}
+                    data={dataIndicadores}
+                  />
+                </div>
+              </div>
+
+              <div className = "card">
+                <Calendar stops = {calendarStops}/>
+              </div>
+            </div>
+            }
+
+          </div>
+
+        );
+    }
+  }
+
+  onChange(item){
+    this.setState({userSelected: item})
+  }
+
+  render(){
+
 
     return(
-      <div className ="page-box">
-
-      { this.state.loading ? 
-        <div className = "spinner">
-          <ClipLoader
-            sizeUnit={"px"}
-            size={250}
-            color={'black'}
-            loading={this.state.loading}
-          /> 
-          <p>Generando reportes</p>
-        </div>
-        :    
-        <div>
-      
-        <div>
-          <select id="months" className="select" onChange={this.dataMonth.bind(this)}>
-            value={this.state.monthSelected}
-              {months.map((item, index) => {
-                return (
-                  <option key={item.key} value={item.key}>
-                    {item.mes}
-                  </option>
-                );
-              })}
-          </select>
-
-          <select id="years" className="select" onChange={this.dataYear.bind(this)}>
-            value={this.state.yearSelected}
-              {years.map((item, index) => {
-                return (
-                  <option key={index} value={item}>
-                    {item}
-                  </option>
-                );
-              })}
-          </select>
-
-          <button className="primary" onClick= {this.filterData.bind(this)}>Filtrar data</button>
-        </div>
-
-        <p className = "title" id = "stats">Estadisticas mensuales</p>
-
-        <div className ="card ">
-            <Table
-              headerClassName ="table-header"
-              hoverable
-              sortable
-              rowKey={record => record.id}
-              columns={columns}
-              data={data}
-            />
-            <Table
-              headerClassName ="table-header"
-              hoverable
-              sortable
-              rowKey={record => record.id}
-              columns={columnsPerdidos}
-              data={dataPerdidos}
-            />
-        </div>
-
-        <div className ="card">
-          <div className ="center">
-            <ChartPrediction dataIngresos = {this.state.ingresosbyMonth} dataEgresos = {this.state.egresosByMonth}/>
-          </div>
-        </div>
-
-        <p> Ventas netas </p>
-
-        <div className ="card">
-          <ChartTotals totalEgresos = {this.state.totalEgresos} totalIngresos = {this.state.totalIngresos} month = {this.state.monthSelected}/>
-        </div>
-
-        <p className = "title" id = "kpis">Kpi´s Financieros</p>
-
-        <div className ="card">
-          <p className ="cardTitle">Utilidad neta</p>
-          <CountUp className ="number"
-            decimals = {2}
-            prefix = "$ "
-            separator=","
-            end={utilidadNeta}
-          />
-        </div>
-
-        <div className ="card">
-          <p className ="cardTitle">Retorno de inversión</p>
-          <CountUp className ="number"
-            decimals = {2}
-            prefix = "% "
-            separator=","
-            end={roi}
-          />
-        </div>
-
-
-        <div className ="card">
-          <p className ="cardTitle">Tasa de crecimiento</p>
-          <CountUp className ="number"
-            decimals = {2}
-            prefix = "% "
-            separator=","
-            end={22.5}
-          />
-        </div>
-
-
-        <div className ="card">
-          <p className ="cardTitle">Punto equilibrio (dias)</p>
-          <CountUp className ="number"
-            decimals = {2}
-            prefix = "# "
-            separator=","
-            end={puntoEquilibrio}
-          />
-        </div>
-
-        <div className ="card">
-          <p className ="cardTitle">Costo de financiación</p>
-          <CountUp className ="number"
-            decimals = {2}
-            prefix = "$ "
-            separator=","
-            end={84560.51}
-          />
-        </div>
-
-        <p className = "title" id= "clients">Clientes</p>
-
-
-            <div className ="card">
-               <div className = "user-info border-line">
-                  <p className = "one"> CLIENTES</p>
-                  <p className = "two"> INGRESO</p>
-                  <p className = "three">ADEUDO MES</p>
-                  <p className = "four">ADEUDO ANTERIOR</p>
-               </div>
-              {this.adeudos()}
-            </div>
-
-            <div className ="card">
-                <div className ="center">
-                  <ChartProduct title = "Desgloce Culiacan" egreso = {this.state.egresoCLN }/>
-                </div>
-                <div className ="center">
-                  <ChartProduct title = "Desgloce Mochis" egreso = {this.state.egresoMochis }/>
-                </div>
-                <div className ="center">
-                  <ChartProduct title = "Desgloce Queretaro" egreso = { this.state.egresoQro }/>
-                </div>
-            </div>
-
-
-        <div className ="card ">
-          <StackedChart oxxo = {oxxoIngresos} bonatti = {bonattiIngresos} otros = {otrosIngresos} gastosOxxo = {oxxoEgresos} gastosBonatti= {bonattiEgresos} gastosOtros = {otrosEgresos}/>
-        </div>
-
-
-        <p>Utilidad y perdida por recolección</p>
-        <div className ="card ">
-              <div className ="center">
-                <ChartPositions payByClient = {this.state.byGroup}/>
-              </div>
-        </div>
-
-       <p className = "title" id= "bus">Recolección del mes</p>
-  
-        <div className ="card ">
-          <div className ="flex-r">
-            <Table
-              headerClassName ="table-header"
-              hoverable
-              sortable
-              rowKey={record => record.id}
-              columns={columnRecolección}
-              data={dataRecolección}
-            />
-
-            <Table
-              headerClassName ="table-header"
-              hoverable
-              sortable
-              rowKey={record => record.id}
-              columns={columnIndicadores}
-              data={dataIndicadores}
-            />
-          </div>
-        </div>
-
-        <div className = "card">
-          <Calendar stops = {calendarStops}/>
-        </div>
+      <div>
+        {this.statsBlock()}
       </div>
-      }
-
-    </div>
-
     );
   }
 }
