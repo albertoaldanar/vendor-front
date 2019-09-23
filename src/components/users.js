@@ -6,7 +6,7 @@ class Users extends Component{
 	constructor(props){
     	super(props);
 
-    	this.state = {allUsers: []}
+    	this.state = {allUsers: [], userSelected: {}, showEdit: false, password: "", username: "", access: "", name: ""}
 
 	    if(!firebase.apps.length){
 	        const firebaseConfig = {
@@ -27,6 +27,61 @@ class Users extends Component{
 		return this.getUsers();
 	}
 
+
+	handlePassword(event){
+		this.setState({ password: event.target.value });
+	}
+
+	handleUsername(event){
+		this.setState({ username: event.target.value });
+	}
+
+	seletUser(user){
+		this.setState({username: user.username, password: user.password, name: user.nombre, showEdit: true})
+	}
+
+
+	editUser(){
+		if(this.state.username){
+			return(
+				<div>
+					<div className = "users-num">	
+						<div>	
+							<p>NOMBRE:</p>
+							<form>
+		                      <div className ="field">
+		                        <input type="text" name="name" value = {this.state.name}/>
+		                      </div>
+	                    	</form>
+						</div>
+						<div>
+							<p>USUARIO:</p>
+							<form>
+		                      <div className ="field">
+		                        <input type="text" name="username" value = {this.state.username} onChange = {this.handleUsername.bind(this)}/>
+		                      </div>
+	                    	</form>
+						</div>
+
+						<div>
+							<p>CONTRASEÑA:</p>
+							<form>
+		                      <div className ="field">
+		                        <input type="text" name="contra" value = {this.state.password} onChange = {this.handlePassword.bind(this)}/>
+		                      </div>
+	                    	</form>
+						</div>
+					</div>
+
+					<button className="save-button"> Guardar cambios </button>
+					<button className="delete-button"> Eliminar cuenta </button>
+				</div>
+			);
+		} else {
+			return null;
+		}
+	}
+
 	getUsers(){
 		const db = firebase.firestore();
 
@@ -43,20 +98,30 @@ class Users extends Component{
 
 	renderUsers(){
 
-		return this.state.allUsers.map(x => {
+		var access= localStorage.getItem('access');
 
-		    return(
-		          <div className = "user-info">
-		          	<p className = "two-u"> {x.nombre} </p>
-		            <p className = "one-u"> {x.access} </p>
-		             
-		          </div>
-		      );
-		})
+		if(access == "Admin Total"){
+			return this.state.allUsers.map(x => {
+
+			    return(
+				          <div className = "user-info">
+				          	<p className = "two-u"> {x.nombre} </p>
+				            <p className = "one-u"> {x.access}  <button onClick = {this.seletUser.bind(this, x)}> Editar </button> </p>
+				          </div>
+			      );
+			})
+		} else {
+			return(
+				<div>
+		          <img  width ="70" height = "70" src ="https://image.flaticon.com/icons/svg/395/395848.svg"/>
+		          <p className ="blocked">Esta función es solo para Administradores con total acceso !</p>
+		        </div>
+			);
+		}
+
 	}
 
 	render(){
-		console.log(this.state.allUsers);
 
 		return(
 			<div>
@@ -65,6 +130,7 @@ class Users extends Component{
 		              <p className = "two-u bold"> Usuario</p>
 		        </div>
 				{this.renderUsers()}
+				{this.editUser()}
 			</div>
 		);
 	}
