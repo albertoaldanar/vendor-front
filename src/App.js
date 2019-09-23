@@ -75,9 +75,10 @@ class App extends Component {
                 console.log(doc.data());
 
                 if(doc.data().username){
-                localStorage.setItem("login", "SI")
-                 return this.reloadComponent()
-
+                    localStorage.setItem("login", "SI")
+                    localStorage.setItem("access", doc.data().access)
+                    return this.reloadComponent();
+                    
                 } else {
                   this.setState({errorMessage: "Usuario o contraseña incorrectos", username: "", password: ""})
                 }
@@ -101,7 +102,7 @@ class App extends Component {
             <div>
               <div className ="header">
                 <p className ="bussines-name">Serecsin SA de CV</p>
-                <button onClick={this.logout.bind(this)}>
+                <button onClick={this.logout.bind(this)} className = "button-logout">
                   Logout
                 </button>
               </div>

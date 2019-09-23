@@ -153,5 +153,10 @@
     color:white;
     border-radius: 5px;
   }
+
+  .blocked{
+    font-size: 25px;
+    margin-top: 30px;
+  }
 }
 

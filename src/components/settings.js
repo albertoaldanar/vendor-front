@@ -214,6 +214,44 @@ class Settings extends Component{
   }
 
 
+  blockView(){
+    var access = localStorage.getItem('access');
+
+    if(access == "soloData" || access == "conductor"){
+      return (
+        <div>
+          <img  width ="70" height = "70" src ="https://image.flaticon.com/icons/svg/395/395848.svg"/>
+          <p className ="blocked">Esta función es solo para Administradores con total acceso !</p>
+        </div>
+      );
+    } else {
+        return(
+          <div>
+            <CSVReader
+              cssClass="csv-reader-input"
+              label="Archivo en CSV"
+              onFileLoaded={this.onLoad.bind(this)}
+              onError={this.handleDarkSideForce}
+              inputId="ObiWan"
+              inputStyle={{color: 'gray'}}
+            />
+
+
+            {this.showData()}
+            <p className ="top">{this.state.message}</p>
+
+            {
+              this.state.ingresos.length > 1  ?
+              <button onClick= {this.sendToFirestore.bind(this)}>
+                  Registrar archivos
+              </button> :
+              null
+            }
+          </div>
+        );
+    }
+  }
+
   render(){
     const {unauthorizedSales, week} = this.state;
 
@@ -225,31 +263,11 @@ class Settings extends Component{
       { name: 'Pins' }
     ];
 
-    return( 
+    return (
       <div>
-        <CSVReader
-          cssClass="csv-reader-input"
-          label="Archivo en CSV"
-          onFileLoaded={this.onLoad.bind(this)}
-          onError={this.handleDarkSideForce}
-          inputId="ObiWan"
-          inputStyle={{color: 'gray'}}
-        />
-
-
-        {this.showData()}
-        <p className ="top">{this.state.message}</p>
-
-        {
-          this.state.ingresos.length > 1  ?
-          <button onClick= {this.sendToFirestore.bind(this)}>
-              Registrar archivos
-          </button> :
-          null
-        }
-
+        {this.blockView()}
       </div>
-    );
+    )
   }
 }
 
