@@ -6,7 +6,7 @@ class Users extends Component{
 	constructor(props){
     	super(props);
 
-    	this.state = {allUsers: [], userSelected: {}, showEdit: false, password: "", username: "", access: "", name: ""}
+    	this.state = {allUsers: [], userSelected: {}, showEdit: false, password: "", username: "", access: "", name: "", access: ""}
 
 	    if(!firebase.apps.length){
 	        const firebaseConfig = {
@@ -37,22 +37,34 @@ class Users extends Component{
 	}
 
 	seletUser(user){
-		this.setState({username: user.username, password: user.password, name: user.nombre, showEdit: true})
+		this.setState({username: user.username, password: user.password, name: user.nombre, access: user.access, showEdit: true})
 	}
+
+	accessAdmin(event){
+    	this.setState({access: event.target.value});
+  	}
 
 
 	editUser(){
+
+		const accessOptions = ["Admin Total", "Admin Gráficas", "Admin Archivos", "Conductor"];
+
 		if(this.state.username){
 			return(
 				<div>
 					<div className = "users-num">	
 						<div>	
-							<p>NOMBRE:</p>
-							<form>
-		                      <div className ="field">
-		                        <input type="text" name="name" value = {this.state.name}/>
-		                      </div>
-	                    	</form>
+							<p>ACCESO:</p>
+			                <select id="access" className="select" onChange={this.accessAdmin.bind(this)}>
+			                  value={this.state.access}
+			                    {accessOptions.map((item, index) => {
+			                      return (
+			                        <option key={item} value={item}>
+			                          {item}
+			                        </option>
+			                      );
+			                    })}
+			                </select>
 						</div>
 						<div>
 							<p>USUARIO:</p>
@@ -122,6 +134,7 @@ class Users extends Component{
 	}
 
 	render(){
+		console.log(this.state.access);
 
 		return(
 			<div>
