@@ -1,7 +1,5 @@
 import React, {Component} from "react";
 import * as firebase from 'firebase';
-import { transitions, positions, Provider as AlertProvider } from 'react-alert'
-import AlertTemplate from 'react-alert-template-basic'
 
 class Users extends Component{
 
@@ -63,12 +61,12 @@ class Users extends Component{
       		})
 
       		alert("Tus cambios se han guardado");
-      	   // return this.getUsers();	
+      	   	// window.location.reload(false);
 	}
 
 
-	deleteAccount(){
-		  const {username, password, nombre, access, id} = this.state;
+	deleteAccount(id){
+		  const {username, password, nombre, access} = this.state;
 
 		  const db = firebase.firestore();
 
@@ -78,12 +76,11 @@ class Users extends Component{
 	              console.log(doc.id, " => ", doc.data());
 	              // Build doc ref from doc.id
 	              doc.ref.delete();
-
-	              this.setState({showEdit: false})
 	         	});
       		})
 
-      	   return this.getUsers();	
+      	   alert("Esta cuenta se ha eliminado");
+      	   // window.location.reload(false);	
 	}
 
 
@@ -145,7 +142,7 @@ class Users extends Component{
 					</div>
 
 					<button className="save-button" onClick = {this.updateAccount.bind(this)}> Guardar cambios </button>
-					<button className="delete-button" onClick={(e) => { if (window.confirm('Seguro que quieres borrar esta cuenta?')) this.deleteItem.bind(this, e) } }> Eliminar cuenta </button>
+					<button className="delete-button" onClick={this.deleteAccount.bind(this)}> Eliminar cuenta </button>
 				</div>
 			);
 		} else {
