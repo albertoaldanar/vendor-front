@@ -58,10 +58,11 @@ class Users extends Component{
 	              // Build doc ref from doc.id
 	              db.collection("user").doc(doc.id).update({username, password, access});
 	         	});
+
+      	   		// window.location.reload(false);
       		})
 
       		alert("Tus cambios se han guardado");
-      	   	// window.location.reload(false);
 	}
 
 
