@@ -47,8 +47,8 @@ class Users extends Component{
 
 		    return(
 		          <div className = "user-info">
-		          	<p className = "two-u"> {x.nombre}</p>
-		            <p className = "one-u"> {x.access}</p>
+		          	<p className = "two-u"> {x.nombre} </p>
+		            <p className = "one-u"> {x.access} </p>
 		             
 		          </div>
 		      );
