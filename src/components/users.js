@@ -192,13 +192,6 @@ class Users extends Component{
 	render(){
 		console.log(this.state.username);
 
-		const options = {
-		  position: positions.BOTTOM_CENTER,
-		  timeout: 5000,
-		  offset: '30px',
-		  transition: transitions.SCALE
-		}
-
 		return(
 				<div>
 					<div className = "user-info">
