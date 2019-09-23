@@ -42,7 +42,7 @@ class Users extends Component{
 	         	});
       		})
 
-      	   return this.getUsers();	
+      		return alert("Tu cuenta se ha elimindao");
 	}
 
 
@@ -65,8 +65,8 @@ class Users extends Component{
 	}
 
 
-	deleteAccount(id){
-		  const {username, password, nombre, access} = this.state;
+	deleteAccount(){
+		  const {username, password, nombre, access, id} = this.state;
 
 		  const db = firebase.firestore();
 
@@ -109,19 +109,6 @@ class Users extends Component{
 			return(
 				<div>
 					<div className = "users-num">	
-						<div>	
-							<p>ACCESO: </p>
-			                <select id="access" className="select" onChange={this.accessAdmin.bind(this)}>
-			                	value = {this.state.access}
-			                    {accessOptions.map((item, index) => {
-			                      return (
-			                        <option key={item} value={item}>
-			                          {item}
-			                        </option>
-			                      );
-			                    })}
-			                </select>
-						</div>
 						<div>
 							<p>USUARIO:</p>
 							<form>
