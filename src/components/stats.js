@@ -372,7 +372,7 @@ class Stats extends Component{
     ];
     
 
-    if(access == "conductor" || access == "soloArchivo"){
+    if(access == "Conductor" || access == "Admin Archivo"){
       return(
         <div>
                 <img  width ="70" height = "70" src ="https://image.flaticon.com/icons/svg/395/395848.svg"/>
@@ -589,12 +589,12 @@ class Stats extends Component{
 
   render(){
 
-
     return(
       <div>
         {this.statsBlock()}
       </div>
     );
+    
   }
 }
 

@@ -16,7 +16,7 @@ class AdminSideBar extends Component{
   sidebarType(){
     var access = localStorage.getItem('access');
 
-    if(access == "soloData"){
+    if(access == "Admin Gráficas"){
       return(
         <div className="side-nav">
             <Link smooth to="/stats#stats">
@@ -41,7 +41,7 @@ class AdminSideBar extends Component{
             </Link>
         </div>
       );
-    } else if(access == "total"){
+    } else if(access == "Admin Total"){
       return(
         <div className="side-nav">
             <Link smooth to="/stats#stats">
@@ -71,7 +71,7 @@ class AdminSideBar extends Component{
             </Link>
         </div>
       );
-    } else if(access == "soloArchivo"){
+    } else if(access == "Admin Archivos"){
         return(
           <div className="side-nav">
               <Link smooth to="/settings">

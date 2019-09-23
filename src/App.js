@@ -9,6 +9,8 @@ import Calendar from "./components/calendar";
 import Stats from "./components/stats";
 import TeamStats from "./components/teamStats";
 import Lines from "./components/lines";
+import PrivacyPolitics from "./components/privacyPolitics";
+import Users from "./components/users";
 import Team from "./components/team";
 import Settings from "./components/settings";
 import CardView from "./components/reusable/cardView";
@@ -61,7 +63,7 @@ class App extends Component {
 
   handlePassword(event) {
        this.setState({password: event.target.value});
-    }
+  }
 
   login(){
       const {username, password} = this.state;
@@ -78,7 +80,7 @@ class App extends Component {
                     localStorage.setItem("login", "SI")
                     localStorage.setItem("access", doc.data().access)
                     return this.reloadComponent();
-                    
+
                 } else {
                   this.setState({errorMessage: "Usuario o contraseña incorrectos", username: "", password: ""})
                 }
@@ -92,6 +94,22 @@ class App extends Component {
   
   }
 
+  blockUserManagement(){
+      var access = localStorage.getItem('access');
+      
+      if(access == "Admin Total"){
+        return(
+            <div className ="users">
+                  <Link to="/users">
+                    <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/1605/1605401.svg"/>
+                    <span className ="user-name">Manejar usuarios</span>
+                  </Link>
+            </div>
+        );
+      }
+
+  }
+
   render() {
 
     var login = localStorage.getItem('login');
@@ -102,6 +120,7 @@ class App extends Component {
             <div>
               <div className ="header">
                 <p className ="bussines-name">Serecsin SA de CV</p>
+                {this.blockUserManagement()}
                 <button onClick={this.logout.bind(this)} className = "button-logout">
                   Logout
                 </button>
@@ -115,6 +134,7 @@ class App extends Component {
                 <Route exact path="/graphics" component={Chat} />
                 <Route exact path="/lines" component={Lines} />
                 <Route exact path="/calendar" component={Calendar} />
+                <Route exact path="/users" component={Users} />
                 <Route exact path="/team" component={Team} />
                 <Route exact path="/settings" component={Settings} />
               </CardView>
@@ -141,6 +161,8 @@ class App extends Component {
                     <button onClick = {this.login.bind(this)}>Login</button>
               
                     <p className = "errorMessage">{this.state.errorMessage}</p>
+ 
+                    <Route exact path ="/privacyPolitics" component ={PrivacyPolitics}/>
                   </div>
               </div>
 

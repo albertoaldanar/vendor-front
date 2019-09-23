@@ -20,6 +20,15 @@
     right: 5px;
   }
 
+  .one-u{
+    position: absolute;
+    right: 100px;
+  }
+  .two-u{
+    position: absolute;
+    left: 100px;
+  }
+
   .positive{
     color:  green;
   }
@@ -31,6 +40,17 @@
   .negative-yearly{
     color: red;
   }
+
+  .users{
+    margin-top: 17px;
+  }
+
+  .user-name{
+    color: black;
+  }
+  .bussines-name{
+    padding-top: 10px;
+  }
 }
 
 @media screen and (min-width: 1150px){
@@ -40,6 +60,10 @@
     position: absolute;
     top: 50px;
     bottom: 0px;
+  }
+
+  .bussines-name{
+    padding-top: 10px;
   }
 
   .blue-text {
@@ -157,6 +181,25 @@
   .blocked{
     font-size: 25px;
     margin-top: 30px;
+  }
+
+  .users{
+    margin-top: 17px;
+  }
+
+  .user-name{
+    color: black;
+  }
+
+  .one-u{
+    position: absolute;
+    right: 250px;
+    text-align: center;
+  }
+  .two-u{
+    position: absolute;
+    left: 250px;
+    text-align: center;
   }
 }
 

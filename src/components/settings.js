@@ -217,7 +217,7 @@ class Settings extends Component{
   blockView(){
     var access = localStorage.getItem('access');
 
-    if(access == "soloData" || access == "conductor"){
+    if(access == "Admin Gráficas" || access == "Conductor"){
       return (
         <div>
           <img  width ="70" height = "70" src ="https://image.flaticon.com/icons/svg/395/395848.svg"/>
