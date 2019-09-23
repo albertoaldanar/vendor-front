@@ -1,12 +1,14 @@
 import React, {Component} from "react";
 import * as firebase from 'firebase';
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
 
 class Users extends Component{
 
 	constructor(props){
     	super(props);
 
-    	this.state = {allUsers: [], userSelected: {}, showEdit: false, password: "", username: "", access: "", name: "", access: ""}
+    	this.state = {allUsers: [], userSelected: {}, showEdit: false, password: "", username: "", access: "", name: "", access: "", id: null}
 
 	    if(!firebase.apps.length){
 	        const firebaseConfig = {
@@ -23,8 +25,65 @@ class Users extends Component{
 	    }
 	}
 
-	componentWillMount(){
+	async componentWillMount(){
 		return this.getUsers();
+	}
+
+
+	deleteAccount(){
+		  const {username, password, nombre, access} = this.state;
+
+		  const db = firebase.firestore();
+
+		  let userRef = db.collection("user").where("username", "==", username).get()
+      		.then(function(querySnapshot) {
+	        	querySnapshot.forEach(function(doc) {
+	              console.log(doc.id, " => ", doc.data());
+	              // Build doc ref from doc.id
+	              doc.ref.delete();
+	         	});
+      		})
+
+      	   return this.getUsers();	
+	}
+
+
+	updateAccount(){
+		  const {username, password, nombre, access, id} = this.state;
+
+		  const db = firebase.firestore();
+
+		  let userRef = db.collection("user").where("id", "==", id).get()
+      		.then(function(querySnapshot) {
+	        	querySnapshot.forEach(function(doc) {
+	              console.log(doc.id, " => ", doc.data());
+	              // Build doc ref from doc.id
+	              db.collection("user").doc(doc.id).update({username, password, access});
+	         	});
+      		})
+
+      		alert("Tus cambios se han guardado");
+      	   // return this.getUsers();	
+	}
+
+
+	deleteAccount(){
+		  const {username, password, nombre, access, id} = this.state;
+
+		  const db = firebase.firestore();
+
+		  let userRef = db.collection("user").where("id", "==", id).get()
+      		.then(function(querySnapshot) {
+	        	querySnapshot.forEach(function(doc) {
+	              console.log(doc.id, " => ", doc.data());
+	              // Build doc ref from doc.id
+	              doc.ref.delete();
+
+	              this.setState({showEdit: false})
+	         	});
+      		})
+
+      	   return this.getUsers();	
 	}
 
 
@@ -37,7 +96,7 @@ class Users extends Component{
 	}
 
 	seletUser(user){
-		this.setState({username: user.username, password: user.password, name: user.nombre, access: user.access, showEdit: true})
+		this.setState({username: user.username, password: user.password, name: user.nombre, access: user.access, showEdit: true, id: user.id})
 	}
 
 	accessAdmin(event){
@@ -54,9 +113,9 @@ class Users extends Component{
 				<div>
 					<div className = "users-num">	
 						<div>	
-							<p>ACCESO:</p>
+							<p>ACCESO: </p>
 			                <select id="access" className="select" onChange={this.accessAdmin.bind(this)}>
-			                  value={this.state.access}
+			                	value = {this.state.access}
 			                    {accessOptions.map((item, index) => {
 			                      return (
 			                        <option key={item} value={item}>
@@ -85,8 +144,8 @@ class Users extends Component{
 						</div>
 					</div>
 
-					<button className="save-button"> Guardar cambios </button>
-					<button className="delete-button"> Eliminar cuenta </button>
+					<button className="save-button" onClick = {this.updateAccount.bind(this)}> Guardar cambios </button>
+					<button className="delete-button" onClick={(e) => { if (window.confirm('Seguro que quieres borrar esta cuenta?')) this.deleteItem.bind(this, e) } }> Eliminar cuenta </button>
 				</div>
 			);
 		} else {
@@ -134,17 +193,26 @@ class Users extends Component{
 	}
 
 	render(){
-		console.log(this.state.access);
+		console.log(this.state.username);
+
+		const options = {
+		  position: positions.BOTTOM_CENTER,
+		  timeout: 5000,
+		  offset: '30px',
+		  transition: transitions.SCALE
+		}
 
 		return(
-			<div>
-				<div className = "user-info">
-		              <p className = "one-u bold"> Tipo de usuario</p>
-		              <p className = "two-u bold"> Usuario</p>
-		        </div>
-				{this.renderUsers()}
-				{this.editUser()}
-			</div>
+				<div>
+					<div className = "user-info">
+			              <p className = "one-u bold"> Tipo de usuario</p>
+			              <p className = "two-u bold"> Usuario</p>
+			        </div>
+
+			        
+					{this.renderUsers()}
+					{this.editUser()}
+				</div>
 		);
 	}
 }

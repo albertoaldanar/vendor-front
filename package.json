@@ -18,6 +18,8 @@
     "firebase": "^6.6.0",
     "font-awesome": "^4.7.0",
     "react": "^16.8.6",
+    "react-alert": "^5.5.0",
+    "react-alert-template-basic": "^1.0.0",
     "react-big-calendar": "^0.19.2",
     "react-chartjs-2": "^2.7.4",
     "react-countup": "^4.0.0-alpha.6",
