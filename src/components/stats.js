@@ -592,6 +592,10 @@ class Stats extends Component{
     return(
       <div>
         {this.statsBlock()}
+
+        <Link to="/privacyPolitics">
+            <span>Politicas de privacidad</span>
+        </Link>
       </div>
     );
     

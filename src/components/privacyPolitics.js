@@ -1,7 +1,18 @@
 import React, {Component} from "react";
+import {withRouter} from 'react-router-dom';
+
 
 class PrivacyPolitics extends Component{
+
+	constructor(props){
+		super(props);
+		this.state= {}
+	}
+
 	render(){
+
+		// console.log(this.props.location.pathname);
+
 		return(
 			<div>
 				<p>POLITICAS DE PRIVACIDAD DE APP MOVIL SERECSIN</p>

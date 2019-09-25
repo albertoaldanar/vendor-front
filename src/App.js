@@ -8,6 +8,7 @@ import Chat from "./components/chat";
 import Calendar from "./components/calendar";
 import Stats from "./components/stats";
 import TeamStats from "./components/teamStats";
+import Support from "./components/support";
 import Lines from "./components/lines";
 import PrivacyPolitics from "./components/privacyPolitics";
 import Users from "./components/users";
@@ -16,7 +17,7 @@ import Settings from "./components/settings";
 import CardView from "./components/reusable/cardView";
 import Login from "./login";
 import Header from "./components/reusable/header";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, withRouter} from "react-router-dom";
 import './App.css';
 import "./team.css";
 import "./teamStats.css";
@@ -131,11 +132,13 @@ class App extends Component {
                 <Route exact path ="/" component ={Welcome}/>
                 <Route exact path ="/stats" component ={Stats}/>
                 <Route exact path="/chat" component={TeamStats} />
+                <Route exact path="/support" component={Support} />
                 <Route exact path="/graphics" component={Chat} />
                 <Route exact path="/lines" component={Lines} />
                 <Route exact path="/calendar" component={Calendar} />
                 <Route exact path="/users" component={Users} />
                 <Route exact path="/team" component={Team} />
+                <Route exact path ="/privacyPolitics" component ={PrivacyPolitics}/>
                 <Route exact path="/settings" component={Settings} />
               </CardView>
             </div> : 
@@ -160,8 +163,9 @@ class App extends Component {
                     <button onClick = {this.login.bind(this)}>Login</button>
               
                     <p className = "errorMessage">{this.state.errorMessage}</p>
-                    
+
                     <Route exact path ="/privacyPolitics" component ={PrivacyPolitics}/>
+                    <Route exact path="/support" component={Support}/>
                   </div>
               </div>
 
