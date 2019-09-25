@@ -141,7 +141,6 @@ class App extends Component {
             </div> : 
 
               <div>
-
                   <p className ="logoleft">Serecsin SA de CV</p>
                   <div className = "login">
                     <form>
@@ -161,7 +160,7 @@ class App extends Component {
                     <button onClick = {this.login.bind(this)}>Login</button>
               
                     <p className = "errorMessage">{this.state.errorMessage}</p>
- 
+                    
                     <Route exact path ="/privacyPolitics" component ={PrivacyPolitics}/>
                   </div>
               </div>
