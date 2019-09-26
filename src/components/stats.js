@@ -509,9 +509,9 @@ class Stats extends Component{
               <div className ="card">
                 <p className ="cardTitle">Punto equilibrio (dias)</p>
                 <CountUp className ="number"
-                  decimals = {2}
+                  decimals = {0}
                   prefix = "días "
-                  separator=","
+                  separator=""
                   end={puntoEquilibrio}
                 />
               </div>
@@ -606,7 +606,7 @@ class Stats extends Component{
 
   render(){
     console.log(this.state.arrayIngresosMesPasado);
-    
+
     return(
       <div>
         {this.statsBlock()}
