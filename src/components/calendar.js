@@ -57,8 +57,12 @@ class Calendar extends Component{
                 if (event.client == "BASURA"){
                   newStyle.backgroundColor = "green"
                 } else if(event.client == "FALLA"){
+                  newStyle.backgroundColor = "orange"
+                }
+                else if(event.client == "INCIDENTE"){
                   newStyle.backgroundColor = "red"
                 }
+
               return {
                 className: "",
                 style: newStyle

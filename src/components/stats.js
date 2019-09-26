@@ -318,12 +318,14 @@ class Stats extends Component{
   statsBlock(){
     var access = localStorage.getItem('access');
 
-    const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos, ingresos, allStops, paradasCount} = this.state;
+    const {incidentes, descargas, totalRec, totalRecFail, totalIngresos, totalEgresos, ingresos, allStops, paradasCount, arrayIngresosMesPasado} = this.state;
     console.log(this.state.totalIngresos, this.state.totalEgresos);
 
 
     const utilidadNeta = totalIngresos - totalEgresos || 0;
     const roi = (totalIngresos / totalEgresos) || 0;
+
+    const TDC = ((totalIngresos - arrayIngresosMesPasado) / arrayIngresosMesPasado) * 100 || 0;
 
     const puntoEquilibrio = (totalIngresos / 30) / totalEgresos || 0;
 
@@ -342,6 +344,7 @@ class Stats extends Component{
     const data = this.state.clientesGanados.map((x, index) => {
         return { id: index, clientesGanados: x.cliente}
     });
+
     const dataPerdidos = this.state.clientesPerdidos.map((x, index) => {
         return { id: index, clientesPerdidos: x.cliente}
     });
@@ -382,7 +385,7 @@ class Stats extends Component{
     ];
     
     const dataIndicadores = [
-            { id: 1, indicadores: 'Incidentes', number: 10 },
+            { id: 1, indicadores: 'Incidentes', number: this.state.allStops.filter(x => x.client == "INCIDENTE" ).length },
             { id: 2, indicadores: 'Recolecciones totales', number: this.state.allStops.length },
             { id: 3, indicadores: "Recolecciones fallidas", number: this.state.allStops.filter(x => x.fallida == true).length },
             { id: 4, indicadores: 'Descargas', number: this.state.allStops.filter(x => x.client == "BASURA").length },
@@ -501,7 +504,7 @@ class Stats extends Component{
                   decimals = {2}
                   prefix = "% "
                   separator=","
-                  end={22.5}
+                  end={TDC}
                 />
               </div>
 
