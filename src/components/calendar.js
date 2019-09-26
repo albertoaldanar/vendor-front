@@ -48,20 +48,18 @@ class Calendar extends Component{
           eventPropGetter={
             (event, start, end, isSelected) => {
               let newStyle = {
-                backgroundColor: "blue",
+                backgroundColor: "#B0C4DE",
                 color: 'white',
                 borderRadius: "0px",
                 border: "none"
               };
 
-                if (event.client == "BASURA"){
+                if (event.client== "BASURA"){
                   newStyle.backgroundColor = "green"
-                } else if(event.client == "FALLA"){
-                  newStyle.backgroundColor = "orange"
                 }
-                else if(event.client == "INCIDENTE"){
-                  newStyle.backgroundColor = "red"
-                }
+                // else if(event.client == "INCIDENTE"){
+                //   newStyle.color = "red"
+                // }
 
               return {
                 className: "",

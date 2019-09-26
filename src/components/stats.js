@@ -349,7 +349,7 @@ class Stats extends Component{
         return { id: index, clientesPerdidos: x.cliente}
     });
 
-    const calendarStops = allStops.filter(x=> x.client == "BASURA" || x.client == "DESCARGA" || x.client == "GASOLINA");
+    const calendarStops = allStops.filter(x => x.client == "BASURA" || x.client == "INCIDENTE" || x.client == "GASOLINA");
     console.log(calendarStops);
 
     const bonattiIngresos = ingresos.filter(x => x.cliente == "BONATTI").map(x => x.importe).reduce((a, b) => a + b, 0);
