@@ -28,7 +28,7 @@ class Stats extends Component{
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
         totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true, 
-        monthSelected: 1, yearSelected: new Date().getFullYear(), clientesGanados: null, clientesPerdidos: null, egresos: [], allStops: [], paradasCount: []
+        monthSelected: new Date().getMonth() + 1 , yearSelected: new Date().getFullYear(), clientesGanados: null, clientesPerdidos: null, egresos: [], allStops: [], paradasCount: [], arrayIngresosMesPasado: 0
     }
 
     if(!firebase.apps.length){
@@ -148,6 +148,23 @@ class Stats extends Component{
       });
 
     this.setState({ingresos: arrayDesglosado});
+
+
+    //TOTAL INGRESO MES PASADO
+    const arrayIngresosMesPasado = []; 
+    let ingresosMPRef = db.collection('Ingresos').where('mes', '==', this.state.monthSelected - 1 ).where('año', '==', this.state.yearSelected).get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          console.log(doc.id, '=>', doc.data());
+          arrayIngresosMesPasado.push(doc.data().importe);
+
+          this.setState({arrayIngresosMesPasado: arrayIngresosMesPasado.reduce((a, b) => a + b, 0)});
+
+        });
+      })
+      .catch(err => {
+        console.log('Error getting documents', err);
+      });
 
 
     //TOTAL EGRESO
@@ -493,7 +510,7 @@ class Stats extends Component{
                 <p className ="cardTitle">Punto equilibrio (dias)</p>
                 <CountUp className ="number"
                   decimals = {2}
-                  prefix = "# "
+                  prefix = "días "
                   separator=","
                   end={puntoEquilibrio}
                 />
@@ -588,7 +605,8 @@ class Stats extends Component{
   }
 
   render(){
-
+    console.log(this.state.arrayIngresosMesPasado);
+    
     return(
       <div>
         {this.statsBlock()}
