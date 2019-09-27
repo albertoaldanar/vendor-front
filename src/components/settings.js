@@ -5,6 +5,8 @@ import * as XLSX from "xlsx";
 import CSVReader from 'react-csv-reader';
 import * as firebase from 'firebase';
 // import { SegmentedControl } from 'segmented-control-react';
+import * as jsPDF from 'jspdf'
+import html2canvas from "html2canvas";
 
 
 class Settings extends Component{
@@ -53,6 +55,19 @@ class Settings extends Component{
           this.setState({ingresosThisMonth: arrayI, ready: true});
         });
       })
+  }
+
+
+  printDocument() {
+    const input = document.getElementById('divToPrint');
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        // pdf.output('dataurlnewwindow');
+        pdf.save("download.pdf");
+      })
+    ;
   }
 
 
@@ -266,6 +281,11 @@ class Settings extends Component{
     return (
       <div>
         {this.blockView()}
+
+        <div>
+          <p id = "divToPrint">heloooo</p>
+          <button onClick={this.printDocument.bind(this)}>Print</button>
+        </div>
       </div>
     )
   }

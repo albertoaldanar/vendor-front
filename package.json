@@ -17,6 +17,8 @@
     "filepond": "^4.4.11",
     "firebase": "^6.6.0",
     "font-awesome": "^4.7.0",
+    "html2canvas": "^1.0.0-rc.4",
+    "jspdf": "^1.5.3",
     "react": "^16.8.6",
     "react-alert": "^5.5.0",
     "react-alert-template-basic": "^1.0.0",
