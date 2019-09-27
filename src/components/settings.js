@@ -18,6 +18,7 @@ class Settings extends Component{
       week: null,
       month: "",
       goal: 0, 
+      year: new Date().getFullYear(), month: new Date().getMonth() + 1, allStops: [],
       ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]], months: { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     }
 
@@ -36,23 +37,38 @@ class Settings extends Component{
     }
   }
 
+  componentWillMount(){
+      return this.fetchData();
+  }
 
   fetchData(){
     const db = firebase.firestore()
 
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = 1
-
-    var year = new Date().getFullYear();
-
-    const arrayI = []
-    let ingRef = db.collection('Ingresos').where('año', '==', year).orderBy("mes").get()
+    const par = [];
+    let parad = db.collection('parada').where('año', '==', this.state.year).where("mes", "==", this.state.month).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
-          arrayI.push(doc.data());
+          par.push(doc.data());
+          this.setState({allStops: par});
 
-          this.setState({ingresosThisMonth: arrayI, ready: true});
+          // let counts = par.reduce((prev, curr) => {
+          //       let count = prev.get(curr.mes) || 0;
+          //       prev.set(curr.mes, curr.length);
+          //       return prev;
+          //     }, new Map());
+
+          //     // then, map your counts object back to an array
+          //     let reducedObjArr = [...counts].map(([key, value]) => {
+          //       return {key, value}
+          //     })
+          //     this.setState({paradasCount: reducedObjArr});
+
+          // var counts = {};
+          // par.forEach(x => { 
+          //   counts[x.client] = (counts[x.client] || 0) +1 ;
+          // });
+
+          // this.setState({paradasCount: counts})
         });
       })
   }
@@ -64,15 +80,18 @@ class Settings extends Component{
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF();
+        const array = ["1"];
+
+        this.state.allStops.map(x => {
+            pdf.text("CLIENTE:", 5, 5)
+            pdf.text(x.client, 10, 10)
+            pdf.addPage()
+        })
         // pdf.output('dataurlnewwindow');
+        // pdf.text('Chupame el nepee!', 10, 10)
         pdf.save("download.pdf");
       })
     ;
-  }
-
-
-  componentWillMount(){
-      return this.fetchData();
   }
 
 
@@ -269,7 +288,7 @@ class Settings extends Component{
 
   render(){
     const {unauthorizedSales, week} = this.state;
-
+    console.log(this.state.allStops)
     const segments = [
       { name: 'All' },
       { name: 'Unread', disabled: true },
@@ -282,7 +301,7 @@ class Settings extends Component{
       <div>
         {this.blockView()}
 
-        <div>
+        <div className = "pdf">
           <p id = "divToPrint">heloooo</p>
           <button onClick={this.printDocument.bind(this)}>Print</button>
         </div>
