@@ -18,7 +18,7 @@ class Settings extends Component{
       week: null,
       month: "",
       goal: 0, 
-      year: new Date().getFullYear(), month: new Date().getMonth() + 1, allStops: [],
+      year: new Date().getFullYear(), month: new Date().getMonth() + 1, allStops: [], momments:[ [{}], [{}] ], otherArray: [{}],
       ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]], months: { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     }
 
@@ -74,24 +74,114 @@ class Settings extends Component{
   }
 
 
+  getDocReady(){
+
+        const functionWithPromise = item => {
+                // const array = ["Aldana", [{}]];
+
+                // array.push(item)
+                console.log(item);
+
+                this.setState({momments: item})
+        }
+
+
+        const iterateArray = item => {
+                this.setState({otherArray: item})
+        }
+
+        const anAsyncFunction = async item => {
+                return await functionWithPromise(item)
+        }
+
+        const getData = async (list) => {
+                return await Promise.all(list.map(item => anAsyncFunction(item)))
+        }
+
+        const groupBy = key => array =>
+            array.reduce((objectsByKeyValue, obj) => {
+              const value = obj[key];
+
+              objectsByKeyValue[value] = (objectsByKeyValue[value] || []).concat(obj);
+
+              var objectFormat = Object.entries(objectsByKeyValue);
+
+              var clients = objectFormat.map(x => {
+                  return {"Key": x[0], "value": x[1]}
+              });
+
+              console.log(objectFormat)
+
+              const data = getData(objectFormat)
+
+              const data2 = iterateArray(clients);
+              console.log(data);
+
+              // console.log(objectsByKeyValue);
+
+              // console.log(clients);
+
+              return objectsByKeyValue;
+
+        }, {});
+
+        const groupByClient = groupBy('client');
+
+        const onlyClientStops = this.state.allStops.filter(x => x.client != "INCIDENTE" && x.client!= "BASURA" && x.client!= "GASOLINA");
+
+       
+        const result = JSON.stringify({
+            objectsByClient: groupByClient(onlyClientStops),
+        }, null, 2); 
+
+        console.log(result); 
+  }
+
+
   printDocument() {
     const input = document.getElementById('divToPrint');
+
+    const onlyClientStops = this.state.allStops.filter(x => x.client != "INCIDENTE" && x.client!= "BASURA" && x.client!= "GASOLINA");
+    console.log(onlyClientStops);
+
     html2canvas(input)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF();
-        const array = ["1"];
 
-        this.state.allStops.map(x => {
-            pdf.text("CLIENTE:", 5, 5)
-            pdf.text(x.client, 10, 10)
-            pdf.addPage()
-        })
-        // pdf.output('dataurlnewwindow');
-        // pdf.text('Chupame el nepee!', 10, 10)
-        pdf.save("download.pdf");
-      })
-    ;
+          // const example = [
+          //   [
+          //     "Client", [{}]
+          //   ],  
+          //   [
+          //     "Aldana", [{}]
+          //   ]
+          // ]
+          this.state.otherArray.map(x => {
+              x.value.map(y => {
+                pdf.text(y.client, 10, 10);
+              })
+              pdf.save(`${x.Key}`)
+          })
+
+         
+
+          // let counts = onlyClientStops.reduce((prev, curr) => {
+          //     // let count = prev.get(curr.client) || 0;
+          //     prev.set(curr.client, [curr]);
+          //     console.log(curr);
+
+          //     return prev;
+          // }, new Map());
+
+          //     // then, map your counts object back to an array
+          // let reducedObjArr = [...counts].map(([key, value]) => {
+          //       return {key, value}
+          // })
+
+          // console.log(reducedObjArr)
+         
+      });
   }
 
 
@@ -288,14 +378,7 @@ class Settings extends Component{
 
   render(){
     const {unauthorizedSales, week} = this.state;
-    console.log(this.state.allStops)
-    const segments = [
-      { name: 'All' },
-      { name: 'Unread', disabled: true },
-      { name: 'Drafts' },
-      { name: 'Trash' },
-      { name: 'Pins' }
-    ];
+    console.log(this.state.momments, this.state.otherArray)
 
     return (
       <div>
@@ -303,7 +386,8 @@ class Settings extends Component{
 
         <div className = "pdf">
           <p id = "divToPrint">heloooo</p>
-          <button onClick={this.printDocument.bind(this)}>Print</button>
+          <button onClick={this.printDocument.bind(this)}>Descargar reportes en PDF</button>
+          <button onClick={this.getDocReady.bind(this)}>Generar PDF</button>
         </div>
       </div>
     )
