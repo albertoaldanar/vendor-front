@@ -143,6 +143,7 @@ class Settings extends Component{
 
   printDocument() {
     const input = document.getElementById('divToPrint');
+    const months = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" };
 
     const onlyClientStops = this.state.allStops.filter(x => x.client != "INCIDENTE" && x.client!= "BASURA" && x.client!= "GASOLINA");
     console.log(onlyClientStops);
@@ -156,10 +157,14 @@ class Settings extends Component{
                   const pdf = new jsPDF();
 
               x.value.map((y, ind) => { 
-                    pdf.text(y.comments, 10, 10)
+                    pdf.text("Reporte Mensual", 10 , 10)
+                    pdf.text(`Cliente: ${x.Key}`, 10 , 30)
+                    pdf.text(`${months[this.state.month]} - ${this.state.year}`, 140 , 10)
+                    pdf.text(y.comments, 30, 70)
                     
               });
-              pdf.save(`${x.Key}`)
+              
+              pdf.save(`${x.Key} / ${months[this.state.month]} / ${this.state.year}`)
              
           })
       });
