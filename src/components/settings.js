@@ -82,10 +82,8 @@ class Settings extends Component{
   getDocReady(){
 
         const functionWithPromise = item => {
-
-                console.log(item)
-
-                this.setState({momments: item})
+            console.log(item)
+            this.setState({momments: item})
         }
 
 
@@ -147,6 +145,7 @@ class Settings extends Component{
 
     const onlyClientStops = this.state.allStops.filter(x => x.client != "INCIDENTE" && x.client!= "BASURA" && x.client!= "GASOLINA");
     console.log(onlyClientStops);
+          var count = 1;
 
           this.state.otherArray.map((x, index) => {
               
@@ -156,14 +155,69 @@ class Settings extends Component{
                   const imgData = canvas.toDataURL('image/png');
                   const pdf = new jsPDF();
 
+                  
               x.value.map((y, ind) => { 
-                    pdf.text("Reporte Mensual", 10 , 10)
-                    pdf.text(`Cliente: ${x.Key}`, 10 , 30)
-                    pdf.text(`${months[this.state.month]} - ${this.state.year}`, 140 , 10)
-                    pdf.text(y.comments, 30, 70)
-                    
+                    //Fecha
+                    count += 1
+
+                    pdf.setFont('courier')
+                    pdf.setFontType('normal')
+                    pdf.setFontSize(10) 
+                    pdf.text(`${y.arrived_at}`, 10, count * 40)
+                    //Lugar
+                    pdf.setFont('courier')
+                    pdf.setFontType('normal')
+                    pdf.setFontSize(10) 
+                    pdf.text(`${y.lat}- ${y.lng}`, 60, count * 40)
+                    //Comentario
+                    pdf.setFont('courier')
+                    pdf.setFontType('normal')
+                    pdf.setFontSize(10) 
+                    pdf.text(`${y.comments}`, 120, count * 40)
+                    //Fotos
+                    pdf.setFont('courier')
+                    pdf.setFontType('normal')
+                    pdf.setFontSize(10) 
+                    pdf.text(`Fotos`, 180, count * 40)
+                    pdf.addPage();
               });
-              
+
+              const paradasOK = x.value.filter(x => x.fallida == false).length;
+              const paradasFail = x.value.filter(x => x.fallida).length;
+
+              pdf.setFont('courier')
+              pdf.setFontType('normal') 
+              pdf.text("Reporte Mensual", 10 , 10)  
+
+              pdf.setFont('helvetica')
+              pdf.setFontType('bold')
+              pdf.text(`Cliente: ${x.Key}`, 10 , 30)
+
+              pdf.setFont('courier')
+              pdf.setFontType('normal') 
+              pdf.text(`${months[this.state.month]} - ${this.state.year}`, 140 , 10)
+
+              pdf.text(`Información del mes:`, 10 , 50)
+              pdf.text(` * Recolecciones del mes:  ${x.value.length}`, 10 , 60)
+              pdf.text(` * Recolecciones fallidas: ${paradasFail}`, 10 , 70)
+              pdf.text(` * Recolecciones logradas: ${paradasOK}`, 10 , 80)
+
+              pdf.setFont('helvetica')
+              pdf.setFontType('bold') 
+              pdf.text(`Día`, 10 , 100)
+
+              pdf.setFont('helvetica')
+              pdf.setFontType('bold') 
+              pdf.text(`Comentario`, 120 , 100)
+
+              pdf.setFont('helvetica')
+              pdf.setFontType('bold') 
+              pdf.text(`Lugar`, 60 , 100)
+
+              pdf.setFont('helvetica')
+              pdf.setFontType('bold') 
+              pdf.text(`Fotos`, 180 , 100)
+
               pdf.save(`${x.Key} / ${months[this.state.month]} / ${this.state.year}`)
              
           })
