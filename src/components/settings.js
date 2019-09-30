@@ -7,6 +7,7 @@ import * as firebase from 'firebase';
 // import { SegmentedControl } from 'segmented-control-react';
 import * as jsPDF from 'jspdf'
 import html2canvas from "html2canvas";
+import Modal from 'react-modal';
 
 
 class Settings extends Component{
@@ -18,7 +19,7 @@ class Settings extends Component{
       week: null,
       month: "",
       goal: 0, 
-      year: new Date().getFullYear(), month: new Date().getMonth() + 1, allStops: [], momments: null, otherArray: [{}],
+      year: new Date().getFullYear(), month: new Date().getMonth() + 1, allStops: [], momments: null, otherArray: [{}], modalShow: false,
       ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]], months: { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     }
 
@@ -39,6 +40,10 @@ class Settings extends Component{
 
   componentWillMount(){
       return this.fetchData();
+  }
+
+  openModal() {
+    this.setState({modalShow: true});
   }
 
   fetchData(){
@@ -131,6 +136,8 @@ class Settings extends Component{
         }, null, 2); 
 
         console.log(result); 
+
+        this.setState({modalShow: true})
   }
 
 
@@ -156,6 +163,8 @@ class Settings extends Component{
              
           })
       });
+
+      this.setState({modalShow: false})
 
     }
   onChangeWeek(e){
@@ -351,16 +360,36 @@ class Settings extends Component{
 
   render(){
     const {unauthorizedSales, week} = this.state;
-    console.log(this.state.momments, this.state.otherArray)
+    console.log(this.state.momments, this.state.otherArray);
+
+
+    const customStyles = {
+      content : {
+        top                   : '50%',
+        left                  : '50%',
+        right                 : 'auto',
+        bottom                : 'auto',
+        marginRight           : '-50%',
+        transform             : 'translate(-50%, -50%)'
+      }
+    };
 
     return (
       <div>
         {this.blockView()}
 
-        <div className = "pdf">
-          <p id = "divToPrint">heloooo</p>
-          <button onClick={this.printDocument.bind(this)}>Descargar reportes en PDF</button>
+        <div className = "pdf" id = "divToPrint">
           <button onClick={this.getDocReady.bind(this)}>Generar PDF</button>
+          <Modal
+            isOpen={this.state.modalShow}
+            style={customStyles}
+            contentLabel="Example Modal"
+          >
+            <div className = "modal-button">
+              <button  onClick={() => this.setState({modalShow: false})}> X </button>
+            </div>
+            <button onClick={this.printDocument.bind(this)}>Descargar reportes en PDF</button>
+          </Modal>
         </div>
       </div>
     )

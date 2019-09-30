@@ -240,5 +240,10 @@
   .space-a{
     margin-top: 50px;
   }
+
+  .modal-button{
+    padding-bottom: 20px;
+    background-color: transparent;
+  }
 }
 
