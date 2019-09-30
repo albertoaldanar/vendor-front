@@ -18,7 +18,7 @@ class Settings extends Component{
       week: null,
       month: "",
       goal: 0, 
-      year: new Date().getFullYear(), month: new Date().getMonth() + 1, allStops: [], momments:[ [{}], [{}] ], otherArray: [{}],
+      year: new Date().getFullYear(), month: new Date().getMonth() + 1, allStops: [], momments: null, otherArray: [{}],
       ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]], months: { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     }
 
@@ -77,10 +77,8 @@ class Settings extends Component{
   getDocReady(){
 
         const functionWithPromise = item => {
-                // const array = ["Aldana", [{}]];
 
-                // array.push(item)
-                console.log(item);
+                console.log(item)
 
                 this.setState({momments: item})
         }
@@ -115,8 +113,6 @@ class Settings extends Component{
               const data = getData(objectFormat)
 
               const data2 = iterateArray(clients);
-              console.log(data);
-
               // console.log(objectsByKeyValue);
 
               // console.log(clients);
@@ -144,47 +140,24 @@ class Settings extends Component{
     const onlyClientStops = this.state.allStops.filter(x => x.client != "INCIDENTE" && x.client!= "BASURA" && x.client!= "GASOLINA");
     console.log(onlyClientStops);
 
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF();
+          this.state.otherArray.map((x, index) => {
+              
+              console.log(x.Key);
+              html2canvas(input)
+                .then((canvas) => {
+                  const imgData = canvas.toDataURL('image/png');
+                  const pdf = new jsPDF();
 
-          // const example = [
-          //   [
-          //     "Client", [{}]
-          //   ],  
-          //   [
-          //     "Aldana", [{}]
-          //   ]
-          // ]
-          this.state.otherArray.map(x => {
-              x.value.map(y => {
-                pdf.text(y.client, 10, 10);
-              })
+              x.value.map((y, ind) => { 
+                    pdf.text(y.comments, 10, 10)
+                    
+              });
               pdf.save(`${x.Key}`)
+             
           })
-
-         
-
-          // let counts = onlyClientStops.reduce((prev, curr) => {
-          //     // let count = prev.get(curr.client) || 0;
-          //     prev.set(curr.client, [curr]);
-          //     console.log(curr);
-
-          //     return prev;
-          // }, new Map());
-
-          //     // then, map your counts object back to an array
-          // let reducedObjArr = [...counts].map(([key, value]) => {
-          //       return {key, value}
-          // })
-
-          // console.log(reducedObjArr)
-         
       });
-  }
 
-
+    }
   onChangeWeek(e){
     this.setState({week: e.target.value})
   }
