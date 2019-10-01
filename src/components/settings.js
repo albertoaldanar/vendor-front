@@ -446,7 +446,7 @@ class Settings extends Component{
   render(){
     const {unauthorizedSales, week} = this.state;
     console.log(this.state.momments, this.state.otherArray);
-
+    const months = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" };
 
     const customStyles = {
       content : {
@@ -464,7 +464,7 @@ class Settings extends Component{
         {this.blockView()}
 
         <div className = "pdf" id = "divToPrint">
-          <button onClick={this.getDocReady.bind(this)}>Generar PDF</button>
+          <button onClick={this.getDocReady.bind(this)}>Preparar info para descarga</button>
           <Modal
             isOpen={this.state.modalShow}
             style={customStyles}
@@ -473,7 +473,10 @@ class Settings extends Component{
             <div className = "modal-button">
               <button  onClick={() => this.setState({modalShow: false})}> X </button>
             </div>
-            <button onClick={this.printDocument.bind(this)}>Descargar reportes en PDF</button>
+            {this.state.otherArray.length > 1 ?
+             <button onClick={this.printDocument.bind(this)}>Descargar reportes de {months[this.state.month]}</button> : 
+             <p>Generando pdf...</p>
+            }
           </Modal>
         </div>
       </div>
