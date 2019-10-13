@@ -468,6 +468,7 @@ class Settings extends Component{
           <Modal
             isOpen={this.state.modalShow}
             style={customStyles}
+            ariaHideApp={false}
             contentLabel="Example Modal"
           >
             <div className = "modal-button">
