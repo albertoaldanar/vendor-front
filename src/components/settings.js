@@ -19,7 +19,7 @@ class Settings extends Component{
       week: null,
       month: "",
       goal: 0, 
-      year: new Date().getFullYear(), month: 9 , allStops: [], momments: null, otherArray: [{}], modalShow: false,
+      year: new Date().getFullYear(), month: new Date().getMonth() + 1 , anotherArray: [], allStops: [], momments: null, otherArray: [{}], modalShow: false,
       ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]], months: { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }
     }
 
@@ -445,7 +445,8 @@ class Settings extends Component{
 
   render(){
     const {unauthorizedSales, week} = this.state;
-    console.log(this.state.momments, this.state.otherArray);
+    console.log(this.state.anotherArray);
+
     const months = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" };
 
     const customStyles = {
