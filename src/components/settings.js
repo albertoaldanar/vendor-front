@@ -203,7 +203,6 @@ class Settings extends Component{
                     pdf.setFontType('normal')
                     pdf.setFontSize(10) 
 
-
               });
 
               count = -1;
@@ -475,10 +474,8 @@ class Settings extends Component{
             <div className = "modal-button">
               <button  onClick={() => this.setState({modalShow: false})}> X </button>
             </div>
-            {this.state.otherArray.length > 1 ?
-             <button onClick={this.printDocument.bind(this)}>Descargar reportes de {months[this.state.month]}</button> : 
-             <p>Generando pdf...</p>
-            }
+
+             <button onClick={this.printDocument.bind(this)}>Descargar reportes de {months[this.state.month]}</button> 
           </Modal>
         </div>
       </div>
