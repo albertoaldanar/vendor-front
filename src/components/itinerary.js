@@ -4,12 +4,14 @@ import Calendar from "./calendar";
 import BigCalendar from 'react-big-calendar';
 import { HashLink as Link } from 'react-router-hash-link';
 import Modal from 'react-responsive-modal';
+import Select from "react-dropdown-select";
 
 class Itinerary extends Component{
 
 	constructor(props){
 		super(props);
 		this.state ={
+			openModal: true, day: "", client: ""
 		}
 
 		if(!firebase.apps.length){
@@ -25,6 +27,10 @@ class Itinerary extends Component{
 
 	      this.dataBase = firebase.initializeApp(firebaseConfig);
 	    }
+	}
+
+	registerRouteClient(){
+		console.log("register")
 	}
 
 	render(){
@@ -43,12 +49,43 @@ class Itinerary extends Component{
     allDay: false
   }
 ]
+
+	console.log(this.state.day);
+
+	const days = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+
 		return(
 			<div>	
 				<p className = "title-route">Ruta semanal <img  width ="30" height = "30" src ="https://image.flaticon.com/icons/svg/1179/1179054.svg"/></p>
-					
+
 				<div className = "card">
 			      <div id = "mycalendar" className ="calendar-container">
+
+			      	<Modal open={this.state.openModal} onClose={() => this.setState({openModal: false})} center>
+          				<p className = "modal-title">Registro</p>
+
+          				<div className = "users">
+          				    <select id="years" className="select" onChange={(event) => this.setState({day: event.target.value})}>
+			                  value={this.state.day}
+			                    {days.map((item, index) => {
+			                      return (
+			                        <option key={index} value={item}>
+			                          {item}
+			                        </option>
+			                      );
+			                    })}
+			                </select>
+
+			                <div className ="input-modal">
+				               	<form>
+			                      <div className ="field">
+			                        <input type="text" name="contra" value = {this.state.client} onChange = {(event) => this.setState({client: event.target.value})}/>
+			                      </div>
+		                    	</form>
+	                    	</div>
+          					<button onClick = {this.registerRouteClient.bind(this)}>Registrar parada</button>
+          				</div>
+        			</Modal>
 			        <BigCalendar
 
 			          eventPropGetter={
