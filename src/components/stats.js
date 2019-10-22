@@ -327,7 +327,7 @@ class Stats extends Component{
 
     const TDC = ((totalIngresos - arrayIngresosMesPasado) / arrayIngresosMesPasado) * 100 || 0;
 
-    const puntoEquilibrio = (totalIngresos / 30) / totalEgresos || 0;
+    const puntoEquilibrio = (totalEgresos / (totalIngresos / 30)) || 0;
 
     const months = [ {mes: "Enero", key: 1}, {mes: "Febrero", key: 2}, {mes: "Marzo", key: 3}, {mes: "Abril", key: 4}, {mes: "Mayo", key: 5}, {mes: "Junio", key: 6}, {mes: "Julio", key: 7}, {mes: "Agosto", key: 8}, {mes: "Septiembre", key: 9}, {mes: "Octubre", key: 10}, {mes: "Noviembre", key: 11}, {mes: "Diciembre", key: 12}];
     const monthStrings = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" }

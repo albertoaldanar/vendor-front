@@ -245,5 +245,11 @@
     padding-bottom: 20px;
     background-color: transparent;
   }
+
+  .title-route{
+    font-size: 28px;
+    text-align: center;
+    margin-bottom: 50px;
+  }
 }
 

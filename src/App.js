@@ -11,6 +11,7 @@ import TeamStats from "./components/teamStats";
 import Support from "./components/support";
 import Lines from "./components/lines";
 import PrivacyPolitics from "./components/privacyPolitics";
+import Itinerary from "./components/itinerary";
 import Users from "./components/users";
 import Team from "./components/team";
 import Settings from "./components/settings";
@@ -136,6 +137,7 @@ class App extends Component {
                 <Route exact path="/graphics" component={Chat} />
                 <Route exact path="/lines" component={Lines} />
                 <Route exact path="/calendar" component={Calendar} />
+                <Route exact path="/itinerary" component={Itinerary} />
                 <Route exact path="/users" component={Users} />
                 <Route exact path="/team" component={Team} />
                 <Route exact path ="/privacyPolitics" component ={PrivacyPolitics}/>
