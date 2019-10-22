@@ -292,7 +292,7 @@ class Stats extends Component{
 
           var counts = {};
           par.forEach(x => { 
-            counts[x.client] = (counts[x.client] || 0) +1 ;
+            counts[x.client] = (counts[x.client] || 0) + 1 ;
           });
 
           this.setState({paradasCount: counts})

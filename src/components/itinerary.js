@@ -32,8 +32,17 @@ class Itinerary extends Component{
 	componentWillMount(){
 		const db = firebase.firestore();
 
+		const month = new Date().getMonth() + 1;
+
+		var today = new Date();
+    	var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    	var dateTime = date+' '+time;
+
+    	console.log(dateTime);
+
 	    const itinerario = [];
-	    let cGanados = db.collection('itinerario').get()
+	    let cGanados = db.collection('itinerario').where("mes", "==", month).get()
 	      .then(snapshot => {
 	        snapshot.forEach(doc => {
 	          itinerario.push(doc.data());
@@ -43,27 +52,53 @@ class Itinerary extends Component{
 	}
 
 	registerRouteClient(){
-		console.log("register")
+
+		const days = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+
+		const db = firebase.firestore();
+		let itinerarioDB = db.collection('itinerario')
+
+		const month = new Date().getMonth() + 1;
+		const day = new Date().getDay();
+
+		// var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  //   	var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  //   	var dateTime = date+' '+time;
+    	itinerarioDB.add({
+    		day: this.state.day, mes: month, client: this.state.client
+    	})
+
+    	this.setState({openModal: false, client: ""})
+
 	}
 
 	render(){
-		const events = [
-  {
-    title: 'Carga de gas',
-    startDate: new Date(2019, 8, 3),
-    endDate: new Date(2019, 8, 3),
-    desc: 'Descarga'
-  },
-  {
-    title: 'Descarga',
-    startDate: new Date(2019, 8, 2),
-    endDate: new Date(2019, 8, 2),
-    desc: 'refer',
-    allDay: false
-  }
-]
+// 		const events = [
+//   {
+//     title: 'Carga de gas',
+//     startDate: new Date(2019, 8, 3),
+//     endDate: new Date(2019, 8, 3),
+//     desc: 'Descarga'
+//   },
+//   {
+//     title: 'Descarga',
+//     startDate: new Date(2019, 8, 2),
+//     endDate: new Date(2019, 8, 2),
+//     desc: 'refer',
+//     allDay: false
+//   }
+// ]	
+	console.log(this.state.itinerario)
 
-	console.log(this.state.itinerario);
+
+	const events = this.state.itinerario.map(x=> {
+      return {
+        title: x.client, 
+        startDate: x.date, 
+        endDate: x.date, 
+        allDay: true
+      }
+    })
 
 	const days = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
 
