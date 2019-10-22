@@ -11,7 +11,7 @@ class Itinerary extends Component{
 	constructor(props){
 		super(props);
 		this.state ={
-			openModal: true, day: "", client: ""
+			openModal: false, day: "", client: "", itinerario: ""
 		}
 
 		if(!firebase.apps.length){
@@ -27,6 +27,19 @@ class Itinerary extends Component{
 
 	      this.dataBase = firebase.initializeApp(firebaseConfig);
 	    }
+	}
+
+	componentWillMount(){
+		const db = firebase.firestore();
+
+	    const itinerario = [];
+	    let cGanados = db.collection('itinerario').get()
+	      .then(snapshot => {
+	        snapshot.forEach(doc => {
+	          itinerario.push(doc.data());
+	        })
+	      });
+	      this.setState({ itinerario });
 	}
 
 	registerRouteClient(){
@@ -50,13 +63,19 @@ class Itinerary extends Component{
   }
 ]
 
-	console.log(this.state.day);
+	console.log(this.state.itinerario);
 
 	const days = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
 
 		return(
 			<div>	
 				<p className = "title-route">Ruta semanal <img  width ="30" height = "30" src ="https://image.flaticon.com/icons/svg/1179/1179054.svg"/></p>
+					
+				<div className = "users">
+				  <button onClick = {() => this.setState({openModal: true})}>
+              		<span>Añadir ruta +</span>
+            	  </button>
+            	</div>
 
 				<div className = "card">
 			      <div id = "mycalendar" className ="calendar-container">
