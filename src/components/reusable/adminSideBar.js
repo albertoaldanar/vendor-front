@@ -16,76 +16,21 @@ class AdminSideBar extends Component{
   sidebarType(){
     var access = localStorage.getItem('access');
 
-    if(access == "Admin Gráficas"){
+
       return(
         <div className="side-nav">
-            <Link smooth to="/stats#stats">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/478/478544.svg"/>
-              <span>Estadisticas</span>
-            </Link>
-
-            <Link smooth to="/stats#kpis">
-                <img  width ="40" height = "40" src ="https://image.flaticon.com/icons/svg/1611/1611179.svg"/>
-                <span>KPI´S </span>
-            </Link>
-
-            <Link smooth to="/stats#clients">
-              <img  width ="35" height = "35" src ="https://image.flaticon.com/icons/svg/1528/1528669.svg"/>
-              <span> Clientes </span>
-            </Link>
-
-
-            <Link smooth to="/stats#bus">
-              <img  width ="35" height = "35" src ="https://image.flaticon.com/icons/svg/74/74928.svg"/>
-              <span> Recolección </span>
-            </Link>
-        </div>
-      );
-    } else if(access == "Admin Total"){
-      return(
-        <div className="side-nav">
-            <Link smooth to="/stats#stats">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/478/478544.svg"/>
-              <span>Estadisticas</span>
-            </Link>
-
-            <Link smooth to="/stats#kpis">
-                <img  width ="30" height = "30" src ="https://image.flaticon.com/icons/svg/1611/1611179.svg"/>
-                <span>KPI´S </span>
-            </Link>
-
-            <Link smooth to="/stats#clients">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/1528/1528669.svg"/>
-              <span> Clientes </span>
-            </Link>
-
-
-            <Link smooth to="/stats#bus">
-              <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/74/74928.svg"/>
-              <span> Recolección </span>
-            </Link>
 
             <Link smooth to="/settings">
               <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/149/149213.svg"/>
-              <span> Archivos </span>
+              <span> Reportes </span>
             </Link>
 
              <Link smooth to="/itinerary">
               <img  width ="25" height = "25" src ="https://image.flaticon.com/icons/svg/1179/1179054.svg"/>
-              <span> Ruta </span>
+              <span> Itinerario </span>
             </Link>
         </div>
       );
-    } else if(access == "Admin Archivos"){
-        return(
-          <div className="side-nav">
-              <Link smooth to="/settings">
-                <img  width ="35" height = "35" src ="https://image.flaticon.com/icons/svg/149/149213.svg"/>
-                <span> Archivos </span>
-              </Link>
-            </div>
-        );
-      } 
   }
 
   render(){

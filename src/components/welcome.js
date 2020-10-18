@@ -4,6 +4,12 @@ class Welcome extends Component{
 
 	render(){
 
+    var logged = localStorage.getItem("LOGGED");
+    var access = localStorage.getItem("ACCESS");
+    var user = localStorage.getItem("USER");
+
+    console.log("local storage => ", logged, access, user);
+
 		return(
 			<div className ="welcome">
 				<div className ="intro-ser">

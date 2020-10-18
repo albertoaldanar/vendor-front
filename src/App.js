@@ -1,4 +1,5 @@
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import 'react-dropdown/style.css'
 import React, { Component } from 'react';
 import logo from './logo.svg';
@@ -23,7 +24,8 @@ import './App.css';
 import "./team.css";
 import "./teamStats.css";
 import "./settings.css";
-import * as firebase from 'firebase';
+import API from "./apis/login";
+import Loader from 'react-loader-spinner'
 
 class App extends Component {
 
@@ -31,75 +33,73 @@ class App extends Component {
   constructor(props){
     super(props);
 
-    this.state = {username: "", password: "", errorMessage : ""}
-
-    if(!firebase.apps.length){
-        const firebaseConfig = {
-            apiKey: "AIzaSyD3G-zK6USRWEAJy1_dtHdqZZb_GWDmifw",
-            authDomain: "serecsin-1533314943191.firebaseapp.com",
-            databaseURL: "https://serecsin-1533314943191.firebaseio.com",
-            projectId: "serecsin-1533314943191",
-            storageBucket: "",
-            messagingSenderId: "1091946178343",
-            appId: "1:1091946178343:web:68af7c6bb70c4584acab02"
-        };
-
-          this.dataBase = firebase.initializeApp(firebaseConfig);
-      }
+    this.state = {username: "", password: "", errorMessage : "", visibleModal: false}
   }
 
   logout(){
-    localStorage.removeItem('login');
+    localStorage.removeItem('LOGGED');
+
      window.location.reload(false);
   }
 
 
   reloadComponent(){
-      window.location.reload(false);
+    window.location.reload(false);
   }
 
   handleUsername(event) {
-       this.setState({username: event.target.value});
+    this.setState({username: event.target.value});
   }
 
 
   handlePassword(event) {
-       this.setState({password: event.target.value});
+    this.setState({password: event.target.value});
   }
 
-  login(){
-      const {username, password} = this.state;
-      const dbUser = firebase.firestore().collection('user');
+  async login(){
 
-    if(username && password){
+    const {username, password} = this.state;
 
-          dbUser.where('username', '==', username).where("password", "==", password).get()
-            .then(snapshot => {
-              snapshot.forEach(doc => {
-                console.log(doc.data());
+        try {
+            this.setState({visibleModal: true});
 
-                if(doc.data().username){
-                    localStorage.setItem("login", "SI")
-                    localStorage.setItem("access", doc.data().access)
-                    return this.reloadComponent();
+            const loginResponse = await API.logIn(username, password);
+            console.log('login respuest =>', loginResponse);
 
-                } else {
-                  this.setState({errorMessage: "Usuario o contraseña incorrectos", username: "", password: ""})
+            if (loginResponse.response == 'SUCCESS') {
+                this.setState({visibleModal: false});
+
+                localStorage.setItem("LOGGED", "SI");
+                localStorage.setItem("ACCESS", "Admin Total");
+                localStorage.setItem("USER", loginResponse.user[0].username);
+
+                this.setState({password: "", username: ""});
+                return this.reloadComponent();
+
+            } else if(loginResponse.response == "Invalid credentials"){
+                this.setState({visibleModal: false, password: "", username: ""});
+
+                alert("Usuario o contraseña incorrectos");
+            }
+
+        } catch (err) {
+            alert(err);
+            if (err instanceof TypeError) {
+                if (err.message == 'Network request failed') {
+                    alert("No hay internet");
+                    console.log("No hay internet")
                 }
-              });
-              })
-
-      // return this.sendToHome();
-    } else {
-      this.setState({errorMessage: "Información incompleta", password: "", username: ""})
-    }
-  
+                else {
+                    alert("El servicio esta fallando.")
+                    console.log('Ups..', 'Por el momento este servicio no esta disponible, vuelva a intentarlo mas tarde');
+                }
+            }
+        }
   }
 
   blockUserManagement(){
       var access = localStorage.getItem('access');
-      
-      if(access == "Admin Total"){
+
         return(
             <div className ="users">
                   <Link to="/users">
@@ -108,17 +108,16 @@ class App extends Component {
                   </Link>
             </div>
         );
-      }
 
   }
 
   render() {
 
-    var login = localStorage.getItem('login');
+    var logged = localStorage.getItem('LOGGED');
 
     return (
       <Router>
-          { login =="SI" ? 
+          { logged == "SI" ?
             <div>
               <div className ="header">
                 <p className ="bussines-name">Serecsin SA de CV</p>
@@ -143,11 +142,16 @@ class App extends Component {
                 <Route exact path ="/privacyPolitics" component ={PrivacyPolitics}/>
                 <Route exact path="/settings" component={Settings} />
               </CardView>
-            </div> : 
+            </div>
+
+            :
 
               <div>
                   <p className ="logoleft">Serecsin SA de CV</p>
+
+
                   <div className = "login">
+
                     <form>
                       <div className ="field">
                         <label>
@@ -163,7 +167,7 @@ class App extends Component {
                     </form>
 
                     <button onClick = {this.login.bind(this)}>Login</button>
-              
+
                     <p className = "errorMessage">{this.state.errorMessage}</p>
 
                     <Route exact path ="/privacyPolitics" component ={PrivacyPolitics}/>

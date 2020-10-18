@@ -1,12 +1,20 @@
 import React, {Component} from "react";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
 import * as firebase from 'firebase';
+import API from "../apis/users";
+import Loader from 'react-loader-spinner';
+import Modal from 'react-responsive-modal';
 
 class Users extends Component{
 
 	constructor(props){
     	super(props);
 
-    	this.state = {allUsers: [], userSelected: {}, showEdit: false, password: "", username: "", access: "", name: "", access: "", id: null}
+    	this.state = {
+        allUsers: [], userSelected: {}, showEdit: false, password: "",
+        username: "", access: "", name: "", access: "", id: null, visibleModal: false,
+        createModal: false, userType: "Conductor", access: "Reportes e itinerario"
+      }
 
 	    if(!firebase.apps.length){
 	        const firebaseConfig = {
@@ -28,62 +36,53 @@ class Users extends Component{
 	}
 
 
-	deleteAccount(){
-		  const {username, password, nombre, access} = this.state;
-
-		  const db = firebase.firestore();
-
-		  let userRef = db.collection("user").where("username", "==", username).get()
-      		.then(function(querySnapshot) {
-	        	querySnapshot.forEach(function(doc) {
-	              console.log(doc.id, " => ", doc.data());
-	              // Build doc ref from doc.id
-	              doc.ref.delete();
-	         	});
-      		})
-
-      		return alert("Tu cuenta se ha elimindao");
-	}
-
-
 	updateAccount(){
-		  const {username, password, nombre, access, id} = this.state;
 
-		  const db = firebase.firestore();
-
-		  let userRef = db.collection("user").where("id", "==", id).get()
-      		.then(function(querySnapshot) {
-	        	querySnapshot.forEach(function(doc) {
-	              console.log(doc.id, " => ", doc.data());
-	              // Build doc ref from doc.id
-	              db.collection("user").doc(doc.id).update({username, password, access});
-	         	});
-
-      	   		// window.location.reload(false);
-      		})
-
-      		alert("Tus cambios se han guardado");
 	}
 
 
-	deleteAccount(){
+	async getUsers(){
 		  const {username, password, nombre, access, id} = this.state;
 
-		  const db = firebase.firestore();
+      try {
+        this.setState({visibleModal: true});
 
-		  let userRef = db.collection("user").where("id", "==", id).get()
-      		.then(function(querySnapshot) {
-	        	querySnapshot.forEach(function(doc) {
-	              console.log(doc.id, " => ", doc.data());
-	              // Build doc ref from doc.id
-	              doc.ref.delete();
-	         	});
-      		})
+            const usersResponse = await API.getAllUsers();
+            console.log('users respuest =>', usersResponse);
 
-      	   alert("Esta cuenta se ha eliminado");
-      	   // window.location.reload(false);	
+            if (usersResponse.users) {
+                this.setState({
+                  visibleModal: false,
+                  allUsers: usersResponse.users
+                });
+            } else {
+              alert("Ha ocurrido un error, vuelva a intentarlo mas tarde.")
+            }
+
+      } catch (err) {
+            alert(err);
+            if (err instanceof TypeError) {
+                if (err.message == 'Network request failed') {
+                    alert("No hay internet");
+                    console.log("No hay internet")
+                }
+                else {
+                    alert("El servicio esta fallando.")
+                    console.log('Ups..', 'Por el momento este servicio no esta disponible, vuelva a intentarlo mas tarde');
+                }
+            }
+      }
 	}
 
+  closeAndClean(){
+    this.setState({
+      createModal: false,
+      username: "",
+      password: "",
+      userType: "Conductor",
+      id: null,
+    });
+  }
 
 	handlePassword(event){
 		this.setState({ password: event.target.value });
@@ -93,79 +92,122 @@ class Users extends Component{
 		this.setState({ username: event.target.value });
 	}
 
-	seletUser(user){
-		this.setState({username: user.username, password: user.password, name: user.nombre, access: user.access, showEdit: true, id: user.id})
+	selectUser(user){
+		this.setState({ username: user.username, password: user.password, access: user.access, createModal: true, id: user.id, userType: user.user_type })
 	}
 
 	accessAdmin(event){
-    	this.setState({access: event.target.value});
-  	}
+    this.setState({ access: event.target.value });
+  }
 
+	async createUser(){
 
-	editUser(){
+      const { username, password, userType, access } = this.state;
 
-		const accessOptions = ["Admin Total", "Admin Gráficas", "Admin Archivos", "Conductor"];
+      if(username && password){
+        try {
+              const usersResponse = await API.createUser(username, password, userType, access);
+              console.log('users respuest =>', usersResponse);
 
-		if(this.state.username){
-			return(
-				<div>
-					<div className = "users-num">	
-						<div>
-							<p>USUARIO:</p>
-							<form>
-		                      <div className ="field">
-		                        <input type="text" name="username" value = {this.state.username} onChange = {this.handleUsername.bind(this)}/>
-		                      </div>
-	                    	</form>
-						</div>
+              if (usersResponse.response == "SUCCESS") {
+                  this.setState({
+                    createModal: false, username: "", password: "", userType: "Conductor", access: "Reportes e itinerario"
+                  });
 
-						<div>
-							<p>CONTRASEÑA:</p>
-							<form>
-		                      <div className ="field">
-		                        <input type="text" name="contra" value = {this.state.password} onChange = {this.handlePassword.bind(this)}/>
-		                      </div>
-	                    	</form>
-						</div>
-					</div>
+                  this.getUsers();
+              } else {
+                alert("Ha ocurrido un error, vuelva a intentarlo mas tarde.")
+              }
 
-					<button className="save-button" onClick = {this.updateAccount.bind(this)}> Guardar cambios </button>
-					<button className="delete-button" onClick={this.deleteAccount.bind(this)}> Eliminar cuenta </button>
-				</div>
-			);
-		} else {
-			return null;
-		}
+        } catch (err) {
+              alert(err);
+              if (err instanceof TypeError) {
+                  if (err.message == 'Network request failed') {
+                      alert("No hay internet");
+                      console.log("No hay internet")
+                  }
+                  else {
+                      alert("El servicio esta fallando.")
+                      console.log('Ups..', 'Por el momento este servicio no esta disponible, vuelva a intentarlo mas tarde');
+                  }
+              }
+        }
+      } else {
+        alert("Favor de llenar todos los campos")
+      }
+
 	}
 
-	getUsers(){
-		const db = firebase.firestore();
+    async updateUser(){
 
-    	const allUsers = [];
-	    let cPerdidos = db.collection('user').get()
-	      .then(snapshot => {
-	        snapshot.forEach(doc => {
-	          allUsers.push(doc.data());
-	        })
-	      });
-	      this.setState({allUsers});
-	}
+      const { username, password, userType, access, id } = this.state;
+
+      if(username && password){
+        try {
+
+              const usersResponse = await API.editUser(id, username, password, userType, access);
+              console.log('users respuest =>', usersResponse);
+
+              if (usersResponse.response == "SUCCESS") {
+                  this.setState({
+                    createModal: false, username: "", password: "", userType: "Conductor", access: "Reportes e itinerario"
+                  });
+
+                  this.getUsers();
+
+                  alert("Usuario se ha editado correctamente :)")
+              } else {
+                alert("Ha ocurrido un error, vuelva a intentarlo mas tarde.")
+              }
+
+        } catch (err) {
+              alert(err);
+              if (err instanceof TypeError) {
+                  if (err.message == 'Network request failed') {
+                      alert("No hay internet");
+                      console.log("No hay internet")
+                  }
+                  else {
+                      alert("El servicio esta fallando.")
+                      console.log('Ups..', 'Por el momento este servicio no esta disponible, vuelva a intentarlo mas tarde');
+                  }
+              }
+        }
+      } else {
+        alert("Favor de llenar todos los campos")
+      }
+
+  }
+
 
 
 	renderUsers(){
-
-		var access= localStorage.getItem('access');
+    const { allUsers } = this.state;
+		var access= "Admin Total";
 
 		if(access == "Admin Total"){
-			return this.state.allUsers.map(x => {
 
-			    return(
-				          <div className = "user-info">
-				          	<p className = "two-u"> {x.nombre} </p>
-				            <p className = "one-u"> {x.access}  <button onClick = {this.seletUser.bind(this, x)}> Editar </button> </p>
-				          </div>
-			      );
-			})
+      if(allUsers.length > 0){
+          return this.state.allUsers.map( x => {
+
+          return(
+                  <div className = "user-info">
+                    <p className = "two-u"> {x.username} </p>
+                    <p className = "one-u"> {x.access}  <button onClick = {this.selectUser.bind(this, x)}> Editar </button> </p>
+                  </div>
+            );
+        })
+      } else {
+        return    <Loader
+                      type="Oval"
+                      color="black"
+                      height={50}
+                      width={50}
+                      visible = {this.state.visibleModal}
+                  />
+
+      }
+
 		} else {
 			return(
 				<div>
@@ -178,18 +220,78 @@ class Users extends Component{
 	}
 
 	render(){
-		console.log(this.state.username);
+		console.log("type => ", this.state.userType);
+    console.log("state => ", this.state);
 
 		return(
 				<div>
+          <button onClick = {() => this.setState({createModal: true})}> Crear usuario </button>
+          <Modal open= {this.state.createModal} center onClose = {this.closeAndClean.bind(this)}>
+              <div>
+                <p>USUARIO:</p>
+                <form>
+                  <div className ="field">
+                    <input type="text" name="username" value = {this.state.username} onChange = {this.handleUsername.bind(this)}/>
+                  </div>
+                </form>
+              </div>
+
+              <div>
+                <p>CONTRASEÑA:</p>
+                <form>
+                  <div className ="field">
+                    <input type="text" name="contra" value = {this.state.password} onChange = {this.handlePassword.bind(this)}/>
+                  </div>
+                </form>
+              </div>
+
+              <div style = {{marginTop: 15, justifyConent: "center", alignSelf: "center"}}>
+                <select id="type" className="select" onChange={ value => this.setState({userType: value.target.value })} value = {this.state.userType}>
+
+                      <option value= "Conductor">
+                        Conductor
+                      </option>
+
+                      <option value= "Administrador" >
+                        Administrador
+                      </option>
+                </select>
+              </div>
+
+              {
+                this.state.userType == "Administrador" ?
+                  <div style = {{marginTop: 15, justifyConent: "center", alignSelf: "center"}}>
+                    <select id="type" className="select" onChange={ value => this.setState({access: value.target.value })} value = {this.state.access}>
+                          <option value= "Reportes e itinerario">
+                            Reportes e itinerario
+                          </option>
+
+                          <option value= "Total" >
+                            Total
+                          </option>
+                    </select>
+                  </div>
+                :
+                  null
+              }
+
+              {
+                  this.state.username && this.state.password ?
+                      <div style = {{marginTop: 20, marginLeft: 5}}>
+                        <button className="save-button" onClick = { this.state.id  == null ? this.createUser.bind(this) : this.updateUser.bind(this)}> Guardar cambios </button>
+                      </div>
+                  :
+                  null
+              }
+
+          </Modal>
+
 					<div className = "user-info">
 			              <p className = "one-u bold"> Tipo de usuario</p>
 			              <p className = "two-u bold"> Usuario</p>
 			        </div>
 
-			        
 					{this.renderUsers()}
-					{this.editUser()}
 				</div>
 		);
 	}

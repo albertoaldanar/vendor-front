@@ -27,7 +27,7 @@ class Stats extends Component{
     this.state = {
         ingresosbyMonth: [], egresosByMonth: [], totalEgresos: 0, totalIngresos: 0, month: "",
         egresoQro: [[]], egresoCLN: [[]], egresoMochis: [[]], stopsByClient:[], payByClient: [],
-        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true, 
+        totalRec: 0, totalRecFail: 0, descargas: 0, incidentes: 0, year: 0, byGroup: [], ingersos: [], loading: true,
         monthSelected: new Date().getMonth() + 1 , yearSelected: new Date().getFullYear(), clientesGanados: null, clientesPerdidos: null, egresos: [], allStops: [], paradasCount: [], arrayIngresosMesPasado: 0
     }
 
@@ -131,14 +131,14 @@ class Stats extends Component{
 
 
     //TOTAL INGRESO
-    const arrayIngresos = []; 
+    const arrayIngresos = [];
     const arrayDesglosado = [];
     let ingresosRef = db.collection('Ingresos').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           console.log(doc.id, '=>', doc.data());
           arrayIngresos.push(doc.data().importe);
-          arrayDesglosado.push(doc.data()); 
+          arrayDesglosado.push(doc.data());
 
           this.setState({totalIngresos: arrayIngresos.reduce((a, b) => a + b, 0)})
         });
@@ -151,7 +151,7 @@ class Stats extends Component{
 
 
     //TOTAL INGRESO MES PASADO
-    const arrayIngresosMesPasado = []; 
+    const arrayIngresosMesPasado = [];
     let ingresosMPRef = db.collection('Ingresos').where('mes', '==', this.state.monthSelected - 1 ).where('año', '==', this.state.yearSelected).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
@@ -168,14 +168,14 @@ class Stats extends Component{
 
 
     //TOTAL EGRESO
-    const arrayEgresos = []; 
+    const arrayEgresos = [];
     const egresos= [];
     let egresosRef = db.collection('egreso').where('mes', '==', this.state.monthSelected).where('año', '==', this.state.yearSelected).get()
       .then(snapshot => {
         snapshot.forEach(doc => {
           console.log(doc.id, '=>', doc.data());
-          arrayEgresos.push(doc.data().importe); 
-          egresos.push(doc.data()); 
+          arrayEgresos.push(doc.data().importe);
+          egresos.push(doc.data());
 
           this.setState({totalEgresos: arrayEgresos.reduce((a, b) => a + b, 0), egresos })
         });
@@ -291,7 +291,7 @@ class Stats extends Component{
           //     this.setState({paradasCount: reducedObjArr});
 
           var counts = {};
-          par.forEach(x => { 
+          par.forEach(x => {
             counts[x.client] = (counts[x.client] || 0) + 1 ;
           });
 
@@ -369,7 +369,7 @@ class Stats extends Component{
     ];
 
     const dataRecolección =[
-        
+
     ]
 
     for (var key in paradasCount) {
@@ -383,14 +383,14 @@ class Stats extends Component{
         { dataIndex: 'indicadores', title: "Indicadores" },
         { dataIndex: 'number', title: '#' }
     ];
-    
+
     const dataIndicadores = [
             { id: 1, indicadores: 'Incidentes', number: this.state.allStops.filter(x => x.client == "INCIDENTE" ).length },
             { id: 2, indicadores: 'Recolecciones totales', number: this.state.allStops.length },
             { id: 3, indicadores: "Recolecciones fallidas", number: this.state.allStops.filter(x => x.fallida == true).length },
             { id: 4, indicadores: 'Descargas', number: this.state.allStops.filter(x => x.client == "BASURA").length },
     ];
-    
+
 
     if(access == "Conductor" || access == "Admin Archivo"){
       return(
@@ -403,19 +403,19 @@ class Stats extends Component{
               return(
                 <div className ="page-box">
 
-            { this.state.loading ? 
+            { this.state.loading ?
               <div className = "spinner">
                 <ClipLoader
                   sizeUnit={"px"}
                   size={250}
                   color={'black'}
                   loading={this.state.loading}
-                /> 
+                />
                 <p>Generando reportes</p>
               </div>
-              :    
+              :
               <div>
-            
+
               <div>
                 <select id="months" className="select" onChange={this.dataMonth.bind(this)}>
                   value={this.state.monthSelected}
@@ -568,7 +568,7 @@ class Stats extends Component{
               </div>
 
              <p className = "title" id= "bus">Recolección del mes</p>
-        
+
               <div className ="card ">
                 <div className ="flex-r">
                   <Table
@@ -619,7 +619,7 @@ class Stats extends Component{
         </Link>
       </div>
     );
-    
+
   }
 }
 
