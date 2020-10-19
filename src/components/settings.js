@@ -304,7 +304,7 @@ class Settings extends Component{
 
     const { stopsByClient } = this.state;
     const input = document.getElementById('divToPrint');
-    const months = { 1: "Enero", 2: "Febrero", 3: "Marzo", 4: "Abril", 5: "Mayo", 6: "Junio", 7: "Julio", 8: "Agosto", 9: "Septiembre", 10: "Octubre", 11: "Noviembre", 12: "Diciembre" };
+    const monthString = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
     for (let [key, value] of Object.entries(stopsByClient)) {
         console.log(`${key}: ${value.length} paradas`);
@@ -315,16 +315,32 @@ class Settings extends Component{
                   const imgData = canvas.toDataURL('image/png');
                   const pdf = new jsPDF();
 
+                  pdf.setFont('courier')
+                  pdf.setFontType('bold')
+                  pdf.setFontSize(10)
+                  pdf.text(`Cliente: ${key}`, 10, 10)
+
+                  pdf.setFont('courier')
+                  pdf.setFontType('bold')
+                  pdf.setFontSize(10)
+                  pdf.text(`Mes: ${monthString[this.state.month -1]}`, 10, 20)
+
+
+                  pdf.setFont('courier')
+                  pdf.setFontType('bold')
+                  pdf.setFontSize(10)
+                  pdf.text(`Paradas: ${value.length}`, 10, 30)
+
                   value.map(stop => {
                     pdf.setFont('courier')
                     pdf.setFontType('bold')
                     pdf.setFontSize(10)
-                    pdf.text(`${stop.comments}`, 10, 10)
+                    pdf.text(`${stop.comments}`, 100, 100)
 
                     // stop.photos[0].length != undefined ? pdf.addImage(`data:image/png;base64,${stop.photos[0]}`, 'PNG', 100, 100, 20, 20) : null;
                   })
 
-                  pdf.save(`Reporte ${key}`)
+                  pdf.save(`Reporte ${key} - Mes:${monthString[this.state.month - 1]}`)
             })
     }
       //   this.state.stopsByClient.map((x, index) => {
