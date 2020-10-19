@@ -16,7 +16,6 @@ var date = new Date();
 var d = date.getDay();
 
 
-
 class Itinerary extends Component{
 
 	constructor(props){
