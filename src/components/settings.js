@@ -21,7 +21,7 @@ class Settings extends Component{
     this.state = {
       unauthorizedSales: [],
       week: null,
-      year: new Date().getFullYear(), month: new Date().getMonth() + 1, anotherArray: [], allStops: [], momments: null, otherArray: [{}], modalShow: false, stops: [], routeView: true,
+      year: new Date().getFullYear(), month: 0, anotherArray: [], allStops: [], momments: null, otherArray: [{}], modalShow: false, stops: [], routeView: true,
       ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]],
       day: new Date(), loadingModal: false, stopsByClient: {}, dataReady: false, monthResponse: "", yearResponse: ""
     }
@@ -33,7 +33,7 @@ class Settings extends Component{
 
       console.log("DATE => ", moment(new Date()).format("YYYY-MM-DD"));
       console.log("MARCA =>", Object.keys(obj).length);
-      // return this.getStops();
+      return this.getStops();
   }
 
 
@@ -46,8 +46,8 @@ class Settings extends Component{
     const { month, year } = this.state;
     const monthString = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
-
-    this.setState({loadingModal: true, routeView: false});
+    if(month != 0 ){
+      this.setState({loadingModal: true, routeView: false});
 
 
       try {
@@ -84,6 +84,10 @@ class Settings extends Component{
               }
             }
       }
+    } else {
+      alert("Favor de escojer un mes para generar reporte")
+    }
+
   }
 
   async getStops(){
@@ -305,7 +309,7 @@ class Settings extends Component{
                       pdf.setFontSize(10)
                       pdf.text(`${(hour).toString() + ":" + (minutes).toString()}`, 150, positionVertical[index])
 
-                      // stop.photos[0] != undefined ? pdf.addImage(`data:image/png;base64,${stop.photos[0]}`, 'PNG', 183, positionVertical[index] - 10, 20, 20) : null;
+                      stop.photos[0] != undefined ? pdf.addImage(`data:image/png;base64,${stop.photos[0]}`, 'PNG', 183, positionVertical[index] - 10, 20, 20) : null;
                   })
 
                   pdf.save(`Reporte ${key} - Mes:${this.state.monthResponse}`)
@@ -382,7 +386,7 @@ class Settings extends Component{
     console.log("stops by client => ", this.state.stopsByClient);
     console.log("mes => ", this.state.month, this.state.year, this.state.monthResponse);
 
-    const months = [ {mes: "Enero", key: 1}, {mes: "Febrero", key: 2}, {mes: "Marzo", key: 3}, {mes: "Abril", key: 4}, {mes: "Mayo", key: 5}, {mes: "Junio", key: 6}, {mes: "Julio", key: 7}, {mes: "Agosto", key: 8}, {mes: "Septiembre", key: 9}, {mes: "Octubre", key: 10}, {mes: "Noviembre", key: 11}, {mes: "Diciembre", key: 12}];
+    const months = [ {mes: "Escoje un mes", key: 0}, {mes: "Enero", key: 1}, {mes: "Febrero", key: 2}, {mes: "Marzo", key: 3}, {mes: "Abril", key: 4}, {mes: "Mayo", key: 5}, {mes: "Junio", key: 6}, {mes: "Julio", key: 7}, {mes: "Agosto", key: 8}, {mes: "Septiembre", key: 9}, {mes: "Octubre", key: 10}, {mes: "Noviembre", key: 11}, {mes: "Diciembre", key: 12}];
     const monthString = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
     const years = [2020, 2021, 2022];
@@ -402,6 +406,8 @@ class Settings extends Component{
       <div>
 
         <div className = "pdf" id = "divToPrint">
+
+          <p className = "title-route" style ={{fontSize: 20, marginBottom: -5}}>Reportes mensuales <img  width ="30" height = "30" src ="https://image.flaticon.com/icons/svg/149/149213.svg"/></p>
 
           <div style = {{paddingTop: 10, display: "flex", flexDirection: "row", paddingBottom: 15, marginLeft: 25}}>
             <p

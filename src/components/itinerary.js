@@ -410,7 +410,7 @@ class Itinerary extends Component{
               </div>
         </Modal>
 
-				<p className = "title-route">Ruta semanal <img  width ="30" height = "30" src ="https://image.flaticon.com/icons/svg/1179/1179054.svg"/></p>
+				<p className = "title-route" style = {{fontSize: 20,}}>Itinerario semanal <img  width ="30" height = "30" src ="https://image.flaticon.com/icons/svg/1179/1179054.svg"/></p>
 
         <div style = {{display: "flex", flexDirection: "row", justifyContent: "center"}}>
           <select id="type" className="select" onChange={ value => this.getItinerary(value)} value = {this.state.day}>
