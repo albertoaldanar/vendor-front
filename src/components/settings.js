@@ -170,6 +170,42 @@ class Settings extends Component{
       }
   }
 
+  async deleteStop(id){
+    try {
+          const stopsResponse = await API.deleteStop(id);
+          console.log('stops respuesta =>', stopsResponse);
+
+          this.setState({loadingModal: true});
+
+          if (stopsResponse.response == "SUCCESS") {
+              this.setState({
+                  modalVisible: false,
+                  loadingModal: false,
+              });
+
+              alert("Se ha eliminado correctamente")
+              this.onChangeDay(this.state.day);
+
+          } else {
+              this.setState({ loadingModal: false });
+              alert("Ha ocurrido un error, vuelva a intentarlo mas tarde.")
+          }
+
+      } catch (err) {
+            this.setState({ loadingModal: false });
+            alert(err);
+            if (err instanceof TypeError) {
+              if (err.message == 'Network request failed') {
+                  alert("No hay internet");
+                  console.log("No hay internet")
+              } else {
+                alert("El servicio esta fallando.")
+                console.log('Ups..', 'Por el momento este servicio no esta disponible, vuelva a intentarlo mas tarde');
+              }
+            }
+      }
+  }
+
   generateRouteDoc(){
 
     const { stops } = this.state;
@@ -341,6 +377,8 @@ class Settings extends Component{
                   <p className ="center">{item.day} </p>
                   <p className ="center">{(hour).toString() + ":" + (minutes).toString()} </p>
                   <p className ="center">{stopType} </p>
+
+                  <img  width ="25" height = "25" src ="https://www.flaticon.es/svg/static/icons/svg/864/864393.svg" onClick = {this.deleteStop.bind(this, item.id)} style= {{cursor: "pointer"}}/>
                 </div>
           );
         })
@@ -452,6 +490,7 @@ class Settings extends Component{
                             <p className ="center" style = {{fontWeight: "700"}}>Fecha </p>
                             <p className ="center" style = {{fontWeight: "700"}}>Hora </p>
                             <p className ="center" style = {{fontWeight: "700"}}>Tipo </p>
+                            <p className ="center" style = {{fontWeight: "700"}}> </p>
                           </div>
                         </div>
                       {this.showData()}
