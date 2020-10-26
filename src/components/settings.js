@@ -148,7 +148,6 @@ class Settings extends Component{
                   modalVisible: false,
                   stops: stopsResponse.stops,
                   loadingModal: false,
-
               });
 
           } else {
@@ -171,7 +170,6 @@ class Settings extends Component{
       }
   }
 
-
   generateRouteDoc(){
 
     const { stops } = this.state;
@@ -180,7 +178,8 @@ class Settings extends Component{
 
     const titulos = ["Cliente", "Exitosa", "Comentarios", "Hora", "Foto"];
     const positionHorizontal = [10, 50, 90, 150, 190];
-    const positionVertical = [55, 85, 115, 145, 175];
+    const positionVertical = [55, 85, 115, 145, 175, 205, 235, 265, 295, 325, 355];
+
 
     html2canvas(input)
                 .then((canvas) => {
@@ -205,8 +204,9 @@ class Settings extends Component{
                       pdf.text(`${titulo}`, positionHorizontal[index], 35)
                     })
 
-                    stops.map((stop, index) => {
 
+                    stops.map((stop, index) => {
+                        console.log("stop =>", stop)
                       var exitosa = stop.fail == false ? "SI" : "NO";
                       const hour = new Date(stop.created_at).getHours();
                       const minutes = new Date(stop.created_at).getMinutes();
@@ -223,7 +223,6 @@ class Settings extends Component{
                       pdf.setFontSize(10)
                       pdf.text(`${exitosa}`, 56, positionVertical[index])
 
-
                       pdf.setFont('courier')
                       pdf.setFontType('normal')
                       pdf.setFontSize(10)
@@ -232,12 +231,12 @@ class Settings extends Component{
                       pdf.setFont('courier')
                       pdf.setFontType('normal')
                       pdf.setFontSize(10)
-                      pdf.text(`${(hour).toString() + ":" + (minutes).toString()}`, 150, positionVertical[index])
+                      pdf.text(`${(hour).toString() + ":" + (minutes).toString()}` , 150, positionVertical[index])
 
                       stop.photos[0] != undefined ? pdf.addImage(`data:image/png;base64,${stop.photos[0]}`, 'PNG', 183, positionVertical[index] - 10, 20, 20) : null;
                     })
 
-                  pdf.save(`Ruta ${moment(this.state.day).format("YYYY-MM-DD")}`)
+                    pdf.save(`Ruta ${moment(this.state.day).format("YYYY-MM-DD")}`)
     })
   }
 
@@ -250,7 +249,7 @@ class Settings extends Component{
 
     const titulos = ["Día", "Exitosa", "Comentarios", "Hora", "Foto"];
     const positionHorizontal = [10, 50, 90, 150, 190];
-    const positionVertical = [55, 85, 115, 145, 175];
+    const positionVertical = [55, 85, 115, 145, 175, 205, 235, 265, 295, 325, 355];
 
     for (let [key, value] of Object.entries(stopsByClient)) {
         console.log(`${key}: ${value.length} paradas`);
