@@ -23,7 +23,7 @@ class Settings extends Component{
       week: null,
       year: new Date().getFullYear(), month: 0, anotherArray: [], allStops: [], momments: null, otherArray: [{}], modalShow: false, stops: [], routeView: true,
       ingresos: [{}],  loaded: false, type: "", message: "", ingresosThisMonth: [[]],
-      day: new Date(), loadingModal: false, stopsByClient: {}, dataReady: false, monthResponse: "", yearResponse: ""
+      day: new Date(), loadingModal: false, stopsByClient: {}, dataReady: false, monthResponse: "", yearResponse: "", reportType: "client"
     }
   }
 
@@ -43,15 +43,14 @@ class Settings extends Component{
 
   async getStopsByClient() {
 
-    const { month, year } = this.state;
+    const { month, year, reportType } = this.state;
     const monthString = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
     if(month != 0 ){
       this.setState({loadingModal: true, routeView: false});
 
-
       try {
-          const stopsResponse = await API.getStops("client", "", month, year);
+          const stopsResponse = await API.getStops(reportType, "", month, year);
           console.log('by client respuesta =>', stopsResponse);
 
           this.setState({loadingModal: true});
@@ -63,6 +62,7 @@ class Settings extends Component{
                   modalVisible: false,
                   stopsByClient: stopsResponse.stops,
                   loadingModal: false,
+                  reportSelected: this.state.reportType
               });
 
 
@@ -407,7 +407,7 @@ class Settings extends Component{
     if(monthResponse){
       if(Object.keys(this.state.stopsByClient).length > 0){
         return (
-          <p style = {{cursor: "pointer", textDecoration: "underline", padding: 20}} onClick = {this.printDocument.bind(this)}>Descargar reporte de {this.state.monthResponse}</p>
+          <p style = {{cursor: "pointer", textDecoration: "underline", padding: 20}} onClick = {this.printDocument.bind(this)}>Descargar reporte de {this.state.monthResponse} ({this.state.reportSelected})</p>
         )
       } else {
         return (
@@ -425,7 +425,7 @@ class Settings extends Component{
     const { unauthorizedSales, week, routeView, stopsByClient } = this.state;
     console.log("stops => ", this.state.stops);
     console.log("stops by client => ", this.state.stopsByClient);
-    console.log("mes => ", this.state.month, this.state.year, this.state.monthResponse);
+    console.log("mes => ", this.state.month, this.state.year, this.state.monthResponse, this.state.reportType);
 
     const months = [ {mes: "Escoje un mes", key: 0}, {mes: "Enero", key: 1}, {mes: "Febrero", key: 2}, {mes: "Marzo", key: 3}, {mes: "Abril", key: 4}, {mes: "Mayo", key: 5}, {mes: "Junio", key: 6}, {mes: "Julio", key: 7}, {mes: "Agosto", key: 8}, {mes: "Septiembre", key: 9}, {mes: "Octubre", key: 10}, {mes: "Noviembre", key: 11}, {mes: "Diciembre", key: 12}];
     const monthString = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -521,6 +521,21 @@ class Settings extends Component{
                         </option>
                       );
                     })}
+                </select>
+
+                <select id="years" className="select" onChange={reportType => this.setState({reportType: reportType.target.value})}>
+                  <option key={"client"} value={"client"}>
+                    Cliente
+                  </option>
+                  <option key={"gasolina"} value={"gasolina"}>
+                    Gasolina
+                  </option>
+                  <option key={"basura"} value={"basura"}>
+                    Basura
+                  </option>
+                  <option key={"incidente"} value={"incidente"}>
+                    Incidentes
+                  </option>
                 </select>
 
                 <button className="primary" onClick = {this.getStopsByClient.bind(this)}>Crear reporte</button>
