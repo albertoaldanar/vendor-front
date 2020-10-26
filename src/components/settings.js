@@ -178,7 +178,7 @@ class Settings extends Component{
 
     const titulos = ["Cliente", "Exitosa", "Comentarios", "Hora", "Foto"];
     const positionHorizontal = [10, 50, 90, 150, 190];
-    const positionVertical = [55, 85, 115, 145, 175, 205, 235, 265, 295, 325, 355];
+    const positionVertical = [55, 85, 115, 145, 175, 205, 235, 265, 35, 65, 95, 125, 155, 185, 205, 245, 35, 65, 95, 125, 155, 185, 205, 245, 35, 65, 95, 125, 155, 185, 205, 245,];
 
 
     html2canvas(input)
@@ -212,6 +212,10 @@ class Settings extends Component{
                       const minutes = new Date(stop.created_at).getMinutes();
                       var splitComments = pdf.splitTextToSize(stop.comments, 40);
                       var splitClient = pdf.splitTextToSize(stop.client, 40);
+
+                      if(index == 8){
+                        pdf.addPage();
+                      }
 
                       pdf.setFont('courier')
                       pdf.setFontType('normal')
