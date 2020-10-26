@@ -378,7 +378,7 @@ class Settings extends Component{
                   <p className ="center">{(hour).toString() + ":" + (minutes).toString()} </p>
                   <p className ="center">{stopType} </p>
 
-                  <img  width ="25" height = "25" src ="https://www.flaticon.es/svg/static/icons/svg/864/864393.svg" onClick = {this.deleteStop.bind(this, item.id)} style= {{cursor: "pointer"}}/>
+                  <img  width ="25" height = "25" src ="https://www.flaticon.es/svg/static/icons/svg/786/786195.svg" onClick = {this.deleteStop.bind(this, item.id)} style= {{cursor: "pointer"}}/>
                 </div>
           );
         })
