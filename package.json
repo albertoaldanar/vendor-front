@@ -50,7 +50,7 @@
     "segmented-control-react": "^2.1.3",
     "semantic-ui-css": "^2.4.1",
     "smoothscroll-polyfill": "^0.4.4",
-    "xlsx": "^0.14.4"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
